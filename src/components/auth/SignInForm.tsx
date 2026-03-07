@@ -22,12 +22,12 @@ export default function SignInForm() {
 
   const handleLogin = async (e :any) => {
     e.preventDefault();
-    console.log(email)
-    console.log(password)
+    // console.log(email)
+    // console.log(password)
     try {
       const { data } = await axios.post('/api/auth/login', { email, password });
-      console.log(email);
-      console.log(password);
+      // console.log(email);
+      // console.log(password);
       localStorage.setItem('token', data.token);
       localStorage.setItem('roleId', data.user.role);
       router.push('/dashboard');
@@ -89,7 +89,7 @@ export default function SignInForm() {
                   <Label>
                     Site <span className="text-error-500">*</span>{" "}
                   </Label>
-                    <select value={''}  onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
+      <select value={''}  onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
               <option>RGD</option>
               <option>MRP</option>
               <option>MCS</option>

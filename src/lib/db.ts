@@ -17,12 +17,12 @@ export const pool = async () => {
   if (!poolPromise) {
     poolPromise = sql.connect(config)
       .then((pool) => {
-        console.log('Connected to MSSQL ');
+       // console.log('Connected to MSSQL ');
         return pool;
       })
       .catch((err) => {
         poolPromise = null; // reset if connection failed
-        console.error('DB Connection Error ', err);
+        // console.error('DB Connection Error ', err);
         throw err;
       });
   }

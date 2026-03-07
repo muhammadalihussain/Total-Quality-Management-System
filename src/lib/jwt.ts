@@ -14,3 +14,4 @@ export const generateToken = (user: { id: string; email: string }) => {
 export const verifyToken = (token: string) => {
   return jwt.verify(token, SECRET_KEY);
 };
+
