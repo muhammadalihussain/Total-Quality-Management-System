@@ -1,6 +1,12 @@
 import UserAddressCard from "@/components/user-profile/UserAddressCard";
 import UserInfoCard from "@/components/user-profile/UserInfoCard";
 import UserMetaCard from "@/components/user-profile/UserMetaCard";
+import FullScreenModal from "@/components/example/ModalExample/FullScreenModal";
+import ModalBasedAlerts from "@/components/example/ModalExample/ModalBasedAlerts";
+import VerticallyCenteredModal from "@/components/example/ModalExample/VerticallyCenteredModal";
+import FormInModal from "@/components/example/ModalExample/FormInModal";
+import DefaultModal from "@/components/example/ModalExample/DefaultModal";
+
 import { Metadata } from "next";
 import React from "react";
 
@@ -21,6 +27,11 @@ export default function Profile() {
           <UserMetaCard />
           <UserInfoCard />
           <UserAddressCard />
+          <FullScreenModal />
+          <ModalBasedAlerts />
+          <VerticallyCenteredModal />
+          <FormInModal />
+          <DefaultModal />
         </div>
       </div>
     </div>

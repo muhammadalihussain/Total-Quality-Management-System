@@ -5,11 +5,14 @@ import Link from "next/link";
 import Input from "@/components/form/input/InputField";
 import Pagination from "@/components/pagination/pagination";
 import { useSearchParams, useRouter } from "next/navigation";
-
+import ComponentCard from "@/components/common/ComponentCard";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
+import { useModal } from "@/hooks/useModal";
+import Button from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/modal";
 
-type Role = "Admin" | "User" | "Manager";
-type Status = "Active" | "Pending" | "Inactive";
+// type Role = "Admin" | "User" | "Manager";
+// type Status = "Active" | "Pending" | "Inactive";
 
 type User = {
   UserID: number;
@@ -32,7 +35,6 @@ function uid(): number {
 export default function UsersPage() {
 
    const searchParams = useSearchParams();
-  const router = useRouter();
 
   const initialQ = searchParams.get("q") || "";
   const initialPage = parseInt(searchParams.get("page") || "1");
@@ -42,19 +44,13 @@ export default function UsersPage() {
  
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
-
-
-
+  const [showDelete, setShowDelete] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
   const [users, setUsers] = useState([]);
  
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<User | null>(null);
 
-
-
-
-  
- 
 
 // Debounce typing
   const [debouncedQ, setDebouncedQ] = useState(q);
@@ -93,12 +89,12 @@ export default function UsersPage() {
   }, [debouncedQ, page]);
 
 
-  
+  const totalPages = Math.ceil(count / 10);
 
 const changePage = (p: number) => {
   if (p < 1) p = 1;
-  if (p > count) p = count;
-  setPage(p); // triggers useEffect to fetch new page
+  if (p > totalPages) p = totalPages;
+  setPage(p);
 };
   const openAdd = () => {
     setEditing(null);
@@ -114,9 +110,20 @@ const changePage = (p: number) => {
   };  
 
   const handleDelete = (u: any) => {
-    if (!confirm(`Delete ${u.Username}?`)) return;
-    // setUsers((prev) => prev.filter((x) => x.id !== u.id));
+    setSelectedUser(u);
+    setShowDelete(true);
   };
+
+  const handleDeleteConfirm = async (id: number) => {
+  // await fetch(`/api/users/${id}`, {
+  //   method: "DELETE",
+  // });
+
+  setShowDelete(false);
+
+  // refresh data
+  fetchUsersData();
+};
 
   const handleSave = (payload: Omit<User, "id">) => {
     // if (editing) {
@@ -222,32 +229,92 @@ const changePage = (p: number) => {
       </div>
      <div className="flex gap-2 mt-4">
   <button
-    onClick={() => changePage(page - 1)}
-    disabled={page <= 1}
-    className="px-3 py-1 bg-gray-200"
-  >
-    Prev
-  </button>
+  onClick={() => changePage(page - 1)}
+  disabled={page <= 1}
+  className="px-3 py-1 bg-gray-200"
+>
+  Prev
+</button>
 
-  {Array.from({ length: count }, (_, i) => i + 1).map((p) => (
-    <button
-      key={p}
-      onClick={() => changePage(p)}
-      className={`px-3 py-1 border ${p === page ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-    >
-      {p}
-    </button>
-  ))}
-
+{Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
   <button
-    onClick={() => changePage(page + 1)}
-    disabled={page >= count}
-    className="px-3 py-1 bg-gray-200"
+    key={p}
+    onClick={() => changePage(p)}
+    className={`px-3 py-1 border ${
+      p === page ? "bg-blue-500 text-white" : "bg-gray-200"
+    }`}
   >
-    Next
+    {p}
   </button>
+))}
+
+<button
+  onClick={() => changePage(page + 1)}
+  disabled={page >= totalPages}
+  className="px-3 py-1 bg-gray-200"
+>
+  Next
+</button>
 </div>
 </>)}
+
+{showDelete && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+    
+    <div className="bg-white rounded-xl shadow-2xl w-[420px] p-6 animate-scaleIn">
+      
+      {/* Icon */}
+      <div className="flex justify-center mb-4">
+        <div className="bg-red-100 p-3 rounded-full">
+          <svg
+            className="w-8 h-8 text-red-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round"
+              d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Title */}
+      <h2 className="text-xl font-semibold text-center text-gray-800">
+        Delete User
+      </h2>
+
+      {/* Message */}
+      <p className="text-gray-500 text-center mt-2">
+        Are you sure you want to delete  
+        <span className="font-semibold text-red-600">
+          {" "} {selectedUser?.Username}
+        </span> ?
+      </p>
+
+      {/* Buttons */}
+      <div className="flex justify-center gap-4 mt-6">
+        
+        <button
+          onClick={() => setShowDelete(false)}
+          className="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={() => handleDeleteConfirm(selectedUser.UserID)}
+          className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)}
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -323,16 +390,6 @@ const [selectedSites, setSelectedSites] = useState<number[]>(
 
   const [password, setPassword] = useState('');
 
-  // const [form, setForm] = useState({
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  //   site:"",
-  //   role :"",
-  //   status:"",
-  //   siteIds: "",
-  // });
-
 
 const [form, setForm] = useState(() => ({
   name: initial?.Username || "",
@@ -345,11 +402,6 @@ const [form, setForm] = useState(() => ({
  
 }));
 
-
-
-
-
-  
 
 type FormError = {
   name?: boolean;
@@ -372,18 +424,6 @@ type FormError = {
       siteIds: selectedSites
     }));
   };
-
-  // useEffect(() => {
-  //   setName(initial?.name ?? "");
-  //   setEmail(initial?.email ?? "");
-  //   setPassword(initial?.password ?? "");
-  //   setSite(initial?.site ?? "1");
-  //   setRole(initial?.role ?? "User");
-  //   setStatus(initial?.status ?? "Active");
-  // }, [initial]);
-
-
-
 
 
   const submit = async (e: React.FormEvent) => {
@@ -410,8 +450,6 @@ type FormError = {
     
     if (Object.keys(newError).length > 0) return; // stop if error
 
-
-
   const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -432,7 +470,10 @@ type FormError = {
   };
 
   return (
+     
+    
     <form onSubmit={submit}>
+      
       <div className="p-4">
         <div className="mb-3">
           <label className="block text-sm font-medium mb-1">Full name</label>
@@ -445,7 +486,7 @@ type FormError = {
           <input value={form.email} name="email" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
             error.email ? "border-red-500" : "border-gray-300" }`} aria-label="Email" />
         </div>
-        {  initial==null ?(
+       
          <div className="relative">
            <label className="block text-sm font-medium mb-1">Password</label>
                     <input
@@ -467,9 +508,7 @@ type FormError = {
                         <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 mt-5" />
                       )}
                     </span>
-                  </div>):('')
-                  
-                  }
+                  </div>
                    <div className="mt-5">
 
           <label className="block text-sm font-medium mb-1">Sites</label>
@@ -496,17 +535,6 @@ type FormError = {
               </div>
             ))}
             </div>
-        
-
-            {/* <select  value={form.site}  name="site" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
-            error.site ? "border-red-500" : "border-gray-300" }`} aria-label="site">
-                 <option value="">Select Site</option>
-              <option value="RGD">RGD</option>
-              <option  value="MRP">MRP</option>
-              <option value="MCS">MCS</option>
-              <option value="BPD">BPD</option>
-            </select>
-           */}
 
 
           
@@ -537,26 +565,14 @@ type FormError = {
             )}
           </select>
            
-            {/* <select value={form.role} name="role" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
-            error.role ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
-              <option value="">Select Role</option>
-              <option value="Admin">Admin</option>
-              <option value="User">User</option>
-              <option value="Manager">Manager</option>
-
-
-             <option value="QAOfficer">QA Officer</option>
-              <option value="QA/QCManager">QA/QC Manager</option>
-              <option value="Manager">Head of QA/QC-PCQI</option>
-
-            </select> */}
+        
           </div>
 
           <div className="mt-5">
             <label className="block text-sm font-medium mb-1">Status</label>
-            <select value={form.status}  name="status" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
+            <select  value={form.status}  name="status" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
             error.status ? "border-red-500" : "border-gray-300" }`} aria-label="Status">
-              <option value="" disabled>Select Status</option>
+              <option value=""  disabled>Select Status</option>
               <option value="1">Active</option>
               {/* <option value="Pending">Pending</option> */}
               <option value="0">Inactive</option>
@@ -575,5 +591,6 @@ type FormError = {
         </div>
       </div>
     </form>
+   
   );
 }
