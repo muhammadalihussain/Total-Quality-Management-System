@@ -90,10 +90,12 @@ export default function SignInForm() {
                     Site <span className="text-error-500">*</span>{" "}
                   </Label>
       <select value={''}  onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
-              <option>RGD</option>
-              <option>MRP</option>
-              <option>MCS</option>
-              <option>BPD</option>
+              <option value="1">RGD</option>
+              <option value="2">MRP</option>
+              <option value="3">MCS</option>
+              <option value="4">FFD</option>
+              <option value="5">BPD</option>
+              
             </select>
                 </div>
                 <div className="flex items-center justify-between">

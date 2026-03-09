@@ -31,21 +31,21 @@ export default function AuthLayout({
                 </Link> */}
                 
 
-                <p className ="text-center text-gray-400 dark:text-white/60 text-4xl" >
-                    <div className="flex justify-center">
-                     <Image
-                    width={231}
-                    height={48}
-                    src="/images/logo/lab.jpg"
-                    alt="Logo"
-                  />   <br></br>
-                   <br></br>
-                  </div>
-                 Total  Quality Management System 
-                  <br></br> Matco Foods Ltd. 
-              
-               
-                </p>
+         <div className="text-center text-gray-400 dark:text-white/60 text-4xl space-y-3">
+
+  <div className="flex justify-center">
+    <Image
+      width={231}
+      height={48}
+      src="/images/logo/lab.jpg"
+      alt="Logo"
+    />
+  </div>
+
+  <p>Total Quality Management System</p>
+  <p className="text-2xl">Matco Foods Ltd.</p>
+
+</div>
               
             </div>
           </div>

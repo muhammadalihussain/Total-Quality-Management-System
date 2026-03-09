@@ -387,3 +387,29 @@ const AppSidebar: React.FC = () => {
 };
 
 export default AppSidebar;
+
+
+// "use client";
+// import { useEffect, useState } from "react";
+
+// export default function Sidebar() {
+//   const [menus, setMenus] = useState([]);
+
+//   useEffect(() => {
+//     fetch("/api/auth/menus", {
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       },
+//     })
+//       .then(res => res.json())
+//       .then(setMenus);
+//   }, []);
+
+//   return (
+//     <aside>
+//       {menus.map((m: any) => (
+//         <a key={m.Url} href={m.Url}>{m.Title}</a>
+//       ))}
+//     </aside>
+//   );
+// }
