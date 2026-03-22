@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState,useCallback } from "react";
+import * as Icons from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -103,6 +104,49 @@ const othersItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const [navItems, setNavItems] = useState<any[]>([]);
+
+    // 🔥 Dynamic icon mapping
+    function getIcon(iconName: string) {
+      const IconComponent = (Icons as any)[iconName];
+      return IconComponent ? <IconComponent size={18} /> : null;
+    }
+
+   function buildNavItems(data: any[]) {
+  // 🔹 Get parents
+  const parents = data.filter((m) => !m.ParentId);
+
+  return parents.map((parent) => {
+    const children = data.filter((m) => m.ParentId === parent.Id);
+
+    return {
+      name: parent.Title,
+      icon: getIcon(parent.Icon),
+      path: parent.Url !== "#" ? parent.Url : undefined,
+
+      // ✅ Only add subItems if children exist
+      ...(children.length > 0 && {
+        subItems: children.map((child) => ({
+          name: child.Title,
+          path: child.Url,
+          pro: false,
+        })),
+      }),
+    };
+  });
+}
+
+    useEffect(() => {
+    fetch("/api/menu")
+      .then((res) => res.json())
+      .then((data) => {
+
+        console.log(data);
+        const menu = buildNavItems(data);
+        setNavItems(menu);
+      });
+  }, []);
+
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -317,20 +361,23 @@ const AppSidebar: React.FC = () => {
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
+           <div className="flex items-center justify-center">
+
               <Image
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
+                className="dark:hidden mx-auto"
+                src="/images/logo/logo.png"
                 alt="Logo"
-                width={150}
+                width={110}
                 height={40}
               />
-              <Image
+              </div>
+              {/* <Image
                 className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
+                src="/images/logo/logo.png"
                 alt="Logo"
-                width={150}
+                width={90}
                 height={40}
-              />
+              /> */}
             </>
           ) : (
             <Image

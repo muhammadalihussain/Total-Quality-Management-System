@@ -83,7 +83,7 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <Link href="/" className="lg:hidden">
+          {/* <Link href="/" className="lg:hidden">
             <Image
               width={154}
               height={32}
@@ -98,7 +98,7 @@ const AppHeader: React.FC = () => {
               src="./images/logo/logo-dark.svg"
               alt="Logo"
             />
-          </Link>
+          </Link> */}
 
           <button
             onClick={toggleApplicationMenu}
@@ -162,7 +162,7 @@ const AppHeader: React.FC = () => {
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
             {/* <!-- Dark Mode Toggler --> */}
-            <ThemeToggleButton />
+            {/* <ThemeToggleButton /> */}
             {/* <!-- Dark Mode Toggler --> */}
 
            <NotificationDropdown /> 

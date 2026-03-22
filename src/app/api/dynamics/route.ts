@@ -2,15 +2,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from '@/lib/db';
 import { comparePassword } from '@/utils/hash'; // or relative path
- import { generateToken } from '@/lib/jwt';
+ import { signToken } from '@/lib/jwt';
 
 
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type"); // Get query param
-
-      const db = await pool(); // Singleton pool
+  const db = await pool(); // Singleton pool
 
 
   try {
@@ -24,7 +23,6 @@ export async function GET(req: Request) {
     }
 
     else if (type === "roles") {
-
      const result = await db.request()
       .execute('sp_GetAllRoles');
      const roles = result.recordset;

@@ -1,7 +1,6 @@
 import * as sql from "mssql";
 import { pool } from '@/lib/db';
-import { comparePassword } from '@/utils/hash'; // or relative path
-import { generateToken } from '@/lib/jwt';
+
 
 
 interface SqlParameter {
@@ -19,7 +18,7 @@ function isSqlParameter(value: unknown): value is SqlParameter {
 }
 
 
-async function executeStoredProcedure(procedureName: any, params = {}) {
+export async function executeStoredProcedure(procedureName: any, params = {}) {
    const db = await pool(); // Singleton pool
   const request = db.request();
 
@@ -37,6 +36,20 @@ async function executeStoredProcedure(procedureName: any, params = {}) {
   return await request.execute(procedureName);
 }
 
+// export async function deleteUser(id: any) {
+//   try {
+//     const result = await executeStoredProcedure("sp_DeleteUser]", {
+//       UserID : { type: sql.Int, value: id },
+//     });
+   
+//     return result.recordsets[0];
+//   } catch (err) {
+//     // Handle errors
+//     return err;
+//   } finally {
+//     // closePool();
+//   }
+// }
 
 export  async function addUser(user: any) {
 
@@ -81,7 +94,7 @@ export  async function addUser(user: any) {
     return result.recordsets[0];
   } catch (err) {
     // Handle errors
-    console.error("Error :", err);
+    return err;
   } finally {
     // closePool();
   }
@@ -131,7 +144,7 @@ export  async function addUser(user: any) {
     return users;
   } catch (err) {
     // Handle errors
-    console.error("Error :", err);
+    return err;
   } finally {
     // closePool();
   }

@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
-   const [site, setSite] = useState('');
+   const [site, setSite] = useState('1');
   const [isChecked, setIsChecked] = useState(false);
 
   const [email, setEmail] = useState('');
@@ -25,12 +25,18 @@ export default function SignInForm() {
     // console.log(email)
     // console.log(password)
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
-      // console.log(email);
-      // console.log(password);
+      const { data } = await axios.post('/api/auth/login', { email, password ,site });
+ 
       localStorage.setItem('token', data.token);
-      localStorage.setItem('roleId', data.user.role);
-      router.push('/dashboard');
+      localStorage.setItem('roleId', data.RoleId);
+      localStorage.setItem('UserID', data.UserID);
+      localStorage.setItem('Email', data.Email);
+      localStorage.setItem('Username', data.Username);
+       localStorage.setItem('PermissionIds', data.PermissionIds);
+      
+    
+      // window.location.href = "/";
+      router.push('/');
     } catch (err :any) {
       setError(err.response?.data?.message || 'Login failed');
     }
@@ -89,13 +95,12 @@ export default function SignInForm() {
                   <Label>
                     Site <span className="text-error-500">*</span>{" "}
                   </Label>
-      <select value={''}  onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
+      <select value={''}   onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
               <option value="1">RGD</option>
               <option value="2">MRP</option>
               <option value="3">MCS</option>
               <option value="4">FFD</option>
               <option value="5">BPD</option>
-              
             </select>
                 </div>
                 <div className="flex items-center justify-between">
@@ -120,7 +125,7 @@ export default function SignInForm() {
               </div>
             </form>
 
-            <div className="mt-5">
+            {/* <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                 Don&apos;t have an account? {""}
                 <Link
@@ -130,7 +135,7 @@ export default function SignInForm() {
                   Sign Up
                 </Link>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
