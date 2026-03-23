@@ -17,6 +17,11 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
+  GroupIcon,
+ PaperPlaneIcon,
+ DocsIcon,
+ TaskIcon,
+ FolderIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 
@@ -72,7 +77,7 @@ const navItems: NavItem[] = [
 
 const othersItems: NavItem[] = [
   {
-    icon: <PieChartIcon />,
+    icon: <PieChartIcon/>,
     name: "Charts",
     subItems: [
       { name: "Line Chart", path: "/line-chart", pro: false },
@@ -108,6 +113,7 @@ const AppSidebar: React.FC = () => {
 
     // 🔥 Dynamic icon mapping
     function getIcon(iconName: string) {
+      console.log(iconName)
       const IconComponent = (Icons as any)[iconName];
       return IconComponent ? <IconComponent size={18} /> : null;
     }
@@ -141,7 +147,7 @@ const AppSidebar: React.FC = () => {
       .then((res) => res.json())
       .then((data) => {
 
-        console.log(data);
+       
         const menu = buildNavItems(data);
         setNavItems(menu);
       });
