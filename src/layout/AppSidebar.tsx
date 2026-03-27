@@ -113,13 +113,14 @@ const AppSidebar: React.FC = () => {
 
     // 🔥 Dynamic icon mapping
     function getIcon(iconName: string) {
-      console.log(iconName)
+
       const IconComponent = (Icons as any)[iconName];
       return IconComponent ? <IconComponent size={18} /> : null;
     }
 
    function buildNavItems(data: any[]) {
   // 🔹 Get parents
+
   const parents = data.filter((m) => !m.ParentId);
 
   return parents.map((parent) => {

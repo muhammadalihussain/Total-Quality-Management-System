@@ -29,6 +29,37 @@ export async function GET(req: Request) {
     if (!roles) return NextResponse.json({ message: "Roles not found" }, { status: 404 });
       return NextResponse.json({ result });
     }
+
+
+
+      else if (type === "categories") {
+      const result = await db.request()
+      .execute('sp_GetAllCategories');
+     const categories = result.recordset;
+
+    if (!categories) return NextResponse.json({ message: "Categories not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+   else if (type === "colors") {
+      const result = await db.request()
+      .execute('sp_GetAllColors');
+     const colors = result.recordset;
+
+    if (!colors) return NextResponse.json({ message: "Colors not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+   else if (type === "forms") {
+      const result = await db.request()
+      .execute('sp_GetAllForms');
+     const forms = result.recordset;
+
+    if (!forms) return NextResponse.json({ message: "Forms not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
     
     else {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });

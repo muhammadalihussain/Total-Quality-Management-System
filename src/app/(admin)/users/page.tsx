@@ -256,6 +256,7 @@ if(res.data.success){
       ) : (
         <>
 
+   <ComponentCard title="User Management">
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y">
@@ -339,7 +340,10 @@ if(res.data.success){
   Next
 </button>
 </div>
-</>)}
+</ComponentCard>
+</>
+
+)}
 
 {showDelete && (
   <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
@@ -553,25 +557,22 @@ type UserFormProps = {
 
 function UserForm({ initial, onSave, onCancel }: UserFormProps) {
  
-  
-  
-  const [error, setError] = useState<FormError>({});
 
-  
+  const [error, setError] = useState<FormError>({});
   const [DataAreaIdrecords, setDataAreaIdRecords] = useState<any[]>([]);
   const [DataRolesrecords, setDataRolesRecords] = useState<any[]>([]);
-const [selectedSites, setSelectedSites] = useState<number[]>(
+  const [selectedSites, setSelectedSites] = useState<number[]>(
   initial?.SiteIDs ? initial.SiteIDs.split(',').map(Number) : []
 );
    
   useEffect(() => {
   async function fetchData() {
     try {
-       const res1 = await axios.get(`api/dynamics?type=company`);
+         const res1 = await axios.get(`api/dynamics?type=company`);
          setDataAreaIdRecords( res1.data.result.recordset);
 
           const res2 = await axios.get(`api/dynamics?type=roles`);
-         setDataRolesRecords( res2.data.result.recordset);
+          setDataRolesRecords( res2.data.result.recordset);
      
     } catch (err :any) {
      alert(err.response?.data?.message );

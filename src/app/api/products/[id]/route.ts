@@ -4,12 +4,62 @@ import { executeStoredProcedure } from "@/lib/dal/userdbutils";
 import bcrypt from "bcryptjs";
 
 
+
+
+// ✅ GET PRODUCT BY ID
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+
+ try {
+  const { id } = await context.params; // 🔥 IMPORTANT
+
+    if (!id) {
+    return NextResponse.json(
+      { success: false, message: "ID is missing" },
+      { status: 400 }
+    );
+  }
+
+    const result = await executeStoredProcedure("sp_GetProductDetailByID", {
+      Id : { type: sql.Int, value: id  },
+    });
+
+
+
+
+    return NextResponse.json({
+      success: true,
+      message: "success",
+      data: result.recordsets[0][0]
+    });
+
+
+  } catch (error:any) {
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || "failed",
+      },
+      { status: 500 }
+    );
+  }
+
+}
+
+
+
+
+
+
+
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ id: string }> } // <-- params is now a Promise
 ) {
 
-    
   try {
     // Await params before using it
     const { id } = await context.params;
@@ -60,7 +110,7 @@ export async function PUT(
 
     const { username,email,rawpassword,isActive,role_Id,sitesIds} = body
 
-      const salt = await bcrypt.genSalt(10);
+       const salt = await bcrypt.genSalt(10);
       const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
       const result = await executeStoredProcedure("sp_UpdateUser", {
          

@@ -750,3 +750,11 @@ span.flatpickr-weekday,
   opacity: 0.8;
   cursor: grabbing; /* Changes the cursor to indicate dragging */
 }
+
+.ag-theme-alpine .ag-cell {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.ag-row:hover {
+  background-color: #f9fafb;
+}
