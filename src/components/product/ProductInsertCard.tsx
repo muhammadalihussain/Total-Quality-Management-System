@@ -9,22 +9,12 @@ import Label from "../form/Label";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import axios from 'axios';
 
-type User = {
-  UserID: number;
-  Username: string;
-  Email: string;
-  RoleID: string;
-  IsActive: number;
-  SiteIDs: string;
-  Password:string;
-  RawPassword:string;
-
-};
-
-type UpdateUserPayload = Partial<Omit<User, "UserID">> & { UserID: number };
 
 
-export default function ProductInsertCard({ editData }: any) {
+
+export default function ProductInsertCard({ refreshGrid  }: any) {
+
+
   const {
     isOpen: isFullscreenModalOpen,
     openModal: openFullscreenModal,
@@ -37,14 +27,14 @@ const [dataColorsRecords, setDataColorsRecords] = useState<any[]>([]);
   useEffect(() => {
   async function fetchData() {
     try {
-         const res1 = await axios.get(`api/dynamics?type=categories`);
+         const res1 = await axios.get(`/api/dynamics?type=categories`);
          setDataCategoriesRecords( res1.data.result.recordset);
 
-           const res2 = await axios.get(`api/dynamics?type=colors`);
+           const res2 = await axios.get(`/api/dynamics?type=colors`);
            setDataColorsRecords( res2.data.result.recordset);
 
 
-          const res3 = await axios.get(`api/dynamics?type=forms`);
+          const res3 = await axios.get(`/api/dynamics?type=forms`);
           setDataFormsRecords( res3.data.result.recordset);
 
 
@@ -65,29 +55,27 @@ const [dataColorsRecords, setDataColorsRecords] = useState<any[]>([]);
  const [showDelete, setShowDelete] = useState(false);
  const [message, setMessage] = useState('');
 
-  const [DataAreaIdrecords, setDataAreaIdRecords] = useState<any[]>([]);
+const initialForm = {
+  ProductName: "",
+  ProductCode: "",
+  CategoryID: "",
+  FormID: "",
+  ColorID: "",
+  CountryOfOrigin: "",
+  Ingredients: "",
+  IngredientsDeclaration: "",
+  SuitableFor: "",
+  Additives: "",
+  Functionalities: "",
+  Description: "",
+  ShelfLife: "",
+  StorageConditions: "",
+  Uses: "",
+  IsActive: true,
+};
 
-const [form, setForm] = useState(
-     {
-      ProductName: "",
-      ProductCode: "",
-      CategoryID: "",
-      FormID: "",
-      ColorID: "",
-      CountryOfOrigin: "",
-      Ingredients: "",
-      IngredientsDeclaration: "",
-      SuitableFor: "",
-      Additives: "",
-      Functionalities: "",
-      Description: "",
-      ShelfLife: "",
-      StorageConditions: "",
-      Uses: "",
-      IsActive: true,
-    }
-  );
 
+const [form, setForm] = useState(initialForm);
 
 type FormError = {
       ProductName?: boolean;
@@ -112,85 +100,13 @@ type FormError = {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-  };
-/*
-const handleSave = async (payload: UpdateUserPayload) => {
-  const { UserID, ...data } = payload;
 
-    if (editing) {
-
-try
-{
-
-
-
-const res =await axios.put(`/api/user/users/${UserID}`, {
-        username:data.Username,
-        email:data.Email,
-        rawpassword:data.Password,
-        isActive: data.IsActive,
-        role_Id: data.RoleID?.toString(),
-        sitesIds:data.SiteIDs,
-});
-if(res.data.success){
-     // setMessage(res.data.message);
-    //  successModal.openModal();
-      setError("");
-    }else{
-      setError(res.data.message);
-    }
-
- } catch (err:any) {
-    setError(err.response?.data?.message || "Something went wrong");
-    errorModal.openModal();
-  }
-
-     // setUsers((prev) => prev.map((p) => (p.id === editing.id ? { ...p, ...payload } : p)));
-    } else {
-
-
-
-      try
-      {
-  const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username:data.Username,
-        email:data.Email,
-        rawpassword:data.Password,
-        isActive: data.IsActive,
-        role_Id: data.RoleID,
-        sitesIds:data.SiteIDs,
-      })
-    });
-
-    if(res){
-     // setMessage(res.data.message);
-    //  successModal.openModal();
-      setError("");
-    }else{
-      setError(res);
-    }
-
- } catch (err:any) {
-    setError(err.response?.data?.message || "Something went wrong");
-    errorModal.openModal();
-  }
-
-
-
-      // const newUser: User = { id: uid(), ...payload };
-      // setUsers((prev) => [newUser, ...prev]);
-
-    }
-    fetchUsersData();
-    //setModalOpen(false);
-    closeFullscreenModal();
-    setEditing(null);
+    setForm((prev) => ({
+    ...prev,
+    [name]: name === "IsActive" ? value === "1" : value,
+  }));
   };
 
-*/
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,11 +130,49 @@ if(res.data.success){
     if (!form.IsActive) newError.IsActive = true;
     setError(newError);
 
+
     if (Object.keys(newError).length > 0) return; // stop if error
      //if (res.ok) alert("User created");
 
 
+  try{
 
+
+  await fetch("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+
+        ProductName: form.ProductName,
+        ProductCode: form.ProductCode,
+        CategoryID: form.CategoryID,
+        FormID: form.FormID,
+        ColorID: form.ColorID,
+        Ingredients: form.Ingredients,
+
+IngredientsDeclaration: form.IngredientsDeclaration,
+SuitableFor: form.SuitableFor,
+Additives: form.Additives,
+Functionalities: form.Functionalities,
+Description: form.Description,
+ShelfLife: form.ShelfLife,
+StorageConditions: form.StorageConditions,
+Uses:form.Uses,
+IsActive: form.IsActive,
+
+      }),
+    });
+
+   closeFullscreenModal()
+   setForm(initialForm); // reset
+   refreshGrid();   // clear edit state (parent)
+
+
+ } catch (err:any) {
+
+    setError(err.response?.data?.message || "Something went wrong");
+    errorModal.openModal();
+  }
 
   };
 
@@ -235,11 +189,17 @@ if(res.data.success){
   */
 
 
+const handleAdd = () => {
+setForm(initialForm);
+openFullscreenModal()
+
+};
+
 
 
   return (
     <>
-      <Button size="sm" onClick={openFullscreenModal}>
+      <Button size="sm" onClick={handleAdd }>
      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
             Add Product
       </Button>
@@ -375,8 +335,7 @@ if(res.data.success){
           <Label>Country Of Origin</Label>
           <Input name="CountryOfOrigin" placeholder="" onChange={handleChange} value={form.CountryOfOrigin}
 
-          className={`w-full border rounded px-3 py-2 ${
-            error.CountryOfOrigin ? "border-red-500" : "border-gray-300" }`} aria-label="CountryOfOrigin"
+          className={`w-full border rounded px-3 py-2`} aria-label="CountryOfOrigin"
           />
         </div>
 
@@ -446,7 +405,7 @@ if(res.data.success){
 
          <div>
           <Label>Shelf Life</Label>
-          <input name="ShelfLife" placeholder="" onChange={handleChange} value={form.ShelfLife}
+          <textarea name="ShelfLife" placeholder="" onChange={handleChange} value={form.ShelfLife}
 
           className={`w-full border rounded px-3 py-2 ${
             error.ShelfLife ? "border-red-500" : "border-gray-300" }`} aria-label="input"
@@ -456,7 +415,7 @@ if(res.data.success){
 
               <div>
           <Label>Storage Conditions</Label>
-          <input name="StorageConditions"  onChange={handleChange} value={form.StorageConditions}
+          <textarea name="StorageConditions"  onChange={handleChange} value={form.StorageConditions}
 
           className={`w-full border rounded px-3 py-2 ${
             error.StorageConditions ? "border-red-500" : "border-gray-300" }`} aria-label="input"
@@ -466,10 +425,9 @@ if(res.data.success){
 
       <div>
           <Label>Uses</Label>
-          <input name="Uses" placeholder="" onChange={handleChange} value={form.Uses}
+          <textarea name="Uses" placeholder="" onChange={handleChange} value={form.Uses}
 
-          className={`w-full border rounded px-3 py-2 ${
-            error.StorageConditions ? "border-red-500" : "border-gray-300" }`} aria-label="input"
+          className={`w-full border rounded px-3 py-2 `} aria-label="input"
           />
         </div>
 

@@ -8,19 +8,36 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-
-       const result = await executeStoredProcedure("sp_Packaging_Insert", {
+       const result = await executeStoredProcedure("sp_ProductAnalysis_Insert", {
 
          ProductId: { type: sql.Int, value: parseInt(body.ProductId) },
-            Material: {
-            type: sql.NVarChar,
-            value: body.Material,
+
+            CategoryId: {
+            type: sql.Int,
+            value: parseInt(body.CategoryId)  ,
           },
 
-          NetWeight: {
+
+            ParameterName : {
             type: sql.NVarChar,
-            value: body.NetWeight,
+            value: body.ParameterName ,
           },
+
+          Unit: {
+            type: sql.NVarChar,
+            value: body.Unit,
+          },
+
+             Limits: {
+            type: sql.NVarChar,
+            value: body.Limits,
+          },
+
+              Status: {
+            type: sql.NVarChar,
+            value: body.Status,
+          },
+
 
           IsActive: {
             type: sql.Bit,

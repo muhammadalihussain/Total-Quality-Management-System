@@ -7,36 +7,238 @@ import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 
 
 export default function ProductMetaCard() {
 const searchParams = useSearchParams();
 const [loading, setLoading] = useState(true);
 const [product, setProduct] = useState([]);
- const id = parseInt(searchParams.get("id") || "1");
+  const params = useParams();
+  const id = params?.id;
 
 
- // Fetch users when page or debounced query changes
-  useEffect(() => {
-    const fetchProduct = async () => {
+const [modalOpen, setModalOpen] = useState(false);
+
+
+
+const [dataCategoriesRecords, setDataCategoriesRecords] = useState<any[]>([]);
+const [dataFormsRecords, setDataFormsRecords] = useState<any[]>([]);
+const [dataColorsRecords, setDataColorsRecords] = useState<any[]>([]);
+const [error, setError] = useState<FormError>({});
+const {
+    isOpen: isFullscreenModalOpen,
+    openModal: openFullscreenModal,
+    closeModal: closeFullscreenModal,
+  } = useModal();
+
+  const initialForm = {
+  ProductName: "",
+  ProductCode: "",
+  CategoryID: "",
+  FormID: "",
+  ColorID: "",
+  CountryOfOrigin: "",
+  Ingredients: "",
+  IngredientsDeclaration: "",
+  SuitableFor: "",
+  Additives: "",
+  Functionalities: "",
+  Description: "",
+  ShelfLife: "",
+  StorageConditions: "",
+  Uses: "",
+  IsActive: true,
+};
+
+
+const [form, setForm] = useState(initialForm);
+
+
+
+type FormError = {
+      ProductName?: boolean;
+      ProductCode?: boolean;
+      CategoryID?: boolean;
+      FormID?: boolean;
+      ColorID?: boolean;
+      CountryOfOrigin?: boolean;
+      Ingredients?: boolean;
+      IngredientsDeclaration?: boolean;
+      SuitableFor?: boolean;
+      Additives?: boolean;
+      Functionalities?: boolean;
+      Description?: boolean;
+      ShelfLife?: boolean;
+      StorageConditions?: boolean;
+      Uses?: boolean;
+      IsActive?: boolean;
+};
+
+
+
+ const loadDataProduct = async () => {
+
+   if (!id) return;
+
+
+try {
+     const res = await fetch(`/api/products/${id}`);
+      const result = await res.json();
+      setProduct(result.data);
+      } catch (err) {
+         alert(err.response?.data?.message );
+      }
+
+}
+
+
+useEffect(() => {
+
+
+  const load = async () => {
+
+if (!id) return;
+    try {
+
       const res = await fetch(`/api/products/${id}`);
       const result = await res.json();
       setProduct(result.data);
 
-    };
+      const res1 = await axios.get(`/api/dynamics?type=categories`);
+       setDataCategoriesRecords( res1.data.result.recordset);
 
-    fetchProduct();
-  }, []);
+       const res2 = await axios.get(`/api/dynamics?type=colors`);
+       setDataColorsRecords( res2.data.result.recordset);
+
+       const res3 = await axios.get(`/api/dynamics?type=forms`);
+        setDataFormsRecords( res3.data.result.recordset);
 
 
-  const { isOpen, openModal, closeModal } = useModal();
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
+    } catch (err :any) {
+     alert(err.response?.data?.message );
+    }
+
   };
-   if (!product) return <div>Loading...</div>;
+
+  load();
+}, [id]);
+
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+
+     setForm((prev) => ({
+    ...prev,
+    [name]: name === "IsActive" ? value === "1" : value,
+  }));
+  };
+
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+
+    const newError: FormError = {}; // type-safe
+    if (!form.ProductName.trim()) newError.ProductName = true;
+    if (!form.ProductCode.trim()) newError.ProductCode = true;
+     if (!form.CategoryID) newError.CategoryID = true;
+    if (!form.FormID) newError.FormID = true;
+        if (!form.ColorID) newError.ColorID = true;
+     if (!form.Ingredients.trim()) newError.Ingredients = true;
+     if (!form.IngredientsDeclaration.trim()) newError.IngredientsDeclaration = true;
+     if (!form.SuitableFor.trim()) newError.SuitableFor = true;
+      if (!form.Additives.trim()) newError.Additives = true;
+    if (!form.Functionalities.trim()) newError.Functionalities = true;
+     if (!form.Description.trim()) newError.Description = true;
+  if (!form.ShelfLife.trim()) newError.ShelfLife = true;
+ if (!form.StorageConditions.trim()) newError.StorageConditions = true;
+
+    if (!form.IsActive) newError.IsActive = true;
+    setError(newError);
+
+
+    if (Object.keys(newError).length > 0) return; // stop if error
+     //if (res.ok) alert("User created");
+
+
+  try{
+      if (!id) return;
+
+  await fetch(`/api/products/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+
+        ProductName: form.ProductName,
+        ProductCode: form.ProductCode,
+        CategoryID: form.CategoryID,
+        FormID: form.FormID,
+        ColorID: form.ColorID,
+        Ingredients: form.Ingredients,
+ CountryOfOrigin:form.CountryOfOrigin,
+IngredientsDeclaration: form.IngredientsDeclaration,
+SuitableFor: form.SuitableFor,
+Additives: form.Additives,
+Functionalities: form.Functionalities,
+Description: form.Description,
+ShelfLife: form.ShelfLife,
+StorageConditions: form.StorageConditions,
+Uses:form.Uses,
+IsActive: form.IsActive,
+
+      }),
+    });
+
+   closeFullscreenModal()
+   //setForm(initialForm); // reset
+   loadDataProduct();
+
+ } catch (err:any) {
+
+    setError(err.response?.data?.message || "Something went wrong");
+    errorModal.openModal();
+  }
+
+  };
+  
+
+
+
+  const handleOpen = async() => {
+
+
+
+setForm({
+  ProductName:product.ProductName,
+  ProductCode:product.ProductCode,
+  CategoryID: product.CategoryID,
+  FormID: product.FormID,
+  ColorID: product.ColorID,
+  CountryOfOrigin:product.CountryOfOrigin,
+  Ingredients: product.Ingredients,
+  IngredientsDeclaration:product.IngredientsDeclaration,
+  SuitableFor: product.SuitableFor,
+  Additives: product.Additives,
+  Functionalities: product.Functionalities,
+  Description: product.Description,
+  ShelfLife: product.ShelfLife,
+  StorageConditions: product.StorageConditions,
+  Uses:product.Uses,
+  IsActive: product.IsActive,
+}
+  );
+ openFullscreenModal();
+  };
+
+if (!product) {
+  return <div>Loading...</div>;
+}
+
+if (product.length === 0) {
+  return <div>No data found</div>;
+}
   return (
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -183,7 +385,7 @@ const [product, setProduct] = useState([]);
 
           </div>
           <button
-            onClick={openModal}
+            onClick={handleOpen }
             className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
           >
             <svg
@@ -208,97 +410,268 @@ const [product, setProduct] = useState([]);
 
 
 
-      <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
-        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
-          <div className="px-2 pr-14">
-            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Personal Information
-            </h4>
-            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-              Update your details to keep your profile up-to-date.
-            </p>
-          </div>
-          <form className="flex flex-col">
-            <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
-              <div>
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Social Links
-                </h5>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div>
-                    <Label>Facebook</Label>
-                    <Input
-                      type="text"
-                      defaultValue="https://www.facebook.com/PimjoHQ"
-                    />
-                  </div>
+         <Modal
+        isOpen={isFullscreenModalOpen}
+        onClose={closeFullscreenModal}
+        isFullscreen={true}
+        showCloseButton={true}
+      >
 
-                  <div>
-                    <Label>X.com</Label>
-                    <Input type="text" defaultValue="https://x.com/PimjoHQ" />
-                  </div>
 
-                  <div>
-                    <Label>Linkedin</Label>
-                    <Input
-                      type="text"
-                      defaultValue="https://www.linkedin.com/company/pimjo"
-                    />
-                  </div>
+    <div className="fixed inset-0 flex flex-col justify-between p-6 overflow-x-hidden overflow-y-auto bg-white dark:bg-gray-900 lg:p-10fixed top-0 left-0 flex flex-col justify-between w-full h-screen p-6 overflow-x-hidden overflow-y-auto bg-white dark:bg-gray-900 lg:p-10">
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[95%] p-5 max-h-[95vh] overflow-y-auto animate-scaleIn">
 
-                  <div>
-                    <Label>Instagram</Label>
-                    <Input
-                      type="text"
-                      defaultValue="https://instagram.com/PimjoHQ"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Personal Information
-                </h5>
+   <form className="flex flex-col" onSubmit={submit}>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
-                    <Input type="text" defaultValue="Musharof" />
-                  </div>
+      {/* HEADER */}
+      <h5 className="mb-4 text-lg font-medium text-gray-800 dark:text-white/90">
+        Add Product
+      </h5>
 
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
-                    <Input type="text" defaultValue="Chowdhury" />
-                  </div>
+      {/* GRID */}
 
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Email Address</Label>
-                    <Input type="text" defaultValue="randomuser@pimjo.com" />
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Phone</Label>
-                    <Input type="text" defaultValue="+09 363 398 46" />
-                  </div>
+ <div>
+          <Label>Product Name</Label>
+            <input name="ProductName" placeholder="" onChange={handleChange} value={form.ProductName}
 
-                  <div className="col-span-2">
-                    <Label>Bio</Label>
-                    <Input type="text" defaultValue="Team Manager" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-              <Button size="sm" variant="outline" onClick={closeModal}>
-                Close
-              </Button>
-              <Button size="sm" onClick={handleSave}>
-                Save Changes
-              </Button>
-            </div>
-          </form>
+          className={`w-full border rounded px-3 py-2 ${
+            error.ProductName ? "border-red-500" : "border-gray-300" }`} aria-label="Product name"
+          />
         </div>
+
+        <div>
+          <Label>Product Code</Label>
+          <input name="ProductCode" placeholder="" onChange={handleChange} value={form.ProductCode}
+
+           className={`w-full border rounded px-3 py-2 ${
+            error.ProductCode ? "border-red-500" : "border-gray-300" }`} aria-label="ProductCode"
+          />
+        </div>
+
+        <div>
+          <Label>Category</Label>
+
+           <select
+            key={"0"}
+            name="CategoryID"
+            id="CategoryID"
+            value={form.CategoryID}
+            onChange={handleChange}
+
+            className={`w-full border rounded px-3 py-2 ${
+            error.CategoryID ? "border-red-500" : "border-gray-300" }`} aria-label="Role"
+          >
+          <option value="" disabled>Select Category</option>
+            {dataCategoriesRecords?.length > 0 ? (
+              dataCategoriesRecords.map((id) => (
+                <option key={id.Id} value={id.Id}>
+                  {id.Name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading...</option>
+            )}
+          </select>
+
+
+        </div>
+
+         <div>
+          <Label>Form</Label>
+
+
+
+            <select
+            key={"0"}
+            name="FormID"
+            id="FormID"
+            value={form.FormID}
+            onChange={handleChange}
+
+            className={`w-full border rounded px-3 py-2 ${
+            error.FormID ? "border-red-500" : "border-gray-300" }`} aria-label="Form" >
+
+          <option value="" disabled>Select Form</option>
+            {dataFormsRecords?.length > 0 ? (
+              dataFormsRecords.map((id) => (
+                <option key={id.Id} value={id.Id}>
+                  {id.Name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading...</option>
+            )}
+          </select>
+
+
+
+
+        </div>
+
+
+            <div>
+          <Label>Color</Label>
+
+           <select
+            key={"0"}
+            name="ColorID"
+            id="ColorID"
+            value={form.ColorID}
+            onChange={handleChange}
+
+            className={`w-full border rounded px-3 py-2 ${
+            error.ColorID ? "border-red-500" : "border-gray-300" }`} aria-label="ColorID" >
+
+          <option value="" disabled>Select Color</option>
+            {dataColorsRecords?.length > 0 ? (
+              dataColorsRecords.map((id) => (
+                <option key={id.Id} value={id.Id}>
+                  {id.Name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading...</option>
+            )}
+          </select>
+
+        </div>
+
+
+          <div>
+          <Label>Country Of Origin</Label>
+         <input name="CountryOfOrigin" placeholder="" onChange={handleChange} value={form.CountryOfOrigin}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.CountryOfOrigin ? "border-red-500" : "border-gray-300" }`} aria-label="CountryOfOrigin"
+          />
+        </div>
+
+
+          <div>
+          <Label>Ingredients</Label>
+          <input name="Ingredients" placeholder="" onChange={handleChange} value={form.Ingredients}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.Ingredients ? "border-red-500" : "border-gray-300" }`} aria-label="Ingredients"
+          />
+        </div>
+
+
+           <div>
+          <Label>Ingredients Declaration</Label>
+          <input name="IngredientsDeclaration" placeholder=" " onChange={handleChange} value={form.IngredientsDeclaration}
+          className={`w-full border rounded px-3 py-2 ${
+            error.IngredientsDeclaration ? "border-red-500" : "border-gray-300" }`} aria-label="IngredientsDeclaration"
+          />
+        </div>
+
+            <div>
+          <Label>Suitable For</Label>
+          <input name="SuitableFor" placeholder="" onChange={handleChange} value={form.SuitableFor}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.SuitableFor ? "border-red-500" : "border-gray-300" }`} aria-label="SuitableFor"
+          />
+        </div>
+
+             <div>
+          <Label>Additives</Label>
+          <input name="Additives" placeholder="" onChange={handleChange} value={form.Additives}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.Additives ? "border-red-500" : "border-gray-300" }`} aria-label="Additives"
+          />
+        </div>
+
+
+
+         <div>
+          <Label>Functionalities</Label>
+          <input name="Functionalities" placeholder="" onChange={handleChange} value={form.Functionalities}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.Functionalities ? "border-red-500" : "border-gray-300" }`} aria-label="Functionalities"
+          />
+        </div>
+
+
+
+
+         <div>
+          <Label>Status</Label>
+            {/* Status */}
+          <select name="IsActive" onChange={handleChange} value={form.IsActive ? 1 : 0}  className={`w-full border rounded px-3 py-2 ${
+            error.Status ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
+            <option value={1}>Active</option>
+            <option value={0}>Inactive</option>
+          </select>
+        </div>
+
+
+
+
+         <div>
+          <Label>Shelf Life</Label>
+          <textarea name="ShelfLife" placeholder="" onChange={handleChange} value={form.ShelfLife}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.ShelfLife ? "border-red-500" : "border-gray-300" }`} aria-label="input"
+          />
+        </div>
+
+
+              <div>
+          <Label>Storage Conditions</Label>
+          <textarea name="StorageConditions"  onChange={handleChange} value={form.StorageConditions}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.StorageConditions ? "border-red-500" : "border-gray-300" }`} aria-label="input"
+          />
+        </div>
+
+
+      <div>
+          <Label>Uses</Label>
+          <textarea name="Uses" placeholder="" onChange={handleChange} value={form.Uses}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.StorageConditions ? "border-red-500" : "border-gray-300" }`} aria-label="input"
+          />
+        </div>
+
+
+
+     <div>
+          <Label>Description</Label>
+          <textarea name="Description" placeholder="" onChange={handleChange} value={form.Description}
+
+          className={`w-full border rounded px-3 py-2 ${
+            error.Description ? "border-red-500" : "border-gray-300" }`} aria-label="Description"
+          />
+        </div>
+
+      </div>
+
+
+
+
+      {/* FOOTER */}
+      <div className="flex justify-end gap-2 mt-6">
+        <Button size="sm" variant="outline" onClick={closeFullscreenModal}>
+          Close
+        </Button>
+        <Button type="submit" size="sm" >
+          Save
+        </Button>
+      </div>
+
+    </form>
+ </div>
+</div>
+
       </Modal>
     </>
   );

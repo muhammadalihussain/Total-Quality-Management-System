@@ -21,23 +21,45 @@ export async function PUT(
 
     const body = await req.json();
 
-    await executeStoredProcedure("sp_Packaging_Update", {
-      Id: { type: sql.Int, value: id },
-      ProductId: { type: sql.Int, value: parseInt(body.ProductId) },
-      Material: {
-        type: sql.NVarChar,
-        value: body.Material,
-      },
+    const result = await executeStoredProcedure("sp_ProductAnalysis_Update", {
 
-         NetWeight: {
-        type: sql.NVarChar,
-        value: body.NetWeight,
-      },
-      IsActive: {
-        type: sql.Bit,
-        value: body.IsActive,
-      },
-    });
+        Id: { type: sql.Int, value: id },
+
+         ProductId: { type: sql.Int, value: parseInt(body.ProductId) },
+
+             CategoryId: {
+            type: sql.Int,
+            value: parseInt(body.CategoryId)  ,
+          },
+
+
+            ParameterName : {
+            type: sql.NVarChar,
+            value: body.ParameterName ,
+          },
+
+          Unit: {
+            type: sql.NVarChar,
+            value: body.Unit,
+          },
+
+             Limits: {
+            type: sql.NVarChar,
+            value: body.Limits,
+          },
+
+              Status: {
+            type: sql.NVarChar,
+            value: body.Status,
+          },
+
+
+          IsActive: {
+            type: sql.Bit,
+            value: body.IsActive,
+          },
+
+        });
 
     return NextResponse.json({ message: "Updated" });
   } catch (err: any) {

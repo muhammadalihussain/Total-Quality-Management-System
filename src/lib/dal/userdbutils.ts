@@ -83,6 +83,11 @@ export  async function addUser(user: any) {
         type: sql.NVarChar,
         value: user.role_Id,
       },
+
+      departmentId: {
+        type: sql.NVarChar,
+        value: user.departmentId,
+      },
    
       site_Ids: {
         type: sql.NVarChar,

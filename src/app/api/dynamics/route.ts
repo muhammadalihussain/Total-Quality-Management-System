@@ -30,12 +30,22 @@ export async function GET(req: Request) {
       return NextResponse.json({ result });
     }
 
+    else if (type === "departments") {
+     const result = await db.request()
+      .execute('sp_GetAllDepartment');
+     const departments = result.recordset;
+    if (!departments) return NextResponse.json({ message: "Departments not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
 
 
       else if (type === "categories") {
       const result = await db.request()
       .execute('sp_GetAllCategories');
      const categories = result.recordset;
+
 
     if (!categories) return NextResponse.json({ message: "Categories not found" }, { status: 404 });
       return NextResponse.json({ result });
@@ -57,6 +67,18 @@ export async function GET(req: Request) {
      const forms = result.recordset;
 
     if (!forms) return NextResponse.json({ message: "Forms not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+
+       else if (type === "analysiscategories") {
+      const result = await db.request()
+      .execute('sp_GetAll_AnalysisCategories');
+     const analysiscategories = result.recordset;
+
+
+    if (!analysiscategories) return NextResponse.json({ message: "analysiscategories not found" }, { status: 404 });
       return NextResponse.json({ result });
     }
 

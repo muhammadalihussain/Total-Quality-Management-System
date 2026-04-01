@@ -11,7 +11,7 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 
 
 export default function ProductPackagingCard() {
@@ -24,7 +24,9 @@ export default function ProductPackagingCard() {
 const [selectedPackaging, setSelectedPackaging] =useState('')
 const [certificationName, setPackagingName] =useState('')
 const searchParams = useSearchParams();
-const id = parseInt(searchParams.get("id") || "1");
+ const params = useParams();
+  const id = params.id;
+
  const { isOpen, openModal, closeModal } = useModal();
 
  const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, resizable: true, filter: true };
@@ -48,7 +50,7 @@ const id = parseInt(searchParams.get("id") || "1");
 
       const res = await fetch(`/api/packaging/${id}`);
       const result = await res.json();
-      setProductName(result.data[0].ProductName)
+     // setProductName(result.data[0].ProductName)
       setRowData(result.data);
   };
 
@@ -257,10 +259,16 @@ await fetch(`/api/packaging/${editing.Id}`, {
   </div>
 <br/>
 
-<div style={{ width: "100%", height: "260px" }}>
-  <div className="ag-theme-alpine" style={{ width: "100%", height: "100%" }}>
+{!rowData ? (
+  <div>Loading...</div>
+) : rowData.length === 0 ? (
+  <div>No data found</div>
+) : (
+ <div style={{ width: "100%",  height: "auto" }}>
+  <div className="ag-theme-alpine" style={{ width: "100%", height: "auto" }}>
     <AgGridReact
       theme="legacy"
+        domLayout="autoHeight"
       rowData={rowData}
       columnDefs={columnDefs}
       defaultColDef={defaultColDef}
@@ -273,6 +281,10 @@ await fetch(`/api/packaging/${editing.Id}`, {
     />
   </div>
 </div>
+)}
+
+
+
 
 {/* POPUP MODAL */}
       {showModal && (

@@ -19,6 +19,7 @@ type User = {
   Username: string;
   Email: string;
   RoleID: string;
+  DeptId:string
   IsActive: number;
   SiteIDs: string;
   Password:string;
@@ -110,7 +111,8 @@ const changePage = (p: number) => {
   };
 
   const openEdit = (u :User) => {
-    
+
+
     setEditing(u);
     setModalOpen(true);
   };  
@@ -140,9 +142,7 @@ if(res.data.success){
     errorModal.openModal();
   }
 
-
   setShowDelete(false);
-
   // refresh data
   fetchUsersData();
 };
@@ -154,13 +154,13 @@ const handleSave = async (payload: UpdateUserPayload) => {
 try
 {
 
-
 const res =await axios.put(`/api/user/users/${UserID}`, {
         username:data.Username,
         email:data.Email,
         rawpassword:data.Password,
         isActive: data.IsActive,
         role_Id: data.RoleID?.toString(),
+        departmentId: data.DeptId?.toString(),
         sitesIds:data.SiteIDs,
 });
 if(res.data.success){
@@ -192,6 +192,7 @@ if(res.data.success){
         rawpassword:data.Password,
         isActive: data.IsActive,
         role_Id: data.RoleID,
+        departmentId: data.DeptId,
         sitesIds:data.SiteIDs,
       })
     });
@@ -235,7 +236,7 @@ if(res.data.success){
       
           <input
             type="text"
-            placeholder="Search by name, email "
+            placeholder="Search by name, email or department "
             value={q}
             onChange={(e) => { setQ(e.target.value); setPage(1); }}
             className="px-3 py-2 border rounded-md text-sm w-72"
@@ -264,32 +265,25 @@ if(res.data.success){
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Department</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Role</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Allow Sites</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Allow Sites</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">Status</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500">Actions</th>
               </tr>
             </thead>
 
             <tbody className="bg-white divide-y">
-              {users.length === 0 ? (
+              {users?.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-6 text-center text-sm text-gray-500">No users found.</td>
                 </tr>
               ) : (
-                users.map((u :any) => (
+                users?.map((u :any) => (
                   <tr key={u.UserID} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-medium">{u.Username.charAt(0)}</div>
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">{u.Username}</div>
-                          
-                        </div>
-                      </div>
-                    </td>
-
+                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{u.Username}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{u.Email}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{u.DepartmentName}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{u.RoleName}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{u.SiteNames}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -561,6 +555,8 @@ function UserForm({ initial, onSave, onCancel }: UserFormProps) {
   const [error, setError] = useState<FormError>({});
   const [DataAreaIdrecords, setDataAreaIdRecords] = useState<any[]>([]);
   const [DataRolesrecords, setDataRolesRecords] = useState<any[]>([]);
+  const [DataDepartmentrecords, setDataDepartmentRecords] = useState<any[]>([]);
+
   const [selectedSites, setSelectedSites] = useState<number[]>(
   initial?.SiteIDs ? initial.SiteIDs.split(',').map(Number) : []
 );
@@ -573,6 +569,11 @@ function UserForm({ initial, onSave, onCancel }: UserFormProps) {
 
           const res2 = await axios.get(`api/dynamics?type=roles`);
           setDataRolesRecords( res2.data.result.recordset);
+
+            const res3 = await axios.get(`api/dynamics?type=departments`);
+          setDataDepartmentRecords( res3.data.result.recordset);
+
+
      
     } catch (err :any) {
      alert(err.response?.data?.message );
@@ -604,7 +605,8 @@ const [form, setForm] = useState(() => ({
   password: initial?.RawPassword,
   site:  "",
   role:  initial?.RoleID || "",
-   status: initial?.IsActive === true ? "1" : "0", // default when editing
+  departmentId:initial?.departmentId || "",
+  status: initial?.IsActive === true ? "1" : "0", // default when editing
   siteIds:  initial?.SiteIDs.split(',').map(Number)|| "",
  
 }));
@@ -616,6 +618,7 @@ type FormError = {
   password?: boolean; 
   site?: boolean;
   role?: boolean;
+  departmentId?: departmentId;
   status?: boolean;
 };
 
@@ -644,6 +647,8 @@ type FormError = {
     if (!form.password.trim()) newError.password = true;
     if (selectedSites.length === 0) newError.site = true;
     if (!form.role) newError.role = true;
+     if (!form.departmentId) newError.departmentId = true;
+
     if (!form.status) newError.status = true;
 
     setError(newError);
@@ -659,6 +664,7 @@ onSave({
   Password: form.password,
   SiteIDs:  selectedSites.join(","),
   RoleID: form.role,
+  DeptId: form.departmentId,
   IsActive: form.status  
 });
 
@@ -713,7 +719,7 @@ onSave({
   <div className={`flex flex-wrap items-center gap-4  ${
     error.site ? "border border-red-500 bg-red-50" : ""
   }`}>
-            {DataAreaIdrecords.map((option :any) => (
+            {DataAreaIdrecords?.map((option :any) => (
               <div key={option.Id} className="flex items-center gap-2">
               
                   <input
@@ -759,9 +765,37 @@ onSave({
               <option disabled>Loading...</option>
             )}
           </select>
-           
-        
+
           </div>
+
+
+          <div className="mt-5">
+            <label className="block text-sm font-medium mb-1">Department</label>
+            <select
+            key={"0"}
+            name="departmentId"
+            id="departmentId"
+            value={form.departmentId}
+            onChange={handleChange}
+
+            className={`w-full border rounded px-3 py-2 ${
+            error.departmentId ? "border-red-500" : "border-gray-300" }`} aria-label="Role"
+          >
+          <option value="" disabled>Select Department</option>
+            {DataDepartmentrecords?.length > 0 ? (
+              DataDepartmentrecords?.map((id) => (
+                <option key={id.Id} value={id.Id}>
+                  {id.DepartmentName}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading...</option>
+            )}
+          </select>
+
+
+          </div>
+
 
           <div className="mt-5">
             <label className="block text-sm font-medium mb-1">Status</label>

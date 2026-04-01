@@ -21,7 +21,7 @@ export async function DELETE(
     );
   }
 
-    const result = await executeStoredProcedure("sp_DeleteUser", {
+    const result = await executeStoredProcedure("deleteUser", {
       UserID: { type: sql.Int, value: id },
     });
     
@@ -32,6 +32,7 @@ export async function DELETE(
     });
   } catch (error:any) {
 
+console.log(error)
     return NextResponse.json(
       {
         success: false,
@@ -58,7 +59,9 @@ export async function PUT(
   try {
     const body = await req.json();
 
-    const { username,email,rawpassword,isActive,role_Id,sitesIds} = body
+    const { username,email,rawpassword,isActive,role_Id,sitesIds,departmentId} = body
+
+
 
       const salt = await bcrypt.genSalt(10);
       const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
@@ -92,7 +95,12 @@ export async function PUT(
             type: sql.NVarChar,
             value: role_Id,
           },
-       
+
+           departmentId: {
+            type: sql.NVarChar,
+            value: departmentId,
+          },
+
           site_Ids: {
             type: sql.NVarChar,
             value: sitesIds,

@@ -27,8 +27,6 @@ export async function GET(
     });
 
 
-
-
     return NextResponse.json({
       success: true,
       message: "success",
@@ -71,12 +69,12 @@ export async function DELETE(
     );
   }
 
-    const result = await executeStoredProcedure("sp_DeleteUser", {
-      UserID: { type: sql.Int, value: id },
+    const result = await executeStoredProcedure("sp_Product_Delete", {
+      Id: { type: sql.Int, value: id },
     });
     
     return NextResponse.json({
-      success: result.recordsets[0][0][""]=="User has been deleted" ?true:false,
+      success: result.recordsets[0][0][""]=="Product has been deleted" ?true:false,
       message: result.recordsets[0][0][""],
       data: result.recordsets[0][0][""]
     });
@@ -107,64 +105,86 @@ export async function PUT(
 
   try {
     const body = await req.json();
+  await executeStoredProcedure("sp_Product_Update", {
+ Id: { type: sql.Int, value: id },
 
-    const { username,email,rawpassword,isActive,role_Id,sitesIds} = body
+    ProductName: {
+            type: sql.NVarChar,
+            value: body.ProductName,
+          },
 
-       const salt = await bcrypt.genSalt(10);
-      const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
-      const result = await executeStoredProcedure("sp_UpdateUser", {
-         
-         UserID: { type: sql.Int, value: parseInt(id) },
-            username: {
+          ProductCode: {
             type: sql.NVarChar,
-            value: username,
+            value: body.ProductCode,
           },
-    
-          email: {
+
+           CategoryID: {
+            type: sql.Int,
+            value: parseInt(body.CategoryID)  ,
+          },
+
+
+            FormID : {
+            type: sql.Int,
+            value: parseInt(body.FormID)   ,
+          },
+
+            ColorID : {
+            type: sql.Int,
+            value: parseInt(body.ColorID)  ,
+          },
+
+            CountryOfOrigin: {
             type: sql.NVarChar,
-            value: email,
+            value: body.CountryOfOrigin,
           },
-    
-          passwordhash: {
+
+            Ingredients : {
             type: sql.NVarChar,
-            value: hashedPasswordCovert,
+            value: body.Ingredients ,
           },
-            rawpassword: {
+            IngredientsDeclaration: {
             type: sql.NVarChar,
-            value: rawpassword,
+            value: body.IngredientsDeclaration,
           },
-          isActive: {
+            SuitableFor: {
             type: sql.NVarChar,
-            value: isActive,
+            value: body.SuitableFor,
           },
-    
-          role_id: {
+            Additives : {
             type: sql.NVarChar,
-            value: role_Id,
+            value: body.Additives ,
           },
-       
-          site_Ids: {
+            Functionalities: {
             type: sql.NVarChar,
-            value: sitesIds,
+            value: body.Functionalities,
           },
-        
+            Description: {
+            type: sql.NVarChar,
+            value: body.Description,
+          },
+            ShelfLife: {
+            type: sql.NVarChar,
+            value: body.ShelfLife,
+          },
+            StorageConditions: {
+            type: sql.NVarChar,
+            value: body.StorageConditions,
+          },
+            Uses: {
+            type: sql.NVarChar,
+            value: body.Uses,
+          },
+
+          IsActive: {
+            type: sql.Bit,
+            value: body.IsActive,
+          },
+
         });
-    
-        
 
-      return NextResponse.json({
-      success: result.recordsets[0][0][""]=="update user successfully" ?true:false,
-      message: result.recordsets[0][0][""],
-      data: result.recordsets[0][0][""]
-    });
-  } catch (error:any) {
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: error.message || "update failed",
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Updated" });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

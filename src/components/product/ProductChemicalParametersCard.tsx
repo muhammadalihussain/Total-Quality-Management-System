@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-
+import axios from 'axios';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 // ✅ REQUIRED (fix for error 272)
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
@@ -12,7 +12,7 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 
 
 export default function ProductChemicalParametersCard() {
@@ -22,10 +22,11 @@ export default function ProductChemicalParametersCard() {
     const warningModal = useModal();
     const errorModal = useModal();
 
-const [selectedPackaging, setSelectedPackaging] =useState('')
-const [certificationName, setPackagingName] =useState('')
+const [selectedProductAnalysis, setSelectedProductAnalysis] =useState('')
+const [certificationName, setProductAnalysisName] =useState('')
 const searchParams = useSearchParams();
-const id = parseInt(searchParams.get("id") || "1");
+ const params = useParams();
+  const id = params.id;
  const { isOpen, openModal, closeModal } = useModal();
 
  const defaultColDef = { editable: true, sortable: true, flex: 1, resizable: true, filter: true };
@@ -34,7 +35,7 @@ const id = parseInt(searchParams.get("id") || "1");
   const [rowData, setRowData] = useState<any[]>([]);
   const [ProductName, setProductName] = useState('');
   const [editing, setEditing] = useState<any | null>(null);
-
+const [records, setRecords] = useState<any[]>([]);
     const [form, setForm] = useState({
     ProductId: "",
     Material: "",
@@ -47,13 +48,17 @@ const id = parseInt(searchParams.get("id") || "1");
     // LOAD
   const loadData = async () => {
 
+   const res1 = await axios.get(`/api/dynamics?type=analysiscategories`);
+         setRecords( res1.data.result.recordset);
+
       const res = await fetch(`/api/productanalysis/${id}`);
       const result = await res.json();
      // setProductName(result.data[0].ProductName)
       setRowData(result.data);
   };
 
-   useEffect(() => {
+   useEffect( () => {
+    
     loadData();
   }, []);
 
@@ -61,20 +66,24 @@ const id = parseInt(searchParams.get("id") || "1");
     const newError: FormError = {}; // type-safe
 
     type FormError = {
-      PackagingName?: boolean;
+      ProductAnalysisName?: boolean;
 
 };
 const [error, setError] = useState({
-  PackagingName: "",
+  ProductAnalysisName: "",
 });
   // INSERT
   const addRow = async () => {
 
    setEditing(null);
      setForm({
-      ProductId: id,
-     Material: "",
-     NetWeight:"",
+      Id:"",
+     ProductId: id,
+     CategoryId: "",
+     ParameterName:"",
+     Unit:"",
+     Limits:"",
+     Status:"",
       IsActive: true,
     });
     setShowModal(true);
@@ -87,17 +96,29 @@ const [error, setError] = useState({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-  if (!form.Material) {
-    setError({ Material: "Required" });
+  if (!form.ParameterName) {
+    setError({ ParameterName: "Required" });
     return false;
   }
 
-    if (!form.NetWeight) {
-    setError({ NetWeight: "Required" });
+    if (!form.Unit) {
+    setError({ Unit: "Required" });
     return false;
   }
-   setError({ Material: "" });
-   setError({ NetWeight: "" });
+
+     if (!form.Limits) {
+    setError({ Limits: "Required" });
+    return false;
+  }
+
+     if (!form.Status) {
+    setError({ Status: "Required" });
+    return false;
+  }
+   setError({ ParameterName: "" });
+   setError({ Unit: "" });
+   setError({ Limits: "" });
+   setError({ Status: "" });
 
 
 
@@ -105,13 +126,17 @@ const [error, setError] = useState({
 
 
 
-await fetch(`/api/packaging/${editing.Id}`, {
+await fetch(`/api/productanalysis/${editing.Id}`, {
   method: "PUT",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
+
     ProductId: form.ProductId,
-    Material: form.Material,
-    NetWeight: form.NetWeight,
+    CategoryId: form.CategoryId,
+    ParameterName: form.ParameterName,
+     Unit: form.Unit,
+      Limits: form.Limits,
+      Status: form.Status,
     IsActive: form.IsActive,
   }),
 });
@@ -123,14 +148,18 @@ await fetch(`/api/packaging/${editing.Id}`, {
 
      {
 
-    await fetch("/api/packaging", {
+    await fetch("/api/productanalysis", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ProductId: id,
-        Material: form.Material,
-        NetWeight: form.NetWeight,
-        IsActive: form.IsActive
+       
+    ProductId: id,
+    CategoryId: form.CategoryId,
+    ParameterName: form.ParameterName,
+     Unit: form.Unit,
+      Limits: form.Limits,
+      Status: form.Status,
+      IsActive: form.IsActive,
       }),
     });
 
@@ -150,8 +179,13 @@ await fetch(`/api/packaging/${editing.Id}`, {
      setEditing(row);
      setForm({
       ProductId: id,
-      Material:row.NetWeight,
-      NetWeight: row.NetWeight,
+      CategoryId: row.CategoryId,
+      ParameterName: row.ParameterName,
+      Unit: row.Unit,
+      Limits: row.Limits,
+      Status: row.Status,
+
+
       IsActive: row.IsActive,
     });
     setShowModal(true);
@@ -183,11 +217,11 @@ const onGridReady = (params) => {
 };
 
   const columnDefs = [
-    { field: "Id", editable: false , hide: true },
-    { field: "CategoryId", hide: true }, //
-    { field: "ProductId", editable: false , hide: true },
-   { field: "CategoryName" , editable: false  , flex: 2, minWidth: 200 },
-   { field: "ParameterName", headerName: "Parameter"  , flex: 2, minWidth: 200},
+  { field: "Id", editable: false , hide: true },
+  { field: "CategoryId", hide: true }, //
+  { field: "ProductId", editable: false , hide: true },
+  { field: "CategoryName" , editable: false  , flex: 2, minWidth: 200 },
+  { field: "ParameterName", headerName: "Parameter"  , flex: 2, minWidth: 200},
   { field: "Unit" },
   { field: "Limits" },
   { field: "Status" },
@@ -226,8 +260,8 @@ const onGridReady = (params) => {
        <button  onClick={(e) => {
 
         e.stopPropagation();
-        setSelectedPackaging(params.data.Id);
-        setPackagingName(params.data.PackagingName)
+        setSelectedProductAnalysis(params.data.Id);
+        setProductAnalysisName(params.data.ParameterName)
         setShowDelete(true);
 }}
 
@@ -241,11 +275,7 @@ const onGridReady = (params) => {
 },
   ];
 
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
-  };
+ 
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
 
@@ -264,10 +294,14 @@ const onGridReady = (params) => {
   </div>
 <br/>
 
-<div style={{ width: "100%", height: "890px" }}>
-  <div className="ag-theme-alpine" style={{ width: "100%", height: "100%" }}>
+
+{Array.isArray(rowData) ? (
+  rowData.length > 0 ? (
+   <div style={{ width: "100%",  height: "auto" }}>
+  <div className="ag-theme-alpine" style={{ width: "100%", height: "auto" }}>
     <AgGridReact
       theme="legacy"
+      domLayout="autoHeight"
       rowData={rowData}
       columnDefs={columnDefs}
       defaultColDef={defaultColDef}
@@ -276,12 +310,20 @@ const onGridReady = (params) => {
       headerHeight={32}
       suppressRowClickSelection={true}
       suppressCellFocus={true}
-pagination={true}
-paginationPageSize={100}
+      pagination={true}
+      paginationPageSize={100}
+
 
     />
   </div>
 </div>
+  ) : (
+    <div>No data found</div>
+  )
+) : (
+  <div>Loading...</div>
+)}
+
 
 {/* POPUP MODAL */}
       {showModal && (
@@ -289,7 +331,7 @@ paginationPageSize={100}
        <div className="bg-gray-50 p-5 rounded-xl w-[350px] shadow-2xl">
 
             <h3 className="text-lg font-semibold mb-3">
-              Add Packaging
+              Add Analysis Categories
             </h3>
          <form className="flex flex-col" onSubmit={submit}>
             {/* ProductId */}
@@ -304,10 +346,37 @@ paginationPageSize={100}
               }
             />
 
+         
+      
+           <select
+            key={"0"}
+            name="CategoryId"
+            id="CategoryId"
+            value={form.CategoryId}
+            onChange={(e) =>{ 
+                setForm({ ...form, CategoryId : e.target.value })
+              }}
+
+            className={`w-full border rounded px-3 py-2 ${
+            error.CategoryId ? "border-red-500" : "border-gray-300" }`} aria-label="CategoryName"
+          >
+          <option value="" disabled>Select CategoryName</option>
+            {records?.length > 0 ? (
+              records.map((id) => (
+                <option key={id.Id} value={id.Id}>
+                  {id.CategoryName}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading...</option>
+            )}
+          </select>
+   <br/>
+
             {/* Name */}
             <input
               className={`w-full px-3 py-2 border rounded-lg ${error?.ParameterName  ? "border-red-500" : "border-gray-300"}`}
-              placeholder="Material Name"
+              placeholder="ParameterName "
               value={form.ParameterName }
                onChange={(e) =>
                 setForm({ ...form, ParameterName : e.target.value })
@@ -343,7 +412,7 @@ paginationPageSize={100}
               value={form.Status }
 
               onChange={(e) =>
-                setForm({ ...form, Limits: e.target.value })
+                setForm({ ...form, Status: e.target.value })
               }
             />
 <br/>
@@ -412,7 +481,7 @@ paginationPageSize={100}
 
       {/* Title */}
       <h2 className="text-xl font-semibold text-center text-gray-800">
-        Delete Packaging
+        Delete ProductAnalysis
       </h2>
 
       {/* Message */}
@@ -434,7 +503,7 @@ paginationPageSize={100}
         </button>
 
         <button
-          onClick={() => deleteRow(selectedPackaging)}
+          onClick={() => deleteRow(selectedProductAnalysis)}
           className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow"
         >
           Delete

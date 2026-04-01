@@ -118,8 +118,13 @@ const AppSidebar: React.FC = () => {
       return IconComponent ? <IconComponent size={18} /> : null;
     }
 
-   function buildNavItems(data: any[]) {
+   function buildNavItems(data) {
   // 🔹 Get parents
+
+  if (!Array.isArray(data)) {
+  console.log("Data is not array:", data);
+  return [];
+}
 
   const parents = data.filter((m) => !m.ParentId);
 
@@ -144,11 +149,10 @@ const AppSidebar: React.FC = () => {
 }
 
     useEffect(() => {
+
     fetch("/api/menu")
       .then((res) => res.json())
       .then((data) => {
-
-       
         const menu = buildNavItems(data);
         setNavItems(menu);
       });
