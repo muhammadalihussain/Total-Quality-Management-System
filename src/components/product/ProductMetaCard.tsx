@@ -10,15 +10,13 @@ import Image from "next/image";
 import { useSearchParams, useParams } from "next/navigation";
 
 
-export default function ProductMetaCard() {
-const searchParams = useSearchParams();
-const [loading, setLoading] = useState(true);
+const ProductMetaCard = ({  id }:any) => {
+
+
 const [product, setProduct] = useState([]);
-  const params = useParams();
-  const id = params?.id;
+  
 
 
-const [modalOpen, setModalOpen] = useState(false);
 
 
 
@@ -676,3 +674,5 @@ if (product.length === 0) {
     </>
   );
 }
+
+export default ProductMetaCard;

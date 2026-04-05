@@ -14,20 +14,10 @@ import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import { useSearchParams, useParams } from "next/navigation";
 
-
-export default function ProductChemicalParametersCard() {
-
-    const successModal = useModal();
-    const infoModal = useModal();
-    const warningModal = useModal();
-    const errorModal = useModal();
+const ProductChemicalParametersCard = ({  id }:any) => {
 
 const [selectedProductAnalysis, setSelectedProductAnalysis] =useState('')
 const [certificationName, setProductAnalysisName] =useState('')
-const searchParams = useSearchParams();
- const params = useParams();
-  const id = params.id;
- const { isOpen, openModal, closeModal } = useModal();
 
  const defaultColDef = { editable: true, sortable: true, flex: 1, resizable: true, filter: true };
   const [showModal, setShowModal] = useState(false);
@@ -518,3 +508,5 @@ const onGridReady = (params) => {
 
   );
 }
+
+export default ProductChemicalParametersCard;

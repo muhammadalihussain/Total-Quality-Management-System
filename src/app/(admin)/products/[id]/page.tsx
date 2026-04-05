@@ -35,10 +35,10 @@ export default function ProductEditView() {
           Product Details
         </h3>
         <div className="space-y-6">
-          <ProductMetaCard />
+          {/* <ProductMetaCard />
           <ProductCertificationsCard />
           <ProductPackagingCard/>
-          <ProductChemicalParametersCard />
+          <ProductChemicalParametersCard /> */}
 
         </div>
       </div>

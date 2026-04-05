@@ -29,19 +29,14 @@ export async function POST(req: Request) {
 const allowedUrls = urls.recordset.map((r:any)=>r.Url);
 
 
-  const permissions = await db.request()
-  .input("RoleId", user.RoleId)
-  .execute("sp_GetPermissions");
-
-const PermissionIds = permissions.recordset.map((r:any)=>r.PermissionId);
 
   const token = signToken({
     UserID: user.UserID,
     RoleId: user.RoleId,
     Email:user.Email,
     Username:user.Username,
-    urls: allowedUrls,
-    PermissionIds:PermissionIds
+    urls: allowedUrls
+
   });
 
   if(token)
@@ -54,8 +49,8 @@ const PermissionIds = permissions.recordset.map((r:any)=>r.PermissionId);
       UserID: user.UserID,
       Email:user.Email,
       Username:user.Username,
-      urls: allowedUrls,
-       PermissionIds:PermissionIds
+      urls: allowedUrls
+
     });
 
     // Save token in HTTP-only cookie

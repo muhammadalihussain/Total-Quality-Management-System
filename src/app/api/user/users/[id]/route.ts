@@ -59,9 +59,8 @@ export async function PUT(
   try {
     const body = await req.json();
 
+    
     const { username,email,rawpassword,isActive,role_Id,sitesIds,departmentId} = body
-
-
 
       const salt = await bcrypt.genSalt(10);
       const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);

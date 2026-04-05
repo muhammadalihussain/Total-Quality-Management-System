@@ -14,20 +14,18 @@ import Label from "../form/Label";
 import { useSearchParams, useParams } from "next/navigation";
 
 
-export default function ProductPackagingCard() {
 
-    const successModal = useModal();
-    const infoModal = useModal();
-    const warningModal = useModal();
-    const errorModal = useModal();
+
+const ProductPackagingCard = ({  id }:any) => {
+
+
+
+    
 
 const [selectedPackaging, setSelectedPackaging] =useState('')
 const [certificationName, setPackagingName] =useState('')
-const searchParams = useSearchParams();
- const params = useParams();
-  const id = params.id;
 
- const { isOpen, openModal, closeModal } = useModal();
+
 
  const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, resizable: true, filter: true };
   const [showModal, setShowModal] = useState(false);
@@ -211,7 +209,7 @@ await fetch(`/api/packaging/${editing.Id}`, {
            }
 
  className="inline-flex items-center p-1 rounded hover:bg-gray-100 mr-2" title="Edit" >
-                        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0L15.13 4.9l3.75 3.75 1.83-1.61z"/></svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0L15.13 4.9l3.75 3.75 1.83-1.61z"/></svg>
          </button>
 
 
@@ -427,3 +425,6 @@ await fetch(`/api/packaging/${editing.Id}`, {
 
   );
 }
+
+
+export default ProductPackagingCard;

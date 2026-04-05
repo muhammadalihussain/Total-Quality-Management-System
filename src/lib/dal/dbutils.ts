@@ -36,3 +36,55 @@ export async function executeStoredProcedure(procedureName: any, params = {}) {
   return await request.execute(procedureName);
 }
 
+
+export async function executeQueryWithMultipleResults(
+    procedureName: string,
+    params: { [key: string]: any } = {}
+): Promise<any[]> {
+
+   const db = await pool(); // Singleton pool
+  const request = db.request();
+
+
+    Object.keys(params).forEach(key => {
+        request.input(key, params[key]);
+    });
+
+    const result = await request.execute(procedureName);
+    return result.recordsets;
+}
+
+
+export async function executeQuery<T = any>(
+    procedureName: string,
+    params: { [key: string]: any } = {}
+): Promise<T[]> {
+    const db = await pool(); // Singleton pool
+   const request = db.request();
+
+
+    // Add parameters
+    Object.keys(params).forEach(key => {
+        request.input(key, params[key]);
+    });
+
+    const result = await request.execute(procedureName);
+    return result.recordset as T[];
+}
+
+
+export async function executeNonQuery(
+    query: string,
+    params: { [key: string]: any } = {}
+): Promise<any> {
+       const db = await pool(); // Singleton pool
+      const request = db.request();
+
+
+    Object.keys(params).forEach(key => {
+        request.input(key, params[key]);
+    });
+
+    const result = await request.query(query);
+    return result;
+}

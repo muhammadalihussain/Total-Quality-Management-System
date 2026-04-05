@@ -32,7 +32,7 @@ export default function SignInForm() {
       localStorage.setItem('UserID', data.UserID);
       localStorage.setItem('Email', data.Email);
       localStorage.setItem('Username', data.Username);
-       localStorage.setItem('PermissionIds', data.PermissionIds);
+
       
     
       // window.location.href = "/";

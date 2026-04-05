@@ -9,7 +9,10 @@ import ComponentCard from "@/components/common/ComponentCard";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import { useModal } from "@/hooks/useModal";
 import Button from "@/components/ui/button/Button";
+
+import Label from "@/components/form/Label";
 import { Modal } from "@/components/ui/modal";
+
 
 // type Role = "Admin" | "User" | "Manager";
 // type Status = "Active" | "Pending" | "Inactive";
@@ -605,7 +608,7 @@ const [form, setForm] = useState(() => ({
   password: initial?.RawPassword,
   site:  "",
   role:  initial?.RoleID || "",
-  departmentId:initial?.departmentId || "",
+  DeptId:initial?.DeptId || "",
   status: initial?.IsActive === true ? "1" : "0", // default when editing
   siteIds:  initial?.SiteIDs.split(',').map(Number)|| "",
  
@@ -618,7 +621,7 @@ type FormError = {
   password?: boolean; 
   site?: boolean;
   role?: boolean;
-  departmentId?: departmentId;
+  DeptId?: boolean;
   status?: boolean;
 };
 
@@ -644,10 +647,10 @@ type FormError = {
     const newError: FormError = {}; // type-safe
     if (!form.name.trim()) newError.name = true;
     if (!form.email.trim()) newError.email = true;
-    if (!form.password.trim()) newError.password = true;
+    if (!form.password) newError.password = true;
     if (selectedSites.length === 0) newError.site = true;
     if (!form.role) newError.role = true;
-     if (!form.departmentId) newError.departmentId = true;
+     if (!form.DeptId) newError.DeptId = true;
 
     if (!form.status) newError.status = true;
 
@@ -664,162 +667,174 @@ onSave({
   Password: form.password,
   SiteIDs:  selectedSites.join(","),
   RoleID: form.role,
-  DeptId: form.departmentId,
+  DeptId: form.DeptId,
   IsActive: form.status  
 });
 
   };
 
   return (
-     
-    
-    <form onSubmit={submit}>
-      
-      <div className="p-4">
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">Full name</label>
-          <input value={form.name} name="name" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
-            error.name ? "border-red-500" : "border-gray-300" }`} aria-label="Full name" />
-        </div>
+     <div className="fixed inset-0 z-[9999] flex items-center justify-center
+bg-gradient-to-br from-black/70 via-black/60 to-black/80
+backdrop-blur-md backdrop-saturate-150 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
 
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input value={form.email} name="email" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
-            error.email ? "border-red-500" : "border-gray-300" }`} aria-label="Email" />
-        </div>
-       
-         <div className="relative">
-           <label className="block text-sm font-medium mb-1">Password</label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={form.password}
-                      name="password"
-                   className={`w-full border rounded px-3 py-2 ${
-                  error.password ? "border-red-500" : "border-gray-300" }`}
-                       onChange={handleChange }  
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 mt-5"  />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 mt-5" />
-                      )}
-                    </span>
-                  </div>
-                   <div className="mt-5">
+  {/* BIG MODAL */}
+  <div className="w-[95%] sm:w-[90%] lg:w-[1100px] max-h-[90vh]
+  bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20
+  flex flex-col animate-[fadeIn_0.25s_ease-out]">
 
-          <label className="block text-sm font-medium mb-1">Sites</label>
-              
+    {/* HEADER */}
+    <div className="flex items-center justify-between px-6 py-4 border-b">
+      <h2 className="text-xl font-semibold">Create User</h2>
+      <button onClick={onCancel} className="text-gray-500 hover:text-red-500">✕</button>
+    </div>
 
-           
-  <div className={`flex flex-wrap items-center gap-4  ${
-    error.site ? "border border-red-500 bg-red-50" : ""
-  }`}>
-            {DataAreaIdrecords?.map((option :any) => (
-              <div key={option.Id} className="flex items-center gap-2">
-              
-                  <input
-                    name="site"
-                    type="checkbox"
-                    checked={selectedSites.includes(option.Id)}
-                    onChange={() => handleCheckboxChange(option.Id)}
+    {/* BODY (SCROLLABLE) */}
+    <div className="p-6 overflow-y-auto">
 
-                    
-                  />
-                   <span>{option.SiteName}</span>
-                
-               
-              </div>
-            ))}
-            </div>
+   <form onSubmit={submit} className="space-y-5">
 
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
-          
-          </div>
+    {/* Name */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+      <input
+        value={form.name}
+        name="name"
+        onChange={handleChange}
+        className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none
+        ${error.name ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+      />
+    </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="mt-5">
-            <label className="block text-sm font-medium mb-1">Role</label>
-            <select
-            key={"0"}
-            name="role"
-            id="role"
-            value={form.role}
-            onChange={handleChange}
+    {/* Email */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+      <input
+        value={form.email}
+        name="email"
+        onChange={handleChange}
+        className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none
+        ${error.email ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+      />
+    </div>
 
-            className={`w-full border rounded px-3 py-2 ${
-            error.role ? "border-red-500" : "border-gray-300" }`} aria-label="Role"
-          >
-          <option value="" disabled>Select Role</option>
-            {DataRolesrecords?.length > 0 ? (
-              DataRolesrecords.map((id) => (
-                <option key={id.Id} value={id.Id}>
-                  {id.RoleName}
-                </option>
-              ))
-            ) : (
-              <option disabled>Loading...</option>
-            )}
-          </select>
+    {/* Password */}
+    <div className="relative">
+      <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+      <input
+        type={showPassword ? "text" : "password"}
+        value={form.password}
+        name="password"
+        onChange={handleChange}
+        className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none pr-10
+        ${error.password ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+      />
+      <span
+        onClick={() => setShowPassword(!showPassword)}
+        className="absolute right-3 top-[38px] cursor-pointer text-gray-500"
+      >
+        {showPassword ? <EyeIcon /> : <EyeCloseIcon />}
+      </span>
+    </div>
 
-          </div>
+    {/* Sites */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Sites</label>
 
+      <div className={`max-h-28 overflow-y-auto rounded-lg border p-2 space-y-1
+        ${error.site ? "border-red-500 bg-red-50" : "border-gray-300"}`}>
 
-          <div className="mt-5">
-            <label className="block text-sm font-medium mb-1">Department</label>
-            <select
-            key={"0"}
-            name="departmentId"
-            id="departmentId"
-            value={form.departmentId}
-            onChange={handleChange}
-
-            className={`w-full border rounded px-3 py-2 ${
-            error.departmentId ? "border-red-500" : "border-gray-300" }`} aria-label="Role"
-          >
-          <option value="" disabled>Select Department</option>
-            {DataDepartmentrecords?.length > 0 ? (
-              DataDepartmentrecords?.map((id) => (
-                <option key={id.Id} value={id.Id}>
-                  {id.DepartmentName}
-                </option>
-              ))
-            ) : (
-              <option disabled>Loading...</option>
-            )}
-          </select>
-
-
-          </div>
-
-
-          <div className="mt-5">
-            <label className="block text-sm font-medium mb-1">Status</label>
-            <select  value={form.status}  name="status" onChange={handleChange } className={`w-full border rounded px-3 py-2 ${
-            error.status ? "border-red-500" : "border-gray-300" }`} aria-label="Status">
-              <option value=""  disabled>Select Status</option>
-              <option value={1}>Active</option>
-              {/* <option value="Pending">Pending</option> */}
-              <option value={0}>Inactive</option>
-            </select>
-          </div>
-        </div>
- <input
-            type="hidden"
-            id="sitesIds"
-            name="sitesIds"
-            value={selectedSites}
-          />
-        <div className="mt-4 flex justify-end gap-2">
-          <button type="button" onClick={onCancel} className="px-3 py-2 rounded border">Cancel</button>
-          <button type="submit" className="px-3 py-2 rounded bg-indigo-600 text-white">Save</button>
-        </div>
+        {DataAreaIdrecords?.map((option: any) => (
+          <label key={option.Id} className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={selectedSites.includes(option.Id)}
+              onChange={() => handleCheckboxChange(option.Id)}
+            />
+            {option.SiteName}
+          </label>
+        ))}
       </div>
-    </form>
-   
+    </div>
+
+    {/* Role */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+      <select
+        name="role"
+        value={form.role}
+        onChange={handleChange}
+        className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none
+        ${error.role ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+      >
+        <option value="">Select Role</option>
+        {DataRolesrecords?.map((id) => (
+          <option key={id.Id} value={id.Id}>{id.RoleName}</option>
+        ))}
+      </select>
+    </div>
+
+    {/* Department */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+      <select
+        name="DeptId"
+        value={form.DeptId}
+        onChange={handleChange}
+        className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none
+        ${error.DeptId ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+      >
+        <option value="">Select Department</option>
+        {DataDepartmentrecords?.map((id) => (
+          <option key={id.Id} value={id.Id}>{id.DepartmentName}</option>
+        ))}
+      </select>
+    </div>
+
+    {/* Status */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+      <select
+        name="status"
+        value={form.status}
+        onChange={handleChange}
+        className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none
+        ${error.status ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+      >
+        <option value="">Select Status</option>
+        <option value={1}>Active</option>
+        <option value={0}>Inactive</option>
+      </select>
+    </div>
+
+  </div>
+
+  {/* Hidden */}
+  <input type="hidden" name="sitesIds" value={selectedSites} />
+
+  {/* Footer */}
+  <div className="flex justify-end gap-3 pt-4 border-t">
+    <button
+      type="button"
+      onClick={onCancel}
+      className="px-4 py-2 rounded-lg border hover:bg-gray-100"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="submit"
+      className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+    >
+      Save
+    </button>
+  </div>
+
+</form>
+ </div>
+  </div>
+   </div>
   );
 }
