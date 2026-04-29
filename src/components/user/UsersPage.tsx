@@ -725,7 +725,7 @@ backdrop-blur-md backdrop-saturate-150 bg-white/90 backdrop-blur-xl rounded-2xl 
       <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
       <input
         type={showPassword ? "text" : "password"}
-        value={form.password}
+        value={form.password ?? ""}
         name="password"
         onChange={handleChange}
         className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none pr-10
