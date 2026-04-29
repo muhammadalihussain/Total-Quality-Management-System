@@ -3,10 +3,9 @@
   "version": "2.2.2",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint ."
+     "start": "node server.js"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",
@@ -34,14 +33,12 @@
     "module_name": "^1.0.0",
     "mssql": "^12.2.0",
     "next": "^16.0.10",
-    "nodemailer": "^8.0.5",
     "react": "^19.2.4",
     "react-apexcharts": "^1.8.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.2.4",
     "react-dropzone": "^14.3.8",
-    "react-hot-toast": "^2.6.0",
     "swiper": "^11.2.10",
     "tailwind-merge": "^2.6.0"
   },
@@ -51,7 +48,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mssql": "^9.1.9",
     "@types/node": "^20.19.25",
-    "@types/nodemailer": "^8.0.0",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
     "@types/react-transition-group": "^4.4.12",
