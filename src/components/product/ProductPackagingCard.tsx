@@ -1,17 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import {  AgGridReact } from 'ag-grid-react';
 // ✅ REQUIRED (fix for error 272)
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-import { useModal } from "../../hooks/useModal";
-import { Modal } from "../ui/modal";
-import Button from "../ui/button/Button";
-import Input from "../form/input/InputField";
-import Label from "../form/Label";
-import { useSearchParams, useParams } from "next/navigation";
+
 
 
 
@@ -21,8 +16,8 @@ const ProductPackagingCard = ({  id }:any) => {
 
 
     
+const [selectedPackaging, setSelectedPackaging] = useState<number | null>(null);
 
-const [selectedPackaging, setSelectedPackaging] =useState('')
 const [certificationName, setPackagingName] =useState('')
 
 
@@ -33,6 +28,14 @@ const [certificationName, setPackagingName] =useState('')
   const [rowData, setRowData] = useState<any[]>([]);
   const [ProductName, setProductName] = useState('');
   const [editing, setEditing] = useState<any | null>(null);
+
+  type ErrorType = {
+  Material?: string;
+  NetWeight?: string;
+  Unit?: string;
+  Limits?: string;
+  Status?: string;
+};
 
     const [form, setForm] = useState({
     ProductId: "",
@@ -63,10 +66,7 @@ const [certificationName, setPackagingName] =useState('')
       PackagingName?: boolean;
 
 };
-const [error, setError] = useState({
-  PackagingName: "",
-});
-  // INSERT
+const [error, setError] = useState<ErrorType>({}); 
   const addRow = async () => {
 
    setEditing(null);
@@ -195,7 +195,7 @@ await fetch(`/api/packaging/${editing.Id}`, {
   headerName: "Actions",
   minWidth: 150,
   colId: "action",
-  pinned: "right",
+  pinned: "right" as const, 
   editable: false,
 
   cellRenderer: (params: any) => (
@@ -237,7 +237,7 @@ await fetch(`/api/packaging/${editing.Id}`, {
   const handleSave = () => {
     // Handle save logic here
     console.log("Saving changes...");
-    closeModal();
+
   };
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -410,7 +410,12 @@ await fetch(`/api/packaging/${editing.Id}`, {
         </button>
 
         <button
-          onClick={() => deleteRow(selectedPackaging)}
+        
+
+                 onClick={() =>
+  selectedPackaging != null &&
+  deleteRow(selectedPackaging)
+}
           className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow"
         >
           Delete

@@ -1,23 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import {  AgGridReact } from 'ag-grid-react';
 // ✅ REQUIRED (fix for error 272)
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-import { useModal } from "../../hooks/useModal";
-import { Modal } from "../ui/modal";
-import Button from "../ui/button/Button";
-import Input from "../form/input/InputField";
-import Label from "../form/Label";
-import { useSearchParams, useParams } from "next/navigation";
+
 
 const ProductCertificationsCard = ({  id }:any) => {
 
 
-
-const [selectedCertification, setSelectedCertification] =useState('')
+const [selectedCertification, setSelectedCertification] = useState<number | null>(null);
 const [certificationName, setCertificationName] =useState('')
 
 
@@ -140,7 +134,7 @@ await fetch(`/api/certifications/${editing.Id}`, {
 
   };
 
-const onGridReady = (params) => {
+const onGridReady = (params:any) => {
   params.api.sizeColumnsToFit(); // fit to screen
 };
 
@@ -180,7 +174,7 @@ const onGridReady = (params) => {
   headerName: "Actions",
   minWidth: 150,
   colId: "action",
-  pinned: "right",
+  pinned: "right" as const, 
   editable: false,
 
   cellRenderer: (params: any) => (
@@ -222,7 +216,7 @@ const onGridReady = (params) => {
   const handleSave = () => {
     // Handle save logic here
     console.log("Saving changes...");
-    closeModal();
+   
   };
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -391,7 +385,10 @@ const onGridReady = (params) => {
         </button>
 
         <button
-          onClick={() => deleteRow(selectedCertification)}
+          onClick={() =>
+  selectedCertification != null &&
+  deleteRow(selectedCertification)
+}
           className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow"
         >
           Delete

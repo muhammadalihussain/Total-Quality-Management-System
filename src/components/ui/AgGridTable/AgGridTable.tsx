@@ -14,6 +14,7 @@ interface AgGridTableProps {
     onRowClicked?: (data: any) => void;
     pagination?: boolean;
     paginationPageSize?: number;
+    onGridReady?: (params: GridReadyEvent) => void; // ✅ ADD THIS
     height?: string;
     width?: string;
 }

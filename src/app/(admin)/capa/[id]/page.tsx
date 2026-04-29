@@ -137,17 +137,17 @@ export default function CAPADetailsPage() {
     }
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="p-1 bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
-            <Button variant="secondary" onClick={() => router.back()}>
-                        ← Back
-                    </Button>
 
                 {/* CAPA Header Card */}
-                <ComponentCard title='' className="mb-6">
-                    
+                <ComponentCard title='' >
+
                     <div className="flex justify-between items-start">
                         <div>
+                          <Button variant="primary" onClick={() => router.back()}>
+                        ← Back
+                    </Button>
                             <div className="flex items-center gap-3 mb-2">
                                 <h1 className="text-2xl font-bold text-gray-900">
                                     {details.capa.CAPA_Code}
@@ -223,10 +223,7 @@ export default function CAPADetailsPage() {
                                         <p className="text-sm text-gray-500">CAPA Code</p>
                                         <p className="font-medium">{details.capa.CAPA_Code}</p>
                                     </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Title</p>
-                                        <p className="font-medium">{details.capa.Title}</p>
-                                    </div>
+
                                     <div>
                                         <p className="text-sm text-gray-500">Description</p>
                                         <p>{details.capa.Description}</p>

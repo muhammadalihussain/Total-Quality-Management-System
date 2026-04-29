@@ -1,22 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import {  AgGridReact } from 'ag-grid-react';
 // ✅ REQUIRED (fix for error 272)
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 
-import { useModal } from "../../hooks/useModal";
-import { Modal } from "../ui/modal";
-import Button from "../ui/button/Button";
-import Input from "../form/input/InputField";
-import Label from "../form/Label";
-import { useSearchParams, useParams } from "next/navigation";
 
 const ProductChemicalParametersCard = ({  id }:any) => {
 
-const [selectedProductAnalysis, setSelectedProductAnalysis] =useState('')
+
+
+const [selectedProductAnalysis, setSelectedProductAnalysis] = useState<number | null>(null);
 const [certificationName, setProductAnalysisName] =useState('')
 
  const defaultColDef = { editable: true, sortable: true, flex: 1, resizable: true, filter: true };
@@ -26,14 +22,40 @@ const [certificationName, setProductAnalysisName] =useState('')
   const [ProductName, setProductName] = useState('');
   const [editing, setEditing] = useState<any | null>(null);
 const [records, setRecords] = useState<any[]>([]);
-    const [form, setForm] = useState({
-    ProductId: "",
-    Material: "",
-    NetWeight:"",
-    IsActive: false,
-  });
 
+type FormType = {
+  Id: string;
+  ProductId: string;
+  CategoryId: string;
+  ParameterName: string;
+  Material: string;
+  NetWeight: string;
+  Unit: string;
+  Limits: string;
+  Status: string;
+  IsActive: boolean;
+};
+const [form, setForm] = useState<FormType>({
+  Id: "",
+  ProductId: "",
+  CategoryId: "",
+  ParameterName: "",
+  Material: "",
+  NetWeight: "",
+  Unit: "",
+  Limits: "",
+  Status: "",
+  IsActive: false,
+});
 
+type ErrorType = {
+  ProductAnalysisName?: string;
+  ParameterName?: string;
+  Unit?: string;
+  Limits?: string;
+  Status?: string;
+  CategoryId?: string;
+};
 
     // LOAD
   const loadData = async () => {
@@ -59,23 +81,23 @@ const [records, setRecords] = useState<any[]>([]);
       ProductAnalysisName?: boolean;
 
 };
-const [error, setError] = useState({
-  ProductAnalysisName: "",
-});
+const [error, setError] = useState<ErrorType>({});
   // INSERT
   const addRow = async () => {
 
    setEditing(null);
-     setForm({
-      Id:"",
-     ProductId: id,
-     CategoryId: "",
-     ParameterName:"",
-     Unit:"",
-     Limits:"",
-     Status:"",
-      IsActive: true,
-    });
+setForm({
+  Id: "",
+  ProductId: id,
+  CategoryId: "",
+  ParameterName: "",
+  Material: "",
+  NetWeight: "",
+  Unit: "",
+  Limits: "",
+  Status: "",
+  IsActive: true,
+});
     setShowModal(true);
 
   };
@@ -167,17 +189,18 @@ await fetch(`/api/productanalysis/${editing.Id}`, {
   const updateRow = async (row: any) => {
 
      setEditing(row);
-     setForm({
-      ProductId: id,
-      CategoryId: row.CategoryId,
-      ParameterName: row.ParameterName,
-      Unit: row.Unit,
-      Limits: row.Limits,
-      Status: row.Status,
-
-
-      IsActive: row.IsActive,
-    });
+setForm({
+  Id: row.Id,
+  ProductId: id,
+  CategoryId: row.CategoryId,
+  ParameterName: row.ParameterName,
+  Material: row.Material ?? "",
+  NetWeight: row.NetWeight ?? "",
+  Unit: row.Unit,
+  Limits: row.Limits,
+  Status: row.Status,
+  IsActive: row.IsActive,
+});
     setShowModal(true);
 
   };
@@ -202,7 +225,7 @@ await fetch(`/api/productanalysis/${editing.Id}`, {
    // updateRow(params.data);
   //};
 
-const onGridReady = (params) => {
+const onGridReady = (params:any) => {
   params.api.sizeColumnsToFit(); // fit to screen
 };
 
@@ -226,7 +249,7 @@ const onGridReady = (params) => {
   headerName: "Actions",
   minWidth: 100,
   colId: "action",
-  pinned: "right",
+   pinned: "right" as const, 
   editable: false,
 
   cellRenderer: (params: any) => (
@@ -398,7 +421,7 @@ const onGridReady = (params) => {
 
      <input
            className={`w-full px-3 py-2 border rounded-lg ${error?.Status  ? "border-red-500" : "border-gray-300"}`}
-              placeholder="Status "
+              placeholder="Status"
               value={form.Status }
 
               onChange={(e) =>
@@ -493,7 +516,14 @@ const onGridReady = (params) => {
         </button>
 
         <button
-          onClick={() => deleteRow(selectedProductAnalysis)}
+         
+
+
+  onClick={() =>
+  selectedProductAnalysis != null &&
+  deleteRow(selectedProductAnalysis)
+  }
+
           className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow"
         >
           Delete

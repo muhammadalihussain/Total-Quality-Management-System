@@ -38,8 +38,8 @@ const [dataColorsRecords, setDataColorsRecords] = useState<any[]>([]);
           setDataFormsRecords( res3.data.result.recordset);
 
 
-    } catch (err :any) {
-     alert(err.response?.data?.message );
+    } catch (error) {
+     alert(error );
     }
   }
   fetchData();
@@ -51,7 +51,7 @@ const [dataColorsRecords, setDataColorsRecords] = useState<any[]>([]);
     const warningModal = useModal();
     const errorModal = useModal();
 
- const [error, setError] = useState<FormError>({});
+const [error, setError] = useState<FormError | null>(null);
  const [showDelete, setShowDelete] = useState(false);
  const [message, setMessage] = useState('');
 
@@ -94,6 +94,7 @@ type FormError = {
       StorageConditions?: boolean;
       Uses?: boolean;
       IsActive?: boolean;
+       Status?: boolean;
 };
 
 
@@ -124,15 +125,16 @@ type FormError = {
       if (!form.Additives.trim()) newError.Additives = true;
     if (!form.Functionalities.trim()) newError.Functionalities = true;
      if (!form.Description.trim()) newError.Description = true;
-  if (!form.ShelfLife.trim()) newError.ShelfLife = true;
- if (!form.StorageConditions.trim()) newError.StorageConditions = true;
+    if (!form.ShelfLife.trim()) newError.ShelfLife = true;
+   if (!form.StorageConditions.trim()) newError.StorageConditions = true;
 
     if (!form.IsActive) newError.IsActive = true;
+
+
+    if (Object.keys(newError).length > 0) {
     setError(newError);
-
-
-    if (Object.keys(newError).length > 0) return; // stop if error
-     //if (res.ok) alert("User created");
+    return false;
+  }
 
 
   try{
@@ -229,7 +231,7 @@ openFullscreenModal()
           <Label>Product Name</Label>
           <Input type="text"  name="ProductName" placeholder="" onChange={handleChange} value={form.ProductName}
           className={`w-full border rounded px-3 py-2 ${
-            error.ProductName ? "border-red-500" : "border-gray-300" }`} aria-label="Product name"
+            error?.ProductName ? "border-red-500" : "border-gray-300" }`} aria-label="Product name"
           />
         </div>
 
@@ -237,7 +239,7 @@ openFullscreenModal()
           <Label>Product Code</Label>
           <Input type="text" name="ProductCode" placeholder="" onChange={handleChange} value={form.ProductCode}
            className={`w-full border rounded px-3 py-2 ${
-            error.ProductCode ? "border-red-500" : "border-gray-300" }`} aria-label="ProductCode"
+            error?.ProductCode ? "border-red-500" : "border-gray-300" }`} aria-label="ProductCode"
           />
         </div>
 
@@ -253,7 +255,7 @@ openFullscreenModal()
             onChange={handleChange}
 
             className={`w-full border rounded px-3 py-2 ${
-            error.CategoryID ? "border-red-500" : "border-gray-300" }`} aria-label="Role"
+            error?.CategoryID ? "border-red-500" : "border-gray-300" }`} aria-label="Role"
           >
           <option value="" disabled>Select Category</option>
             {dataCategoriesRecords?.length > 0 ? (
@@ -283,7 +285,7 @@ openFullscreenModal()
             onChange={handleChange}
 
             className={`w-full border rounded px-3 py-2 ${
-            error.FormID ? "border-red-500" : "border-gray-300" }`} aria-label="Form" >
+            error?.FormID ? "border-red-500" : "border-gray-300" }`} aria-label="Form" >
 
           <option value="" disabled>Select Form</option>
             {dataFormsRecords?.length > 0 ? (
@@ -314,7 +316,7 @@ openFullscreenModal()
             onChange={handleChange}
 
             className={`w-full border rounded px-3 py-2 ${
-            error.ColorID ? "border-red-500" : "border-gray-300" }`} aria-label="ColorID" >
+            error?.ColorID ? "border-red-500" : "border-gray-300" }`} aria-label="ColorID" >
 
           <option value="" disabled>Select Color</option>
             {dataColorsRecords?.length > 0 ? (
@@ -345,7 +347,7 @@ openFullscreenModal()
           <input name="Ingredients" placeholder="" onChange={handleChange} value={form.Ingredients}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.Ingredients ? "border-red-500" : "border-gray-300" }`} aria-label="Ingredients"
+            error?.Ingredients ? "border-red-500" : "border-gray-300" }`} aria-label="Ingredients"
           />
         </div>
 
@@ -354,7 +356,7 @@ openFullscreenModal()
           <Label>Ingredients Declaration</Label>
           <input name="IngredientsDeclaration" placeholder=" " onChange={handleChange} value={form.IngredientsDeclaration}
           className={`w-full border rounded px-3 py-2 ${
-            error.IngredientsDeclaration ? "border-red-500" : "border-gray-300" }`} aria-label="IngredientsDeclaration"
+            error?.IngredientsDeclaration ? "border-red-500" : "border-gray-300" }`} aria-label="IngredientsDeclaration"
           />
         </div>
 
@@ -363,7 +365,7 @@ openFullscreenModal()
           <input name="SuitableFor" placeholder="" onChange={handleChange} value={form.SuitableFor}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.SuitableFor ? "border-red-500" : "border-gray-300" }`} aria-label="SuitableFor"
+            error?.SuitableFor ? "border-red-500" : "border-gray-300" }`} aria-label="SuitableFor"
           />
         </div>
 
@@ -372,7 +374,7 @@ openFullscreenModal()
           <input name="Additives" placeholder="" onChange={handleChange} value={form.Additives}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.Additives ? "border-red-500" : "border-gray-300" }`} aria-label="Additives"
+            error?.Additives ? "border-red-500" : "border-gray-300" }`} aria-label="Additives"
           />
         </div>
 
@@ -383,7 +385,7 @@ openFullscreenModal()
           <input name="Functionalities" placeholder="" onChange={handleChange} value={form.Functionalities}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.Functionalities ? "border-red-500" : "border-gray-300" }`} aria-label="Functionalities"
+            error?.Functionalities ? "border-red-500" : "border-gray-300" }`} aria-label="Functionalities"
           />
         </div>
 
@@ -394,7 +396,7 @@ openFullscreenModal()
           <Label>Status</Label>
             {/* Status */}
           <select name="IsActive" onChange={handleChange} value={form.IsActive ? 1 : 0}  className={`w-full border rounded px-3 py-2 ${
-            error.Status ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
+            error?.Status ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
             <option value={1}>Active</option>
             <option value={0}>Inactive</option>
           </select>
@@ -408,7 +410,7 @@ openFullscreenModal()
           <textarea name="ShelfLife" placeholder="" onChange={handleChange} value={form.ShelfLife}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.ShelfLife ? "border-red-500" : "border-gray-300" }`} aria-label="input"
+            error?.ShelfLife ? "border-red-500" : "border-gray-300" }`} aria-label="input"
           />
         </div>
 
@@ -418,7 +420,7 @@ openFullscreenModal()
           <textarea name="StorageConditions"  onChange={handleChange} value={form.StorageConditions}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.StorageConditions ? "border-red-500" : "border-gray-300" }`} aria-label="input"
+            error?.StorageConditions ? "border-red-500" : "border-gray-300" }`} aria-label="input"
           />
         </div>
 
@@ -438,7 +440,7 @@ openFullscreenModal()
           <textarea name="Description" placeholder="" onChange={handleChange} value={form.Description}
 
           className={`w-full border rounded px-3 py-2 ${
-            error.Description ? "border-red-500" : "border-gray-300" }`} aria-label="Description"
+            error?.Description ? "border-red-500" : "border-gray-300" }`} aria-label="Description"
           />
         </div>
 
@@ -500,65 +502,7 @@ openFullscreenModal()
 
 
 
-      {showDelete && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-
-    <div className="bg-white rounded-xl shadow-2xl w-[420px] p-6 animate-scaleIn">
-
-      {/* Icon */}
-      <div className="flex justify-center mb-4">
-        <div className="bg-red-100 p-3 rounded-full">
-          <svg
-            className="w-8 h-8 text-red-600"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round"
-              d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"
-            />
-          </svg>
-        </div>
-      </div>
-
-      {/* Title */}
-      <h2 className="text-xl font-semibold text-center text-gray-800">
-        Delete User
-      </h2>
-
-      {/* Message */}
-      <p className="text-gray-500 text-center mt-2">
-        Are you sure you want to delete
-        <span className="font-semibold text-red-600">
-          {" "} {selectedUser?.Username}
-        </span> ?
-      </p>
-
-      {/* Buttons */}
-      <div className="flex justify-center gap-4 mt-6">
-
-        <button
-          onClick={() => setShowDelete(false)}
-          className="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
-        >
-          Cancel
-        </button>
-
-        <button
-          onClick={() => handleDeleteConfirm(selectedUser.UserID)}
-          className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow"
-        >
-          Delete
-        </button>
-
-      </div>
-
-    </div>
-  </div>
-)}
-
-
+    
   {/* Error Modal */}
       <Modal
         isOpen={errorModal.isOpen}
@@ -605,7 +549,7 @@ openFullscreenModal()
             Danger Alert!
           </h4>
           <p className="text-sm leading-6 text-gray-500 dark:text-gray-400">
-           {error}
+    
           </p>
 
           <div className="flex items-center justify-center w-full gap-3 mt-7">

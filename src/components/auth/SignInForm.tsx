@@ -32,8 +32,8 @@ export default function SignInForm() {
       localStorage.setItem('UserID', data.UserID);
       localStorage.setItem('Email', data.Email);
       localStorage.setItem('Username', data.Username);
-
-      
+      localStorage.setItem('site', site);
+      localStorage.setItem('DepartmentId', data.DepartmentId);
     
       // window.location.href = "/";
       router.push('/');

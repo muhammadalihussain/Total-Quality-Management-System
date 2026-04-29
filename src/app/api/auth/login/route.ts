@@ -13,8 +13,10 @@ export async function POST(req: Request) {
     .input("SiteID", site)
     .execute("sp_LoginUser");
 
+
+
   const user = result.recordset[0];
-  
+
 
   if (!user) return NextResponse.json({ error: "Invalid login" }, { status: 401 });
 
@@ -35,8 +37,9 @@ const allowedUrls = urls.recordset.map((r:any)=>r.Url);
     RoleId: user.RoleId,
     Email:user.Email,
     Username:user.Username,
-    urls: allowedUrls
-
+    SiteID:user.SiteID,
+    DepartmentId:user.DepartmentId,
+    urls: allowedUrls,
   });
 
   if(token)
@@ -49,8 +52,9 @@ const allowedUrls = urls.recordset.map((r:any)=>r.Url);
       UserID: user.UserID,
       Email:user.Email,
       Username:user.Username,
-      urls: allowedUrls
-
+      SiteID:user.SiteID,
+      DepartmentId:user.DepartmentId,
+      urls: allowedUrls,
     });
 
     // Save token in HTTP-only cookie

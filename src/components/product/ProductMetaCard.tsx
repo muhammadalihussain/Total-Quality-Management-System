@@ -12,13 +12,29 @@ import { useSearchParams, useParams } from "next/navigation";
 
 const ProductMetaCard = ({  id }:any) => {
 
+type ProductType = {
+  ProductName: string;
+  ProductCode: string;
+  CategoryID: string;
+  FormID: string;
+  ColorID: string;
+  CountryOfOrigin: string;
+  Ingredients: string;
+  IngredientsDeclaration: string;
+  SuitableFor: string;
+  Additives: string;
+  Functionalities: string;
+  Description: string;
+  ShelfLife: string;
+  StorageConditions: string;
+  CategoryName:string;
+  FormName:string;
+  ColorName:string;
+  Uses: string;
+  IsActive: boolean;
+};
 
-const [product, setProduct] = useState([]);
-  
-
-
-
-
+const [product, setProduct] = useState<ProductType | null>(null);
 
 const [dataCategoriesRecords, setDataCategoriesRecords] = useState<any[]>([]);
 const [dataFormsRecords, setDataFormsRecords] = useState<any[]>([]);
@@ -52,8 +68,6 @@ const {
 
 const [form, setForm] = useState(initialForm);
 
-
-
 type FormError = {
       ProductName?: boolean;
       ProductCode?: boolean;
@@ -71,21 +85,21 @@ type FormError = {
       StorageConditions?: boolean;
       Uses?: boolean;
       IsActive?: boolean;
+      Status?: boolean;
 };
 
 
 
  const loadDataProduct = async () => {
 
-   if (!id) return;
-
+ if (!id) return;
 
 try {
      const res = await fetch(`/api/products/${id}`);
       const result = await res.json();
       setProduct(result.data);
       } catch (err) {
-         alert(err.response?.data?.message );
+         alert(err );
       }
 
 }
@@ -114,7 +128,7 @@ if (!id) return;
 
 
     } catch (err :any) {
-     alert(err.response?.data?.message );
+     alert(err );
     }
 
   };
@@ -195,8 +209,8 @@ IsActive: form.IsActive,
 
  } catch (err:any) {
 
-    setError(err.response?.data?.message || "Something went wrong");
-    errorModal.openModal();
+    setError(err);
+    
   }
 
   };
@@ -208,25 +222,26 @@ IsActive: form.IsActive,
 
 
 
-setForm({
-  ProductName:product.ProductName,
-  ProductCode:product.ProductCode,
-  CategoryID: product.CategoryID,
-  FormID: product.FormID,
-  ColorID: product.ColorID,
-  CountryOfOrigin:product.CountryOfOrigin,
-  Ingredients: product.Ingredients,
-  IngredientsDeclaration:product.IngredientsDeclaration,
-  SuitableFor: product.SuitableFor,
-  Additives: product.Additives,
-  Functionalities: product.Functionalities,
-  Description: product.Description,
-  ShelfLife: product.ShelfLife,
-  StorageConditions: product.StorageConditions,
-  Uses:product.Uses,
-  IsActive: product.IsActive,
+if (product) {
+  setForm({
+    ProductName: product.ProductName,
+    ProductCode: product.ProductCode,
+    CategoryID: product.CategoryID,
+    FormID: product.FormID,
+    ColorID: product.ColorID,
+    CountryOfOrigin: product.CountryOfOrigin,
+    Ingredients: product.Ingredients,
+    IngredientsDeclaration: product.IngredientsDeclaration,
+    SuitableFor: product.SuitableFor,
+    Additives: product.Additives,
+    Functionalities: product.Functionalities,
+    Description: product.Description,
+    ShelfLife: product.ShelfLife,
+    StorageConditions: product.StorageConditions,
+    Uses: product.Uses,
+    IsActive: product.IsActive,
+  });
 }
-  );
  openFullscreenModal();
   };
 
@@ -234,9 +249,7 @@ if (!product) {
   return <div>Loading...</div>;
 }
 
-if (product.length === 0) {
-  return <div>No data found</div>;
-}
+
   return (
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -406,10 +419,7 @@ if (product.length === 0) {
         </div>
       </div>
 
-
-
-
-         <Modal
+       <Modal
         isOpen={isFullscreenModalOpen}
         onClose={closeFullscreenModal}
         isFullscreen={true}
