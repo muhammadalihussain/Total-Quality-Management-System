@@ -9,7 +9,7 @@ import { ColDef } from 'ag-grid-community';
 import CreateCAPAModal from '@/components/CAPA/CreateCAPAModal';
 import toast from 'react-hot-toast';
 import { useModal } from "@/hooks/useModal";
-
+import axios from 'axios';
 
 export default function CAPAList() {
     const router = useRouter();
@@ -60,6 +60,18 @@ export default function CAPAList() {
       setLoading(false);
     }
   };
+const [dataStatusRecords, setDataStatusRecords] = useState<any[]>([]);
+    useEffect(() => {
+  
+       const fetchData = async () => {
+  
+                const res1 = await axios.get(`/api/dynamics?type=status`);
+               setDataStatusRecords( res1.data.result.recordset);
+       }
+  
+      fetchData();
+    }, []);
+  
 
 const onGridReady = (params:any) => {
   params.api.sizeColumnsToFit(); // fit to screen
@@ -200,21 +212,6 @@ const columns: ColDef[] = [
 
        </button>
 
-<button
-  onClick={(e) => {
-    e.stopPropagation();
-   
-  }}
-  className="inline-flex items-center p-1 rounded hover:bg-blue-100 text-blue-600 mr-2"
-  title="Take Action"
->
-  <svg width="23" height="23" viewBox="0 0 24 24">
-    <path
-      fill="currentColor"
-      d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20.3 7.7l-1.4-1.4z"
-    />
-  </svg>
-</button>
 
 
     </div>
@@ -252,20 +249,29 @@ const columns: ColDef[] = [
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold text-gray-900">CAPA Management</h1>
                     <div className="flex gap-3">
-                        <select
-                            value={filterStatus}
-                            onChange={(e) => setFilterStatus(e.target.value)}
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        >
-                            <option value="">All Status</option>
-                            <option value="OPEN">Open</option>
-                            <option value="IN_PROGRESS">In Progress</option>
-                            <option value="READY_FOR_QC">Ready for QC</option>
-                            <option value="READY_FOR_COA">Ready for COA</option>
-                            <option value="CLOSED">Closed</option>
-                            <option value="Accept">Accept</option>
-                            <option value="Reject">Reject</option>
-                        </select>
+                      
+
+ <select
+            key={"0"}
+            name="StatusID"
+            id="StatusID"
+           value={filterStatus}
+     onChange={(e) => setFilterStatus(e.target.value)}
+      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+
+          >
+          <option value="" disabled>Select Status</option>
+            {dataStatusRecords?.length > 0 ? (
+              dataStatusRecords.map((id) => (
+                <option key={id.Id} value={id.Id}>
+                  {id.StatusName}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading...</option>
+            )}
+          </select>
+
                         <Button  onClick={() => {
     openModal();
     setEditing(null);

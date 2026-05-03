@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-     "start": "node server.js"
+    "start": "node server.js",
+    "lint": "next lint"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",

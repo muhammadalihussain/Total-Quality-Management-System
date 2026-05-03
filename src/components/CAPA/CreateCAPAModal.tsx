@@ -221,10 +221,13 @@ const handleCheckboxChange = (id: any) => {
 
      const fetchData = async () => {
 
-            const res3 = await axios.get(`api/dynamics?type=departments`);
-            setDataDepartmentRecords( res3.data.result.recordset);
-              };
-
+        try {
+  const res3 = await axios.get(`/api/dynamics?type=departments`);
+  setDataDepartmentRecords(res3.data.result.recordset);
+} catch (error: any) {
+  console.log("ERROR:", error.response?.data || error.message);
+}
+     }
     fetchData();
   }, []);
 

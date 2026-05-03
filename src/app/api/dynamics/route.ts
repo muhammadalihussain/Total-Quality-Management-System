@@ -30,15 +30,6 @@ export async function GET(req: Request) {
       return NextResponse.json({ result });
     }
 
-    else if (type === "departments") {
-     const result = await db.request()
-      .execute('sp_GetAllDepartment');
-     const departments = result.recordset;
-    if (!departments) return NextResponse.json({ message: "Departments not found" }, { status: 404 });
-      return NextResponse.json({ result });
-    }
-
-
 
 
       else if (type === "categories") {
@@ -46,8 +37,27 @@ export async function GET(req: Request) {
       .execute('sp_GetAllCategories');
      const categories = result.recordset;
 
-
     if (!categories) return NextResponse.json({ message: "Categories not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+      else if (type === "users") {
+      const result = await db.request()
+      .execute('sp_GetAllUsers');
+     const users = result.recordset;
+
+  
+    if (!users) return NextResponse.json({ message: "users not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+      else if (type === "status") {
+      const result = await db.request()
+      .execute('sp_GetAllStatus');
+     const status = result.recordset;
+
+    if (!status) return NextResponse.json({ message: "status not found" }, { status: 404 });
       return NextResponse.json({ result });
     }
 
@@ -72,12 +82,12 @@ export async function GET(req: Request) {
 
 
 
-       else if (type === "analysiscategories") {
+    else if (type === "analysiscategories") {
       const result = await db.request()
       .execute('sp_GetAll_AnalysisCategories');
      const analysiscategories = result.recordset;
 
-
+     console.log(analysiscategories);
     if (!analysiscategories) return NextResponse.json({ message: "analysiscategories not found" }, { status: 404 });
       return NextResponse.json({ result });
     }

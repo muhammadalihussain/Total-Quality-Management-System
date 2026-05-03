@@ -257,7 +257,7 @@ if(res.data.success){
       ) : (
         <>
 
-   <ComponentCard title="User Management">
+   <ComponentCard title="">
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y">

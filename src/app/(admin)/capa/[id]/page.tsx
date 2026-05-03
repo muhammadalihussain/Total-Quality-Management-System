@@ -6,6 +6,7 @@ import ComponentCard from "@/components/common/ComponentCard";
 import Button from "@/components/ui/button/Button";
 import { AgGridTable } from '@/components/ui/AgGridTable/AgGridTable';
 import { ColDef } from 'ag-grid-community';
+import AssignCAPAModal from '@/components/CAPA/AssignCAPAModal';
 
 interface CAPADetails {
     capa: any;
@@ -22,10 +23,65 @@ export default function CAPADetailsPage() {
     const [details, setDetails] = useState<CAPADetails | null>(null);
     const [activeTab, setActiveTab] = useState('overview');
     const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCAPA, setSelectedCAPA] = useState<number | null>(null);
+
+    const handleOpen = (e: any, capaId: number) => {
+    e.stopPropagation(); // prevent row click
+    setSelectedCAPA(capaId);
+    setOpenModal(true);
+  };
 
     useEffect(() => {
         fetchDetails();
     }, [params.id]);
+
+    const columns: ColDef[] = [
+        { field: 'CAPA_Code', headerName: 'CAPA ID', width: 60, pinned: 'left' },
+      //  { field: 'DepartmentName', headerName: 'Department', width: 150 },
+       { field: 'Customer', headerName: 'Customer', width: 200 },
+          { field: 'ItemName', headerName: 'ItemName', width: 200 },
+        { field: 'CreatedByName', headerName: 'Created By', width: 110 },
+
+         {
+  headerName: "Actions",
+  minWidth: 50,
+  colId: "action",
+  pinned: "right",
+  editable: false,
+
+  cellRenderer: (params: any) => (
+    <div className="flex gap-2">
+
+
+      {/* DELETE */}
+
+
+       <button  onClick={(e) => {
+        e.stopPropagation();
+      
+      {/*  deleteRow(params.data.CAPAID);
+
+        setShowDelete(true);
+                           
+    */}
+    }
+
+              }
+
+        className="inline-flex items-center p-1 rounded hover:bg-gray-100 text-red-600" title="Delete" >
+       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+       <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+
+       </button>
+
+
+
+    </div>
+  ),
+},
+    ];
+
 
     const fetchDetails = async () => {
         try {
@@ -139,15 +195,16 @@ export default function CAPADetailsPage() {
     return (
         <div className="p-1 bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
+                   <a href='#'  onClick={() => router.back()}>
+                        ← Back
+                    </a>
 
                 {/* CAPA Header Card */}
                 <ComponentCard title='' >
 
                     <div className="flex justify-between items-start">
                         <div>
-                          <Button variant="primary" onClick={() => router.back()}>
-                        ← Back
-                    </Button>
+                       
                             <div className="flex items-center gap-3 mb-2">
                                 <h1 className="text-2xl font-bold text-gray-900">
                                     {details.capa.CAPA_Code}
@@ -162,6 +219,25 @@ export default function CAPADetailsPage() {
                                 }`}>
                                     {details.capa.Priority}
                                 </span>
+                                <span className="px-3 py-1  cursor-pointer rounded-full text-sm font-medium bg-green-100 text-green-800" 
+                                onClick={(e) => handleOpen(e, Number(params.id))}
+                                
+                                >
+                       Take Action
+                    
+</span>
+
+
+
+ {/* Popup Render */}
+      {
+      openModal && (
+        <AssignCAPAModal
+          capaId={selectedCAPA}
+          onClose={() => setOpenModal(false)}
+        />
+      )}
+
                             </div>
                             <h2 className="text-xl text-gray-700 mb-4">{details.capa.Title}</h2>
                             <p className="text-gray-600">{details.capa.Description}</p>
