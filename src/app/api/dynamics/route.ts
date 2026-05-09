@@ -2,13 +2,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from '@/lib/db';
 import { comparePassword } from '@/utils/hash'; // or relative path
- import { signToken } from '@/lib/jwt';
+import { signToken } from '@/lib/jwt';
 
 
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type"); // Get query param
+
   const db = await pool(); // Singleton pool
 
 
@@ -31,6 +32,15 @@ export async function GET(req: Request) {
     }
 
 
+    else if (type === "departments") {
+     const result = await db.request()
+      .execute('sp_GetAllDepartment');
+     const departments = result.recordset;
+    if (!departments) return NextResponse.json({ message: "departments not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
 
       else if (type === "categories") {
       const result = await db.request()
@@ -49,6 +59,17 @@ export async function GET(req: Request) {
 
   
     if (!users) return NextResponse.json({ message: "users not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+     else if (type === "capaassignusers") {
+      const result = await db.request()
+      .execute('sp_GetAllCapaAssignUsers');
+     const capaassignusers = result.recordset;
+
+
+    if (!capaassignusers) return NextResponse.json({ message: "capaassignusers not found" }, { status: 404 });
       return NextResponse.json({ result });
     }
 

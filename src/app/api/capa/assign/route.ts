@@ -5,14 +5,12 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { CAPAID, UserIDs, TargetDate, ClosureDate, StatusId ,CreatedBy } = body;
+    const { CAPAID, UserIDs,CreatedBy   } = body;
 
-
-const result = await executeQuery('sp_AssignCAPA_MultipleUsers', {
-          CAPAID, UserIDs, TargetDate, ClosureDate, StatusId ,CreatedBy 
+    const result = await executeQuery('sp_AssignCAPA_MultipleUsers', {
+          CAPAID, UserIDs,CreatedBy
         });
 
- 
 
     return Response.json({ success: true });
 

@@ -23,64 +23,26 @@ export default function CAPADetailsPage() {
     const [details, setDetails] = useState<CAPADetails | null>(null);
     const [activeTab, setActiveTab] = useState('overview');
     const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedCAPA, setSelectedCAPA] = useState<number | null>(null);
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedCAPA, setSelectedCAPA] = useState<number | null>(null);
+    const [refreshGrid, setrefreshGrid] = useState(false);
+
+
 
     const handleOpen = (e: any, capaId: number) => {
     e.stopPropagation(); // prevent row click
     setSelectedCAPA(capaId);
+
+    setrefreshGrid(false);
     setOpenModal(true);
   };
 
     useEffect(() => {
         fetchDetails();
-    }, [params.id]);
-
-    const columns: ColDef[] = [
-        { field: 'CAPA_Code', headerName: 'CAPA ID', width: 60, pinned: 'left' },
-      //  { field: 'DepartmentName', headerName: 'Department', width: 150 },
-       { field: 'Customer', headerName: 'Customer', width: 200 },
-          { field: 'ItemName', headerName: 'ItemName', width: 200 },
-        { field: 'CreatedByName', headerName: 'Created By', width: 110 },
-
-         {
-  headerName: "Actions",
-  minWidth: 50,
-  colId: "action",
-  pinned: "right",
-  editable: false,
-
-  cellRenderer: (params: any) => (
-    <div className="flex gap-2">
-
-
-      {/* DELETE */}
-
-
-       <button  onClick={(e) => {
-        e.stopPropagation();
-      
-      {/*  deleteRow(params.data.CAPAID);
-
-        setShowDelete(true);
-                           
-    */}
-    }
-
-              }
-
-        className="inline-flex items-center p-1 rounded hover:bg-gray-100 text-red-600" title="Delete" >
-       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-       <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-
-       </button>
+    }, [params.id,refreshGrid]);
 
 
 
-    </div>
-  ),
-},
-    ];
 
 
     const fetchDetails = async () => {
@@ -163,8 +125,9 @@ export default function CAPADetailsPage() {
 
     const getStatusColor = (status: string) => {
         const colors: any = {
-            OPEN: 'bg-blue-100 text-blue-800',
+            OPEN: 'bg-blue-100 text-blue-900',
             IN_PROGRESS: 'bg-yellow-100 text-yellow-800',
+             ACCEPTED: 'bg-green-100 text-yellow-800',
             READY_FOR_QC: 'bg-green-100 text-green-800',
             READY_FOR_COA: 'bg-purple-100 text-purple-800',
             CLOSED: 'bg-gray-100 text-gray-800',
@@ -200,15 +163,16 @@ export default function CAPADetailsPage() {
                     </a>
 
                 {/* CAPA Header Card */}
-                <ComponentCard title='' >
+                <ComponentCard title={details.capa.CAPA_Code} >
 
                     <div className="flex justify-between items-start">
                         <div>
-                       
                             <div className="flex items-center gap-3 mb-2">
+
                                 <h1 className="text-2xl font-bold text-gray-900">
-                                    {details.capa.CAPA_Code}
+                                   SalesOrder No:{details.capa.SalesId}
                                 </h1>
+
                                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(details.capa.Status)}`}>
                                     {details.capa.Status}
                                 </span>
@@ -219,28 +183,55 @@ export default function CAPADetailsPage() {
                                 }`}>
                                     {details.capa.Priority}
                                 </span>
-                                <span className="px-3 py-1  cursor-pointer rounded-full text-sm font-medium bg-green-100 text-green-800" 
-                                onClick={(e) => handleOpen(e, Number(params.id))}
+
+                                {   
                                 
-                                >
-                       Take Action
-                    
+                                details.capa.StatusId !=7 && (
+                             <span
+  className="px-4 py-2 cursor-pointer rounded-full text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 shadow-sm inline-block"
+  onClick={(e) => {
+    handleOpen(e, Number(params.id));
+  }}
+>
+  Take Action ( Accept / Reject )
 </span>
+)}
 
 
 
  {/* Popup Render */}
       {
-      openModal && (
+        openModal && (
         <AssignCAPAModal
           capaId={selectedCAPA}
           onClose={() => setOpenModal(false)}
+          setrefreshGrid={setrefreshGrid}
+          StatusId ={details.capa.StatusId}
+          TargetDate={ details.capa.TargetDate}
+          ClosureDate ={details.capa.ClosureDate}
         />
       )}
 
-                            </div>
-                            <h2 className="text-xl text-gray-700 mb-4">{details.capa.Title}</h2>
-                            <p className="text-gray-600">{details.capa.Description}</p>
+   </div>
+   <h2 className="text-xl text-gray-700 mb-4">{details.capa.Title}</h2>
+    <div className="flex gap-4 items-center">
+    <div className="flex items-center gap-1">
+    <span className="font-medium">Customer:</span>
+    <p className="text-gray-600">{details.capa.Customer}</p>
+  </div>
+
+  <div className="flex items-center gap-1">
+    <span className="font-medium">ItemID:</span>
+    <p className="text-gray-600">{details.capa.ItemId}</p>
+  </div>
+
+    <div className="flex items-center gap-1">
+    <span className="font-medium">ItemName:</span>
+    <p className="text-gray-600">{details.capa.ItemName}</p>
+  </div>
+</div>
+                            Complaint Detail: <p className="text-gray-600">{details.capa.Description}</p>
+                            Reject Remarks: <p className="text-gray-600">{details.capa.RejectRemarks}</p>
                         </div>
                         <div className="text-right">
                             <p className="text-sm text-gray-500">Created By</p>
@@ -265,12 +256,16 @@ export default function CAPADetailsPage() {
                         </div>
                         <div>
                             <p className="text-sm text-gray-500">Closure Date</p>
-                            <p className="font-medium">{details.capa.ClosedAt ? new Date(details.capa.ClosedAt).toLocaleDateString() : '-'}</p>
+                            <p className="font-medium">{details.capa.ClosureDate ? new Date(details.capa.ClosureDate).toLocaleDateString() : '-'}</p>
                         </div>
                     </div>
                 </ComponentCard>
 
                 {/* Tabs */}
+
+
+   { !openModal && (
+                 <>
                 <div className="border-b border-gray-200 mb-6">
                     <nav className="flex gap-4">
                         {['overview', 'root-causes', 'qc-tests', 'coa', 'timeline'].map((tab) => (
@@ -291,7 +286,7 @@ export default function CAPADetailsPage() {
 
                 {/* Tab Content */}
                 <div>
-                    {activeTab === 'overview' && (
+                    {  activeTab === 'overview' && (
                         <div className="grid grid-cols-2 gap-6">
                             <ComponentCard title="CAPA Information">
                                 <div className="space-y-3">
@@ -414,7 +409,9 @@ export default function CAPADetailsPage() {
                         </ComponentCard>
                     )}
                 </div>
+                 </>) }
             </div>
         </div>
+
     );
 }

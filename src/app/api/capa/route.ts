@@ -25,7 +25,7 @@ console.log("customer"+customer);
            Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID,customer ,ItemName
         });
 
-      /*
+
 
         // CONFIGURE THESE VALUES:
 const SMTP_CONFIG = {
@@ -80,7 +80,7 @@ const SMTP_CONFIG = {
 
 
        // console.log(Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID,FromDepartmentID);
-*/
+
         return NextResponse.json({ success: true, data: 'test' });
     } catch (error) {
         console.error('Error creating CAPA:', error);
@@ -91,6 +91,25 @@ const SMTP_CONFIG = {
     }
 }
 
+export async function GET(req: Request) {
+
+  const { searchParams } = new URL(req.url);
+
+  const search = searchParams.get("search") || "";
+  const status = searchParams.get("status") || "";
+
+const results = await executeQueryWithMultipleResults('USP_GetCAPAList', {
+        Search: (search),Status:(status)
+      });
+
+
+
+
+  return NextResponse.json({ success: true, data: results });
+}
+
+
+/*
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -148,3 +167,5 @@ export async function PUT(request: NextRequest) {
         );
     }
 }
+
+*/

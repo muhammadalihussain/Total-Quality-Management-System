@@ -57,7 +57,9 @@ const [selectedDepartments, setSelectedDepartments] = useState<number[]>(
 const [form, setFormData] = useState<FormType>(initialForm);
 
   const fetchSales = async (initialForm :any) => {
-    if (!initialForm.SalesId) {
+
+
+    if (!form.SalesId) {
      setFormData(initialForm);
      setCustomer('');
      setSelectedITEMVARIETYID('');
@@ -72,7 +74,7 @@ const [form, setFormData] = useState<FormType>(initialForm);
 
 
     const res = await fetch(
-  `/api/sales?salesId=${initialForm.SalesId}&dataAreaid=${site}`
+  `/api/sales?salesId=${form.SalesId}&dataAreaid=${site}`
 );
 
     const data = await res.json();

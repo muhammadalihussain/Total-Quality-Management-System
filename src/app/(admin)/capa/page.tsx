@@ -24,11 +24,33 @@ export default function CAPAList() {
     const [editing, setEditing] = useState<any | null>(null);
 
 
+const [searchText, setSearchText] = useState("");
+const [status, setStatus] = useState("");
+
+
+const loadData = async () => {
+  try {
+
+    const res = await fetch(
+      `/api/capa?search=${encodeURIComponent(searchText)}&status=${status}`
+    );
+
+    const data = await res.json();
+
+    setCapas(data.data);
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+useEffect(() => {
+  loadData();
+}, [searchText, status]);
+
 
 
     useEffect(() => {
-
-
         fetchCAPAs();
     }, [filterStatus]);
 
@@ -98,16 +120,15 @@ fetchCAPAs();
   const updateRow = async (row: any) => {
 
      setEditing(row);
-     setSelectedCAPAID(row.CAPAID)
-      openModal()
-
-
+     setSelectedCAPAID(row.CAPAID);
+     openModal();
   };
 
 const columns: ColDef[] = [
         { field: 'CAPA_Code', headerName: 'CAPA ID', width: 60, pinned: 'left' },
       //  { field: 'DepartmentName', headerName: 'Department', width: 150 },
-       { field: 'Customer', headerName: 'Customer', width: 200 },
+         { field: 'Customer', headerName: 'Customer', width: 200 },
+       { field: "StatusId", hide: true },
           { field: 'ItemName', headerName: 'ItemName', width: 200 },
         { field: 'CreatedByName', headerName: 'Created By', width: 110 },
 
@@ -132,11 +153,12 @@ const columns: ColDef[] = [
             cellStyle: (params) => {
                 const colors: any = {
                     OPEN: { backgroundColor: '#cfe2ff', color: '#084298' },
+                    ACCEPTED: { backgroundColor: '#15985d', color: 'rgb(249, 249, 249)' },
                     IN_PROGRESS: { backgroundColor: '#fff3cd', color: '#856404' },
                     READY_FOR_QC: { backgroundColor: '#d1e7dd', color: '#0f5132' },
                     READY_FOR_COA: { backgroundColor: '#cff4fc', color: '#055160' },
                     CLOSED: { backgroundColor: '#d1e7dd', color: '#0f5132' },
-                    REJECTED: { backgroundColor: '#f8d7da', color: '#721c24' }
+                    REJECTED: { backgroundColor: '#cd212f', color: '#fefefe' }
                 };
                 return colors[params.value] || {};
             }
@@ -168,6 +190,7 @@ const columns: ColDef[] = [
     <button
   onClick={(e) => {
     e.stopPropagation();
+
     router.push(`/capa/${params.data.CAPAID}`)
 
   }}
@@ -183,36 +206,57 @@ const columns: ColDef[] = [
 </button>
 
         {/* UPDATE */}
-       <button  onClick={(e) => {
+
+
+       <button
+
+        disabled={params.data.StatusId != 1}
+
+           onClick={(e) => {
            e.stopPropagation();
            updateRow(params.data)
            }
            }
 
-                       className="inline-flex items-center p-1 rounded hover:bg-gray-100 mr-2" title="Edit" >
+                      className={`inline-flex items-center p-1 rounded
+    ${
+      params.data.StatusId != 1
+        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+        : "hover:bg-gray-100 text-blue-600"
+    }`}title="Edit" >
                         <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0L15.13 4.9l3.75 3.75 1.83-1.61z"/></svg>
          </button>
+
+
 
 
       {/* DELETE */}
 
 
-       <button  onClick={(e) => {
-        e.stopPropagation();
-       deleteRow(params.data.CAPAID);
 
-        setShowDelete(true);
-                            }
+<button
+  disabled={params.data.StatusId != 1}
+  onClick={(e) => {
+    e.stopPropagation();
 
-              }
-
-        className="inline-flex items-center p-1 rounded hover:bg-gray-100 text-red-600" title="Delete" >
-       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-       <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-
-       </button>
-
-
+    deleteRow(params.data.CAPAID);
+    setShowDelete(true);
+  }}
+  className={`inline-flex items-center p-1 rounded
+    ${
+      params.data.StatusId != 1
+        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+        : "hover:bg-gray-100 text-red-600"
+    }`}
+  title="Delete"
+>
+  <svg width="16" height="16" viewBox="0 0 24 24">
+    <path
+      fill="currentColor"
+      d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+    />
+  </svg>
+</button>
 
     </div>
   ),
@@ -239,6 +283,8 @@ const columns: ColDef[] = [
        onClose={closeModal}
        editingData={editing}
        capaID={selectedCAPAID}
+
+
        onSuccess={() => {
        closeModal();
        fetchCAPAs();
@@ -249,18 +295,25 @@ const columns: ColDef[] = [
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold text-gray-900">CAPA Management</h1>
                     <div className="flex gap-3">
+
+                        {/* Search Textbox */}
+  <input
+    type="text"
+    placeholder="Search CAPA..."
+    value={searchText}
+    onChange={(e) => setSearchText(e.target.value)}
+    className="border border-gray-300 rounded-lg px-3 py-2 w-80
+    focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
                       
 
  <select
-            key={"0"}
-            name="StatusID"
-            id="StatusID"
-           value={filterStatus}
-     onChange={(e) => setFilterStatus(e.target.value)}
-      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-
-          >
-          <option value="" disabled>Select Status</option>
+    value={status}
+    onChange={(e) => setStatus(e.target.value)}
+    className="border border-gray-300 rounded-lg px-3 py-2 bg-white w-52
+    focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+          <option value="" >Select Status</option>
             {dataStatusRecords?.length > 0 ? (
               dataStatusRecords.map((id) => (
                 <option key={id.Id} value={id.Id}>

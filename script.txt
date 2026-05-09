@@ -1,0 +1,24 @@
+USE [TQMS]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_LoginUser]    Script Date: 03/10/2026 12:11:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_LoginUser]
+    @Email NVARCHAR(100),
+    @SiteID NVARCHAR(10)
+AS
+BEGIN
+    SELECT U.UserID, U.Username, U.Email, U.PasswordHash, R.RoleName ,UR.RoleId ,UA.SiteID
+    FROM Users U
+    JOIN UserRoles UR ON U.UserID = UR.UserId
+    JOIN Roles R ON UR.RoleId = R.RoleID
+    inner join UserSiteAccess UA on  UA.UserId=U.UserID
+    WHERE U.Email =@Email AND U.IsActive = 1  and UA.SiteID=@SiteID
+    and UA.IsActive = 1 
+END;
+
+
+
+--exec [sp_LoginUser] 'muhammad.ali@matcofoods.com.pk' ,1
