@@ -325,7 +325,7 @@ const columns: ColDef[] = [
     className="border border-gray-300 rounded-lg px-3 py-2 bg-white w-52
     focus:outline-none focus:ring-2 focus:ring-blue-500"
   >
-          <option value="" >Select Status</option>
+          <option value="" >Select All Status</option>
             {dataStatusRecords?.length > 0 ? (
               dataStatusRecords.map((id) => (
                 <option key={id.Id} value={id.Id}>

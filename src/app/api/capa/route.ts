@@ -104,6 +104,18 @@ export async function GET(req: Request) {
   const page = Number(searchParams.get("page")) || 1;
   const pageSize = Number(searchParams.get("pageSize")) || 20;
 
+  const capaId = searchParams.get('id');
+  
+
+    // 🔹 GET BY ID
+    if (capaId) {
+      const results = await executeQueryWithMultipleResults('sp_GetCAPADetails', {
+        CAPAID: parseInt(capaId)
+      });
+
+      return NextResponse.json({ success: true, data: results });
+    }
+
 const results = await executeQueryWithMultipleResults('sp_GetCAPAList', {
         Search: (search),Status:(status),pageSize:pageSize,PageNo:page
       });
@@ -158,6 +170,10 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+*/
+
+
 export async function PUT(request: NextRequest) {
     try {
          const body = await request.json();
@@ -178,4 +194,3 @@ export async function PUT(request: NextRequest) {
     }
 }
 
-*/
