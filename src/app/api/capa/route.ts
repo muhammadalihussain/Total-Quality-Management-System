@@ -91,6 +91,9 @@ const SMTP_CONFIG = {
     }
 }
 
+
+
+
 export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
@@ -98,15 +101,22 @@ export async function GET(req: Request) {
   const search = searchParams.get("search") || "";
   const status = searchParams.get("status") || "";
 
-const results = await executeQueryWithMultipleResults('USP_GetCAPAList', {
-        Search: (search),Status:(status)
+  const page = Number(searchParams.get("page")) || 1;
+  const pageSize = Number(searchParams.get("pageSize")) || 20;
+
+const results = await executeQueryWithMultipleResults('sp_GetCAPAList', {
+        Search: (search),Status:(status),pageSize:pageSize,PageNo:page
       });
+    
+    //  console.log(results[0]?.[0].TotalRecords)
+    //  console.log(results[1])
 
-
-
-
-  return NextResponse.json({ success: true, data: results });
+  return Response.json({
+    total: results[0]?.[0].TotalRecords,
+    data: results[1],
+  });
 }
+
 
 
 /*

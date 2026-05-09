@@ -26,18 +26,27 @@ export default function CAPAList() {
 
 const [searchText, setSearchText] = useState("");
 const [status, setStatus] = useState("");
+const [page, setPage] = useState(1);
+const [pageSize] = useState(20);
 
+
+const [totalRecords, setTotalRecords] = useState(0);
 
 const loadData = async () => {
+
   try {
 
     const res = await fetch(
-      `/api/capa?search=${encodeURIComponent(searchText)}&status=${status}`
+      `/api/capa?search=${searchText.trim()}
+       &status=${status.trim()}
+      &page=${page}
+      &pageSize=${pageSize}`
     );
 
     const data = await res.json();
 
     setCapas(data.data);
+    setTotalRecords(data.total);
 
   } catch (err) {
     console.log(err);
@@ -46,7 +55,7 @@ const loadData = async () => {
 
 useEffect(() => {
   loadData();
-}, [searchText, status]);
+}, [searchText, status, page]);
 
 
 
@@ -297,15 +306,18 @@ const columns: ColDef[] = [
                     <div className="flex gap-3">
 
                         {/* Search Textbox */}
-  <input
+ <input
     type="text"
     placeholder="Search CAPA..."
     value={searchText}
-    onChange={(e) => setSearchText(e.target.value)}
+    onChange={(e) => {
+      setSearchText(e.target.value);
+      setPage(1);
+    }}
     className="border border-gray-300 rounded-lg px-3 py-2 w-80
     focus:outline-none focus:ring-2 focus:ring-blue-500"
   />
-                      
+             
 
  <select
     value={status}
@@ -355,8 +367,40 @@ const columns: ColDef[] = [
                         data={capas}
 
                         height="600px"
-                        paginationPageSize={20}
+                        pagination={false}
                     /> )}
+
+                    <div className="flex items-center justify-between mt-4">
+
+  <div>
+    Total Records: {totalRecords}
+  </div>
+
+  <div className="flex gap-2">
+
+    <button
+      onClick={() => setPage(page - 1)}
+      disabled={page === 1}
+      className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+    >
+      Previous
+    </button>
+
+    <span className="px-4 py-2">
+      Page {page}
+    </span>
+
+    <button
+      onClick={() => setPage(page + 1)}
+      disabled={page * pageSize >= totalRecords}
+      className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+    >
+      Next
+    </button>
+
+  </div>
+
+</div>
                 </ComponentCard>
             </div>
         </div>
