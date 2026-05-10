@@ -18,12 +18,11 @@ export async function POST(req: Request) {
   const user = result.recordset[0];
 
 
-  if (!user) return NextResponse.json({ error: "Invalid login" }, { status: 401 });
+  if (!user) return NextResponse.json({ message: "Invalid login" }, { status: 401 });
 
   const match = await bcrypt.compare(password, user.PasswordHash);
   
-  if (!match) return NextResponse.json({ error: "Invalid login" }, { status: 401 });
-
+  if (!match) return NextResponse.json({ message: "Invalid login password" }, { status: 401 });
   const urls = await db.request()
   .input("RoleId", user.RoleId)
   .execute("sp_GetAllowedUrls");
