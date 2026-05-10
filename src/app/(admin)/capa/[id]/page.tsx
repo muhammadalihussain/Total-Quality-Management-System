@@ -7,6 +7,11 @@ import Button from "@/components/ui/button/Button";
 import { AgGridTable } from '@/components/ui/AgGridTable/AgGridTable';
 import { ColDef } from 'ag-grid-community';
 import AssignCAPAModal from '@/components/CAPA/AssignCAPAModal';
+import {  AgGridReact } from 'ag-grid-react';
+import axios from "axios";
+import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+ModuleRegistry.registerModules([AllCommunityModule]);
+import AssignUserModal from '@/components/CAPA/AssignUserModal';
 
 interface CAPADetails {
     capa: any;
@@ -21,12 +26,16 @@ export default function CAPADetailsPage() {
     const params = useParams();
     const router = useRouter();
     const [details, setDetails] = useState<CAPADetails | null>(null);
-    const [activeTab, setActiveTab] = useState('overview');
+    const [activeTab, setActiveTab] = useState('assign-user');
     const [loading, setLoading] = useState(true);
     const [openModal, setOpenModal] = useState(false);
+    const [openModalAssign, setOpenModalAssign] = useState(false);
     const [selectedCAPA, setSelectedCAPA] = useState<number | null>(null);
     const [refreshGrid, setrefreshGrid] = useState(false);
-
+    const [users, setUsers] = useState([]);
+    const [gridApi, setGridApi] = useState<any>(null);
+    const [refreshAssignGrid, setrefreshAssignGrid] = useState(false);
+     const [showDelete, setShowDelete] = useState(false);
 
 
     const handleOpen = (e: any, capaId: number) => {
@@ -37,13 +46,112 @@ export default function CAPADetailsPage() {
     setOpenModal(true);
   };
 
+
+   const handleOpenAssing = (e: any, capaId: number) => {
+    e.stopPropagation(); // prevent row click
+
+    setrefreshGrid(false);
+    setrefreshAssignGrid(false);
+    setOpenModalAssign(true);
+  };
+
+  async function fetchCAPAs() {
+    try {
+
+    const res =   await axios.post("/api/capa/assign/getcapausersbycapaid", {
+    CAPAID:  params.id
+    });
+           setUsers(res.data.data);
+
+    } catch (error) {
+     alert(error );
+    }
+  }
+
+     useEffect(() => {
+        fetchCAPAs();
+         setrefreshGrid(true);
+    }, [refreshAssignGrid]);
+  
+// DELETE
+  const deleteRow = async (id: number) => {
+await fetch("/api/capa/assign/delete", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    CAPAID: params.id,
+    AssignmentID: id
+  })
+});
+
+    setrefreshGrid(false);
+    setrefreshAssignGrid(false);
+    fetchCAPAs();
+    setShowDelete(false)
+  };
+
     useEffect(() => {
         fetchDetails();
     }, [params.id,refreshGrid]);
 
 
+    const columnDefsAssign: ColDef<any>[] = [
+
+  { field: "AssignmentID", hide: true },
+  { field: "UserID", hide: true },
+  { field: "FullName", wrapText: true, autoHeight: true },
+  { field: "DepartmentName", wrapText: true, autoHeight: true },
+  { field: "RoleName", wrapText: true, autoHeight: true },
 
 
+   {
+  headerName: "Actions",
+  minWidth: 30,
+  colId: "action",
+  pinned: "right",
+  editable: false,
+
+  cellRenderer: (params: any) => (
+    <div className="flex gap-2">
+
+      {/* DELETE */}
+
+       <button  onClick={(e) =>
+
+       {
+        e.stopPropagation();
+        deleteRow(params.data.AssignmentID);
+        setShowDelete(true);
+
+         }
+     }
+
+        className="inline-flex items-center p-1 rounded hover:bg-gray-100 text-red-600" title="Delete" >
+       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+       <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+
+       </button>
+
+
+
+    </div>
+  ),
+},
+
+
+];
+
+
+
+    
+const onGridReady = (params:any) => {
+setGridApi(params.api);
+  params.api.sizeColumnsToFit(); // fit to screen
+};
+const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, resizable: true, filter: true };
+ 
 
     const fetchDetails = async () => {
         try {
@@ -135,6 +243,7 @@ export default function CAPADetailsPage() {
         };
         return colors[status] || 'bg-gray-100 text-gray-800';
     };
+    
 
     if (loading) {
         return (
@@ -158,9 +267,7 @@ export default function CAPADetailsPage() {
     return (
         <div className="p-1 bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
-                   <a href='#'  onClick={() => router.back()}>
-                        ← Back
-                    </a>
+                 
 
                 {/* CAPA Header Card */}
                 <ComponentCard title={details.capa.CAPA_Code} >
@@ -196,7 +303,9 @@ export default function CAPADetailsPage() {
   Take Action ( Accept / Reject )
 </span>
 )}
-
+  <a href='#'  onClick={() => router.back()}>
+                        ← Back
+                    </a>
 
 
  {/* Popup Render */}
@@ -268,7 +377,7 @@ export default function CAPADetailsPage() {
                  <>
                 <div className="border-b border-gray-200 mb-6">
                     <nav className="flex gap-4">
-                        {['overview', 'root-causes', 'qc-tests', 'coa', 'timeline'].map((tab) => (
+                        {['assign-user', 'root-causes', 'qc-tests', 'coa', 'timeline'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -286,10 +395,64 @@ export default function CAPADetailsPage() {
 
                 {/* Tab Content */}
                 <div>
-                    {  activeTab === 'overview' && (
+                    {  activeTab === 'assign-user' && (
                         <div className="grid grid-cols-2 gap-6">
-                            <ComponentCard title="CAPA Information">
-                                <div className="space-y-3">
+                          
+
+
+
+                            
+<ComponentCard title="">
+{  details.capa.StatusId==6  ? (
+        <div >
+  <button
+   onClick={(e) => handleOpenAssing(e, Number(params.id))}
+    className={"px-3 flex justify-left gap-2  py-1 rounded  bg-blue-600 text-white"}
+  >
+    Assign User
+  </button>
+  </div>) : ""
+  }
+
+                                 {/* Popup Render */}
+                                      {
+                                        openModalAssign && (
+                                        <AssignUserModal
+                                          capaId={params.id}
+                                          onClose={() => setOpenModalAssign(false)}
+                                          setrefreshGrid={setrefreshGrid}
+                                           setrefreshAssignGrid={setrefreshAssignGrid}
+                                
+                                        />
+                                      )}
+
+                                    {users.length === 0 ? (
+  <div>No Data Found</div>
+) : (
+
+
+ <div style={{ width: "100%", height: "300px" }}>
+    <div className="ag-theme-alpine w-full h-full">
+                            <AgGridReact
+                            rowSelection="multiple"
+                             
+                             theme="legacy"
+                              domLayout="autoHeight"
+                                onGridReady={onGridReady}
+                                columnDefs={columnDefsAssign}
+                                defaultColDef={defaultColDef}
+                                pagination={true}
+                                rowHeight={28}
+                                headerHeight={32}
+                                rowData={users}
+                                paginationPageSize={5}
+                                
+                            />
+                            </div>
+                            </div>
+)}
+
+                                {/* <div className="space-y-3">
                                     <div>
                                         <p className="text-sm text-gray-500">CAPA Code</p>
                                         <p className="font-medium">{details.capa.CAPA_Code}</p>
@@ -299,7 +462,7 @@ export default function CAPADetailsPage() {
                                         <p className="text-sm text-gray-500">Description</p>
                                         <p>{details.capa.Description}</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </ComponentCard>
                             <ComponentCard title="Summary">
                                 <div className="space-y-3">

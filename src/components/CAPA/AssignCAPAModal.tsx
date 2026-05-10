@@ -122,9 +122,6 @@ const columnDefs: ColDef<any>[] = [
 
 // DELETE
   const deleteRow = async (id: number) => {
-
-
-
 await fetch("/api/capa/assign/delete", {
   method: "POST",
   headers: {
@@ -147,47 +144,50 @@ await fetch("/api/capa/assign/delete", {
 const [error, setError] = useState<any>({});
 
 
-  useEffect(() => {
-  async function fetchData() {
-    try {
+//   useEffect(() => {
+//   async function fetchData() {
+//     try {
 
 
 
-    const res =   await axios.post("/api/capa/assign/getcapausersbycapaid", {
-    CAPAID: capaId
-    });
-    setUsers(res.data.data);
+//     const res =   await axios.post("/api/capa/assign/getcapausersbycapaid", {
+//     CAPAID: capaId
+//     });
+//     setUsers(res.data.data);
 
-    } catch (error) {
-     alert(error );
-    }
-  }
-  fetchData();
-}, []);
+//     } catch (error) {
+//      alert(error );
+//     }
+//   }
+//   fetchData();
+// }, []);
 
-const [selectedUsersCheckBox, setSelectedUsersCheckBox] = useState<number[]>([]);
+// const [selectedUsersCheckBox, setSelectedUsersCheckBox] = useState<number[]>([]);
 
-const onSelectionChanged = (event: any) => {
-  const selectedRows = event.api.getSelectedRows();
+// const onSelectionChanged = (event: any) => {
+//   const selectedRows = event.api.getSelectedRows();
 
-  // ✅ correct debug
- // alert("Selected Rows:"+ selectedRows);
+//   // ✅ correct debug
+//  // alert("Selected Rows:"+ selectedRows);
 
-  // ⚠️ check multiple possible keys
-  const ids = selectedRows.map((row: any) =>
-    row.UserID ?? row.UserId ?? row.userid
-  );
+//   // ⚠️ check multiple possible keys
+//   const ids = selectedRows.map((row: any) =>
+//     row.UserID ?? row.UserId ?? row.userid
+//   );
 
-  //alert("IDs:"+ ids);
+//   //alert("IDs:"+ ids);
 
-  setSelectedUsersCheckBox(ids);
-};
-const onGridReady = (params:any) => {
-setGridApi(params.api);
-  params.api.sizeColumnsToFit(); // fit to screen
-};
-const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, resizable: true, filter: true };
-  const handleSubmit = async () => {
+//   setSelectedUsersCheckBox(ids);
+// };
+
+// const onGridReady = (params:any) => {
+// setGridApi(params.api);
+//   params.api.sizeColumnsToFit(); // fit to screen
+// };
+// const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, resizable: true, filter: true };
+  
+
+const handleSubmit = async () => {
 
   /*
   if (selectedUsersCheckBox.length === 0 && action === "accept") {
@@ -229,20 +229,20 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
   onClose();
 };
 
-   const handleOpen = (e: any, capaId: number) => {
-    e.stopPropagation(); // prevent row click
+  //  const handleOpen = (e: any, capaId: number) => {
+  //   e.stopPropagation(); // prevent row click
 
-    setrefreshGrid(false);
-    setrefreshAssignGrid(false);
-    setOpenModal(true);
-  };
+  //   setrefreshGrid(false);
+  //   setrefreshAssignGrid(false);
+  //   setOpenModal(true);
+  // };
 
   return (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center" onClick={onClose}>
   <div className="bg-white p-5 rounded-xl w-[80vw] max-w-[800px]"  onClick={(e) => e.stopPropagation()}>
 
  {/* Popup Render */}
-      {
+      {/* {
         openModal && (
         <AssignUserModal
           capaId={capaId}
@@ -251,7 +251,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
            setrefreshAssignGrid={setrefreshAssignGrid}
 
         />
-      )}
+      )} */}
    <h2 className="text-lg font-semibold mb-4">Assign CAPA</h2>
 
     <div className="flex gap-2 mb-4">
@@ -269,14 +269,14 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
     Reject
   </button>
 
-{ action === "accept" || StatusId==6  ? (
+{/* { action === "accept" || StatusId==6  ? (
   <button
    onClick={(e) => handleOpen(e, Number(capaId))}
     className={"px-3 flex justify-right gap-2  py-1 rounded  bg-blue-600 text-white"}
   >
     Assign User
   </button>) : ""
-  }
+  } */}
 </div>
 
 {action === "reject"  && (
@@ -353,7 +353,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
   </div>
 
 </div>
-       <div style={{ width: "100%", height: "300px" }}>
+       {/* <div style={{ width: "100%", height: "300px" }}>
     <div className="ag-theme-alpine w-full h-full">
                             <AgGridReact
                             rowSelection="multiple"
@@ -370,7 +370,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                                 paginationPageSize={5}
                             />
                             </div>
-                            </div>
+                            </div> */}
 
 
   </>
