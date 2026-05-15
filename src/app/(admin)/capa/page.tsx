@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import ComponentCard from "@/components/common/ComponentCard";
 import Button from "@/components/ui/button/Button";
@@ -58,40 +59,30 @@ useEffect(() => {
   loadData();
 }, [searchText, status, page]);
 
+ // STATUS COUNTERS (🔥 NEW PART)
+  // -------------------------
+  const statusSummary = useMemo(() => {
+    const summary: any = {
+      OPEN: 0,
+      ACCEPTED: 0,
+      IN_PROGRESS: 0,
+      READY_FOR_QC: 0,
+      CLOSED: 0,
+      REJECTED: 0,
+      TOTAL: capas.length
+    };
 
-/*
-    useEffect(() => {
-        fetchCAPAs();
-    }, [filterStatus]);
+    capas.forEach((item) => {
+      const key = item.Status?.toUpperCase();
+      if (summary[key] !== undefined) {
+        summary[key]++;
+      }
+    });
 
-    const fetchCAPAs = async () => {
-    setLoading(true);
+    return summary;
+  }, [capas]);
 
-    try {
-      const url = filterStatus
-        ? `/api/capa?status=${filterStatus}`
-        : '/api/capa';
 
-      const response = await fetch(url);
-      const result = await response.json();
-      const data =
-    
-      result?.data ||            // normal
-      [];
-
-      if (Array.isArray(data)) {
-      setCapas(data);
-    } else {
-      setCapas([]);
-    }
-
-    } catch (error) {
-      console.error('Error fetching CAPAs:', error);
-      setCapas([]);
-    } finally {
-      setLoading(false);
-    }
-  };*/
 const [dataStatusRecords, setDataStatusRecords] = useState<any[]>([]);
     useEffect(() => {
   
@@ -118,6 +109,7 @@ const onGridReady = (params:any) => {
     "Content-Type": "application/json",
   },
 })
+
 
 
     setShowDelete(false)
@@ -353,6 +345,21 @@ const columns: ColDef[] = [
 
                 </div>
 
+  {/* 🔥 STATUS DASHBOARD (NEW) */}
+      <div className="grid grid-cols-6 gap-3 mb-4">
+
+        <div className="p-3 bg-blue-100 rounded">OPEN: {statusSummary.OPEN}</div>
+        <div className="p-3 bg-green-100 rounded">ACCEPTED: {statusSummary.ACCEPTED}</div>
+        <div className="p-3 bg-yellow-100 rounded">IN PROGRESS: {statusSummary.IN_PROGRESS}</div>
+        <div className="p-3 bg-teal-100 rounded">QC: {statusSummary.READY_FOR_QC}</div>
+        <div className="p-3 bg-purple-100 rounded">CLOSED: {statusSummary.CLOSED}</div>
+        <div className="p-3 bg-red-100 rounded">REJECTED: {statusSummary.REJECTED}</div>
+
+      </div>
+
+      <div className="p-3 bg-gray-200 rounded mb-4">
+        TOTAL RECORDS: {totalRecords}
+      </div>
 
 
              <ComponentCard title=''>
@@ -376,7 +383,7 @@ const columns: ColDef[] = [
                     <div className="flex items-center justify-between mt-4">
 
   <div>
-    Total Records: {totalRecords}
+   
   </div>
 
   <div className="flex gap-2">
