@@ -322,52 +322,66 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
       )}
 
    </div>
-   <h2 className="text-xl text-gray-700 mb-4">{details.capa.Title}</h2>
-    <div className="flex gap-4 items-center">
-    <div className="flex items-center gap-1">
-    <span className="font-medium">Customer:</span>
-    <p className="text-gray-600">{details.capa.Customer}</p>
-  </div>
+  <h2 className="text-lg text-gray-700 font-medium">
+                  {details.capa.Title}
+                </h2>
 
-  <div className="flex items-center gap-1">
-    <span className="font-medium">ItemID:</span>
-    <p className="text-gray-600">{details.capa.ItemId}</p>
-  </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div><span className="font-semibold">Customer:</span> {details.capa.Customer}</div>
+                  <div><span className="font-semibold">Item ID:</span> {details.capa.ItemId}</div>
+                  <div><span className="font-semibold">Item Name:</span> {details.capa.ItemName}</div>
+                </div>
 
-    <div className="flex items-center gap-1">
-    <span className="font-medium">ItemName:</span>
-    <p className="text-gray-600">{details.capa.ItemName}</p>
-  </div>
-</div>
-                            Complaint Detail: <p className="text-gray-600">{details.capa.Description}</p>
-                            Reject Remarks: <p className="text-gray-600">{details.capa.RejectRemarks}</p>
-                        </div>
-                        <div className="text-right">
-                            <p className="text-sm text-gray-500">Created By</p>
-                            <p className="font-medium">{details.capa.CreatedByName}</p>
-                            <p className="text-sm text-gray-500 mt-2">Department</p>
-                            <p className="font-medium">{details.capa.DepartmentName}</p>
-                        </div>
-                    </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Complaint Detail</p>
+                  <p className="text-gray-700">{details.capa.Description}</p>
+                </div>
 
-                    <div className="grid grid-cols-4 gap-4 mt-6 pt-6 border-t">
-                        <div>
-                            <p className="text-sm text-gray-500">Created Date</p>
-                            <p className="font-medium">{new Date(details.capa.CreatedAt).toLocaleString()}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Target Date</p>
-                            <p className="font-medium">{details.capa.TargetDate ? new Date(details.capa.TargetDate).toLocaleDateString() : '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Assigned To</p>
-                            <p className="font-medium">{details.capa.AssignedToName || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Closure Date</p>
-                            <p className="font-medium">{details.capa.ClosureDate ? new Date(details.capa.ClosureDate).toLocaleDateString() : '-'}</p>
-                        </div>
-                    </div>
+                <div className="bg-red-50 p-3 rounded-lg">
+                  <p className="text-sm text-red-500">Reject Remarks</p>
+                  <p className="text-gray-700">{details.capa.RejectRemarks || '-'}</p>
+                </div>
+
+              </div>
+
+                        {/* RIGHT SIDE */}
+              <div className="w-full md:w-64 bg-white p-4 rounded-xl shadow border space-y-2">
+                <div>
+                  <p className="text-xs text-gray-500">Created By</p>
+                  <p className="font-semibold">{details.capa.CreatedByName}</p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-gray-500">Department</p>
+                  <p className="font-semibold">{details.capa.DepartmentName}</p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-gray-500">Created</p>
+                  <p className="text-sm">{new Date(details.capa.CreatedAt).toLocaleString()}</p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-gray-500">Target</p>
+                  <p className="text-sm">
+                    {details.capa.TargetDate
+                      ? new Date(details.capa.TargetDate).toLocaleDateString()
+                      : '-'}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-gray-500">Closure</p>
+                  <p className="text-sm">
+                    {details.capa.ClosureDate
+                      ? new Date(details.capa.ClosureDate).toLocaleDateString()
+                      : '-'}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
                 </ComponentCard>
 
                 {/* Tabs */}

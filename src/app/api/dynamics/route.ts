@@ -102,6 +102,16 @@ export async function GET(req: Request) {
     }
 
 
+  else if (type === "RootCauseType") {
+      const result = await db.request()
+      .execute('sp_GetAllRootCauseType');
+     const RootCauseType = result.recordset;
+
+    if (!RootCauseType) return NextResponse.json({ message: "RootCauseType not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
 
     else if (type === "analysiscategories") {
       const result = await db.request()

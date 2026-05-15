@@ -9,74 +9,14 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID ,customer ,ItemName } = body;
 
-/*
-console.log("Description="+Description)
-console.log( "CreatedBy="+CreatedBy)
-console.log("SalesId="+ SalesId)
-console.log("Site"+Site)
-console.log("ItemId"+ItemId)
-console.log("ToDepartmentID"+ToDepartmentID)
-console.log("ItemVarietyID"+ItemVarietyID )
-console.log("FromDepartmentID"+FromDepartmentID )
-console.log("customer"+customer);
-*/
+
 
       const result = await executeQuery('sp_CreateCAPA', {
            Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID,customer ,ItemName
         });
 
 
-/*
-        // CONFIGURE THESE VALUES:
-const SMTP_CONFIG = {
-  host: "192.168.11.17",
-  port: 2500,
-  username: 'mfl.cms@matcofoods.com.pk',  // ← CHANGE THIS
-  password: 'm@tco123',  // ← CHANGE THIS
-  from: "muhammad.ali@matcofoods.com.pk",      // ← CHANGE THIS
-  to: "muhammad.ali@matcofoods.com.pk"      // ← CHANGE THIS
-};
 
-
-  const transporter = nodemailer.createTransport({
-    host: SMTP_CONFIG.host,
-    port: SMTP_CONFIG.port,
-
-    auth: {
-      user: SMTP_CONFIG.username,
-      pass: SMTP_CONFIG.password
-    }
-
-  });
-
-  try {
-    let result = await transporter.sendMail({
-      from: SMTP_CONFIG.from,
-      to: SMTP_CONFIG.to,
-      subject: 'Test from Node.js',
-      text: 'Hello! This is a test email.'
-    });
-    console.log('✅ Success! Email sent:', result.messageId);
-  } catch (error) {
-    console.error('❌ Failed:', error);
-  }
-
-         // ✅ HTML TEMPLATE
-    const htmlTemplate = `
-      <div style="font-family: Arial; padding: 10px;">
-        <h2 style="color: #2563eb;">New CAPA Created</h2>
-
-        <p><strong>Customer:</strong> ${customer}</p>
-        <p><strong>Sales Order:</strong> ${SalesId}</p>
-        <p><strong>Description:</strong> ${Description}</p>
-
-        <hr/>
-        <p style="font-size:12px;color:gray;">
-          This is auto generated email from CAPA system
-        </p>
-      </div>
-    `;
-*/
        // console.log(Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID,FromDepartmentID);
 
         return NextResponse.json({ success: true, data: 'test' });
@@ -96,6 +36,8 @@ export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
 
+
+  const UserID = searchParams.get("UserID") || "";
   const search = searchParams.get("search") || "";
   const status = searchParams.get("status") || "";
 
@@ -103,7 +45,8 @@ export async function GET(req: Request) {
   const pageSize = Number(searchParams.get("pageSize")) || 20;
 
   const capaId = searchParams.get('id');
-  
+
+  console.log("user"+UserID);
 
     // 🔹 GET BY ID
     if (capaId) {
@@ -114,8 +57,8 @@ export async function GET(req: Request) {
       return NextResponse.json({ success: true, data: results });
     }
 
-const results = await executeQueryWithMultipleResults('sp_GetCAPAList', {
-        Search: (search),Status:(status),pageSize:pageSize,PageNo:page
+const results = await executeQueryWithMultipleResults('sp_GetAssignCAPAByUserID', {
+       UserID:UserID, Search: (search),Status:(status),pageSize:pageSize,PageNo:page
       });
     
     //  console.log(results[0]?.[0].TotalRecords)

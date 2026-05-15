@@ -47,9 +47,10 @@ const loadData = async () => {
 
     setCapas(data.data);
     setTotalRecords(data.total);
-
+  setLoading(false);
   } catch (err) {
     console.log(err);
+      setLoading(false);
   }
 };
 
@@ -58,7 +59,7 @@ useEffect(() => {
 }, [searchText, status, page]);
 
 
-
+/*
     useEffect(() => {
         fetchCAPAs();
     }, [filterStatus]);
@@ -90,7 +91,7 @@ useEffect(() => {
     } finally {
       setLoading(false);
     }
-  };
+  };*/
 const [dataStatusRecords, setDataStatusRecords] = useState<any[]>([]);
     useEffect(() => {
   
@@ -118,9 +119,6 @@ const onGridReady = (params:any) => {
   },
 })
 
-
-
-fetchCAPAs();
 
     setShowDelete(false)
   };
@@ -158,17 +156,20 @@ const columns: ColDef[] = [
         {
             field: 'Status',
             headerName: 'Status',
-            width: 30,
+           width: 80,  // Use width instead of minWidth for fixed small size
+  minWidth: 60,  // Optional: set minimum if you want responsive behavior
+  maxWidth: 100,
+
             cellStyle: (params) => {
-                const colors: any = {
-                    OPEN: { backgroundColor: '#cfe2ff', color: '#084298' },
-                    ACCEPTED: { backgroundColor: '#15985d', color: 'rgb(249, 249, 249)' },
-                    IN_PROGRESS: { backgroundColor: '#fff3cd', color: '#856404' },
-                    READY_FOR_QC: { backgroundColor: '#d1e7dd', color: '#0f5132' },
-                    READY_FOR_COA: { backgroundColor: '#cff4fc', color: '#055160' },
-                    CLOSED: { backgroundColor: '#d1e7dd', color: '#0f5132' },
-                    REJECTED: { backgroundColor: '#cd212f', color: '#fefefe' }
-                };
+              const colors: any = {
+  OPEN: { backgroundColor: '#e3f2fd', color: '#0d47a1' },           // Light blue
+  ACCEPTED: { backgroundColor: '#c8e6c9', color: '#1b5e20' },       // Light green
+  IN_PROGRESS: { backgroundColor: '#fff9c4', color: '#f57f17' },    // Light yellow
+  READY_FOR_QC: { backgroundColor: '#e0f2f1', color: '#004d40' },   // Light teal
+  READY_FOR_COA: { backgroundColor: '#e1f5fe', color: '#01579b' },   // Light cyan
+  CLOSED: { backgroundColor: '#f3e5f5', color: '#4a148c' },         // Light purple
+  REJECTED: { backgroundColor: '#ffebee', color: '#b71c1c' }        // Light red
+};
                 return colors[params.value] || {};
             }
         },
@@ -187,11 +188,13 @@ const columns: ColDef[] = [
         ,
 
          {
-  headerName: "Actions",
-  minWidth: 50,
+  headerName: "Action",
   colId: "action",
   pinned: "right",
   editable: false,
+  width: 80,  // Use width instead of minWidth for fixed small size
+  minWidth: 120,  // Optional: set minimum if you want responsive behavior
+  maxWidth: 200,  // Optional: cap the maximum width
 
   cellRenderer: (params: any) => (
     <div className="flex gap-2">
@@ -296,13 +299,13 @@ const columns: ColDef[] = [
 
        onSuccess={() => {
        closeModal();
-       fetchCAPAs();
+      
         toast.success("CAPA created successfully!");
       }}
         />
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold text-gray-900">CAPA Management</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Complain Management</h1>
                     <div className="flex gap-3">
 
                         {/* Search Textbox */}
@@ -342,7 +345,7 @@ const columns: ColDef[] = [
     setEditing(null);
     setSelectedCAPAID('');
   }}>
-                            + Create CAPA
+                            + Create
                         </Button>
                     </div>
 

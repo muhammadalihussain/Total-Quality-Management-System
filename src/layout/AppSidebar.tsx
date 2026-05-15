@@ -78,7 +78,7 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
-  {
+ /* {
     icon: <PieChartIcon/>,
     name: "Charts",
     subItems: [
@@ -105,7 +105,7 @@ const othersItems: NavItem[] = [
       { name: "Sign In", path: "/signin", pro: false },
       { name: "Sign Up", path: "/signup", pro: false },
     ],
-  },
+  },*/
 ];
 
 const AppSidebar: React.FC = () => {
@@ -420,6 +420,7 @@ const AppSidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
+              { /*
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
                   !isExpanded && !isHovered
@@ -428,14 +429,14 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  ""
                 ) : (
-                  <HorizontaLDots />
+               <HorizontaLDots />
                 )}
-              </h2>
+              </h2>  */ }
               {renderMenuItems(navItems, "main")}
             </div>
-
+{  /*
             <div className="">
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
@@ -447,11 +448,11 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Others"
                 ) : (
-                  <HorizontaLDots />
+               {    <HorizontaLDots /> }
                 )}
               </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div>
+            {renderMenuItems(othersItems, "others")}
+            </div>  */ }
           </div>
         </nav>
         {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
