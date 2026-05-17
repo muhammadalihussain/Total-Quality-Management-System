@@ -1,20 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { executeQuery, executeQueryWithMultipleResults ,executeStoredProcedure} from '@/lib/dal/dbutils';
 import sql from "mssql";
+import nodemailer from 'nodemailer';
 
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-       const { RootCauseID,DetailsOfRootCause,CorectiveAction ,PreventiveAction ,CreatedBy ,CAPAID } = body;
+        const { Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID ,customer ,ItemName } = body;
 
 
-      const result = await executeQuery('sp_AddCAPAActionsEffectiveness', {
-           RootCauseID,DetailsOfRootCause ,CorectiveAction ,PreventiveAction ,CreatedBy  ,CAPAID
+
+      const result = await executeQuery('sp_CreateCAPA', {
+           Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID,customer ,ItemName
         });
 
 
 
+       // console.log(Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID,FromDepartmentID);
 
         return NextResponse.json({ success: true, data: 'test' });
     } catch (error) {
@@ -27,17 +30,42 @@ export async function POST(request: NextRequest) {
 }
 
 
+
+
 export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
-  const capaId = searchParams.get('CAPAID');
 
-  const results = await executeQueryWithMultipleResults('sp_GetAllCAPAActionsEffectivenessByCAPAID', {
+
+  const UserID = searchParams.get("UserID") || "";
+  const search = searchParams.get("search") || "";
+  const status = searchParams.get("status") || "";
+
+  const page = Number(searchParams.get("page")) || 1;
+  const pageSize = Number(searchParams.get("pageSize")) || 20;
+
+  const capaId = searchParams.get('id');
+
+
+    // 🔹 GET BY ID
+    if (capaId) {
+      const results = await executeQueryWithMultipleResults('sp_GetCAPADetails', {
         CAPAID: parseInt(capaId)
       });
 
+      return NextResponse.json({ success: true, data: results });
+    }
+
+const results = await executeQueryWithMultipleResults('sp_GetAssignCAPAByUserIDOnlyForQA', {
+       UserID:UserID, Search: (search),Status:(status),pageSize:pageSize,PageNo:page
+      });
+    
+    //  console.log(results[0]?.[0].TotalRecords)
+    //  console.log(results[1])
+
   return Response.json({
-    data: results[0],
+    total: results[0]?.[0].TotalRecords,
+    data: results[1],
   });
 }
 
@@ -88,14 +116,12 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
     try {
-          const body = await request.json();
-        const {ActionID, RootCauseID,DetailsOfRootCause,CorectiveAction ,PreventiveAction ,CreatedBy ,CAPAID } = body;
+         const body = await request.json();
+        const { CAPAID, Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID ,customer ,ItemName } = body;
 
-
-       const result = await executeQuery('sp_UpdateCAPAActionsEffectiveness', {
-         ActionID,  RootCauseID,DetailsOfRootCause ,CorectiveAction ,PreventiveAction ,CreatedBy  ,CAPAID
+   const result = await executeQuery('sp_UpdateCAPA', {
+          CAPAID, Description, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID,customer ,ItemName
         });
-
 
 
         return NextResponse.json({ success: true, message: 'CAPA updated successfully' });

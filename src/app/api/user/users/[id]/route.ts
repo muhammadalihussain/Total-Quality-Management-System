@@ -62,6 +62,7 @@ export async function PUT(
     
     const { username,email,rawpassword,isActive,role_Id,sitesIds,departmentId} = body
 
+
       const salt = await bcrypt.genSalt(10);
       const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
       const result = await executeStoredProcedure("sp_UpdateUser", {
@@ -86,7 +87,7 @@ export async function PUT(
             value: rawpassword,
           },
           isActive: {
-            type: sql.NVarChar,
+            type: sql.Bit,
             value: isActive,
           },
     

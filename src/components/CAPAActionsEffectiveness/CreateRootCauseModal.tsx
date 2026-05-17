@@ -6,7 +6,7 @@ import ComponentCard from "../common/ComponentCard";
 import { Modal } from "../ui/modal";
 import { useModal } from "@/hooks/useModal";
 
-export default function CreateRootCauseModal({ isOpen, onClose, onSuccess ,editingData , capaID ,setrefreshGrid }: any) {
+export default function CreateRootCauseModal({ isOpen, onClose, onSuccess ,editingData , capaID ,setrefreshGrid ,view }: any) {
 
   // =====================
   // ✅ STATE (ALL HOOKS FIRST)
@@ -197,7 +197,12 @@ else
 
          })
       });
-setrefreshGrid(true);
+
+        if (typeof setRefreshGrid === "function") {
+         setRefreshGrid(true);
+      
+        }
+
       if (!response.ok)
       {
 
@@ -253,6 +258,8 @@ toast.success("CAPA Created Successfully");
               </label>
 
               <select
+
+                     disabled={view}
                 value={form.RootCauseID}
 
                 onChange={(e) => {
@@ -306,7 +313,7 @@ toast.success("CAPA Created Successfully");
               </label>
 
                   <textarea
-
+disabled={view}
               name="CorectiveAction"
               value={form.CorectiveAction}
               onChange={handleChange}
@@ -329,7 +336,7 @@ className={`w-full border rounded px-3 py-2 ${
               </label>
 
                <textarea
-
+disabled={view}
               name="PreventiveAction"
               value={form.PreventiveAction}
               onChange={handleChange}
@@ -356,7 +363,7 @@ className={`w-full border rounded px-3 py-2 ${
             </label>
 
             <textarea
-
+disabled={view}
               name="DetailsOfRootCause"
               value={form.DetailsOfRootCause}
               onChange={handleChange}
@@ -370,10 +377,12 @@ className={`w-full border rounded px-3 py-2 ${
 
             />
           </div>
-
+{ !view && (
           <div className="flex gap-3 pt-4">
 
-            <button
+            <button 
+
+            disabled={view}
               type="button"
               onClick={onClose}
               className="flex-1 px-4 py-2 border rounded"
@@ -382,15 +391,19 @@ className={`w-full border rounded px-3 py-2 ${
             </button>
 
             <button
+
+            
               type="submit"
-              disabled={loading}
+              disabled={loading || view }
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded"
             >
 
 
                 {loading ? "Creating..." :  editingData ? ("Update CAPA") : "Create CAPA"}
             </button>
-          </div>
+
+          </div>)
+             }
         </form>
       </Modal>
     </ComponentCard>

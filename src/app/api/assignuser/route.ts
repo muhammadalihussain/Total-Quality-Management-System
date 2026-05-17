@@ -46,8 +46,6 @@ export async function GET(req: Request) {
 
   const capaId = searchParams.get('id');
 
-  console.log("user"+UserID);
-
     // 🔹 GET BY ID
     if (capaId) {
       const results = await executeQueryWithMultipleResults('sp_GetCAPADetails', {
