@@ -2,6 +2,8 @@ import { NextResponse,NextRequest } from "next/server";
 import sql from "mssql";
 import { executeStoredProcedure } from "@/lib/dal/userdbutils"; 
 import bcrypt from "bcryptjs";
+
+
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ id: string }> } // <-- params is now a Promise
@@ -19,7 +21,7 @@ export async function DELETE(
     );
   }
 
-    const result = await executeStoredProcedure("sp_DeleteUser", {
+    const result = await executeStoredProcedure("deleteUser", {
       UserID: { type: sql.Int, value: id },
     });
     
@@ -30,6 +32,7 @@ export async function DELETE(
     });
   } catch (error:any) {
 
+console.log(error)
     return NextResponse.json(
       {
         success: false,
@@ -56,9 +59,10 @@ export async function PUT(
   try {
     const body = await req.json();
 
-    const { username,email,rawpassword,isActive,role_Id,sitesIds} = body
+    
+    const { username,email,rawpassword,isActive,role_Id,sitesIds,departmentId} = body
 
-    console.log(role_Id);
+
       const salt = await bcrypt.genSalt(10);
       const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
       const result = await executeStoredProcedure("sp_UpdateUser", {
@@ -83,7 +87,7 @@ export async function PUT(
             value: rawpassword,
           },
           isActive: {
-            type: sql.NVarChar,
+            type: sql.Bit,
             value: isActive,
           },
     
@@ -91,7 +95,12 @@ export async function PUT(
             type: sql.NVarChar,
             value: role_Id,
           },
-       
+
+           departmentId: {
+            type: sql.NVarChar,
+            value: departmentId,
+          },
+
           site_Ids: {
             type: sql.NVarChar,
             value: sitesIds,

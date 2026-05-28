@@ -33,9 +33,15 @@ export async function POST(req: Request) {
             value: body.Limits,
           },
 
-              Status: {
+          //     Status: {
+          //   type: sql.NVarChar,
+          //   value: body.Status,
+          // },
+
+          
+              Method: {
             type: sql.NVarChar,
-            value: body.Status,
+            value: body.Method,
           },
 
 

@@ -34,6 +34,7 @@ type FormType = {
   Limits: string;
   Status: string;
   IsActive: boolean;
+  Method:string;
 };
 const [form, setForm] = useState<FormType>({
   Id: "",
@@ -46,6 +47,7 @@ const [form, setForm] = useState<FormType>({
   Limits: "",
   Status: "",
   IsActive: false,
+  Method:''
 });
 
 type ErrorType = {
@@ -55,6 +57,7 @@ type ErrorType = {
   Limits?: string;
   Status?: string;
   CategoryId?: string;
+  
 };
 
     // LOAD
@@ -97,6 +100,7 @@ setForm({
   Limits: "",
   Status: "",
   IsActive: true,
+  Method: '',
 });
     setShowModal(true);
 
@@ -108,29 +112,34 @@ setForm({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+      if (!form.CategoryId) {
+    setError({ CategoryId: "Required" });
+    return false;
+  }
+
   if (!form.ParameterName) {
     setError({ ParameterName: "Required" });
     return false;
   }
 
-    if (!form.Unit) {
-    setError({ Unit: "Required" });
-    return false;
-  }
+  //   if (!form.Unit) {
+  //   setError({ Unit: "Required" });
+  //   return false;
+  // }
 
      if (!form.Limits) {
     setError({ Limits: "Required" });
     return false;
   }
 
-     if (!form.Status) {
-    setError({ Status: "Required" });
-    return false;
-  }
+  //    if (!form.Status) {
+  //   setError({ Status: "Required" });
+  //   return false;
+  // }
    setError({ ParameterName: "" });
-   setError({ Unit: "" });
+  // setError({ Unit: "" });
    setError({ Limits: "" });
-   setError({ Status: "" });
+  //  setError({ Status: "" });
 
 
 
@@ -148,8 +157,9 @@ await fetch(`/api/productanalysis/${editing.Id}`, {
     ParameterName: form.ParameterName,
      Unit: form.Unit,
       Limits: form.Limits,
-      Status: form.Status,
+  //    Status: form.Status,
     IsActive: form.IsActive,
+     Method: form.Method,
   }),
 });
 
@@ -170,8 +180,9 @@ await fetch(`/api/productanalysis/${editing.Id}`, {
     ParameterName: form.ParameterName,
      Unit: form.Unit,
       Limits: form.Limits,
-      Status: form.Status,
+   //   Status: form.Status,
       IsActive: form.IsActive,
+      Method: form.Method,
       }),
     });
 
@@ -196,10 +207,11 @@ setForm({
   ParameterName: row.ParameterName,
   Material: row.Material ?? "",
   NetWeight: row.NetWeight ?? "",
-  Unit: row.Unit,
-  Limits: row.Limits,
-  Status: row.Status,
+  Unit: row.Unit?? "",
+  Limits: row.Limits?? "",
+ // Status: row.Status?? "",
   IsActive: row.IsActive,
+  Method: row.Method?? "",
 });
     setShowModal(true);
 
@@ -237,8 +249,8 @@ const onGridReady = (params:any) => {
   { field: "ParameterName", headerName: "Parameter"  , flex: 2, minWidth: 200},
   { field: "Unit" },
   { field: "Limits" },
-  { field: "Status" },
-
+ // { field: "Status" },
+  { field: "Method" },
     {
       field: "IsActive",
       editable: true,
@@ -419,7 +431,18 @@ const onGridReady = (params:any) => {
             />
 <br/>
 
-     <input
+
+  <input
+           className="w-full px-3 py-2 border rounded-lg  border-gray-300"
+              placeholder="Method "
+              value={form.Method }
+
+              onChange={(e) =>
+                setForm({ ...form, Method: e.target.value })
+              }
+            />
+<br/>
+     {/* <input
            className={`w-full px-3 py-2 border rounded-lg ${error?.Status  ? "border-red-500" : "border-gray-300"}`}
               placeholder="Status"
               value={form.Status }
@@ -428,7 +451,7 @@ const onGridReady = (params:any) => {
                 setForm({ ...form, Status: e.target.value })
               }
             />
-<br/>
+<br/> */}
 
 
 

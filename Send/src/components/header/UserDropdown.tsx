@@ -39,8 +39,8 @@ export default function UserDropdown() {
       localStorage.removeItem("roleId");
       localStorage.removeItem("UserID");
       localStorage.removeItem("Email");
-       localStorage.removeItem("Username");
-
+      localStorage.removeItem("Username");
+      localStorage.removeItem("PermissionIds");
       // Redirect to sign page
       router.push("/auth/signin");
     } catch (error) {

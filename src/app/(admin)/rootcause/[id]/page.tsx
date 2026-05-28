@@ -208,7 +208,7 @@ export default function RootCauseDetailsPage() {
               {/* LEFT */}
               <div className="space-y-4">
 
-              
+
 
                 <h2 className="text-xl font-semibold text-gray-800">
                   {details.capa.Title}
@@ -223,10 +223,11 @@ export default function RootCauseDetailsPage() {
                   <div className="bg-white p-4 rounded-xl border">
                     <p className="text-gray-500 text-sm">Item</p>
                     <p className="font-semibold">{details.capa.ItemName}</p>
+                     <p className="font-semibold">{details.capa.ItemId}</p>
                   </div>
 
                   <div className="bg-white p-4 rounded-xl border">
-                    <p className="text-gray-500 text-sm">Sales ID</p>
+                    <p className="text-gray-500 text-sm">SOP#</p>
                     <p className="font-semibold">{details.capa.SalesId}</p>
                   </div>
                 </div>

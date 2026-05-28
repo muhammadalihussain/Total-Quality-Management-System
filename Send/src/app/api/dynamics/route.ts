@@ -2,13 +2,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from '@/lib/db';
 import { comparePassword } from '@/utils/hash'; // or relative path
- import { signToken } from '@/lib/jwt';
+import { signToken } from '@/lib/jwt';
 
 
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type"); // Get query param
+
   const db = await pool(); // Singleton pool
 
 
@@ -29,6 +30,99 @@ export async function GET(req: Request) {
     if (!roles) return NextResponse.json({ message: "Roles not found" }, { status: 404 });
       return NextResponse.json({ result });
     }
+
+
+    else if (type === "departments") {
+     const result = await db.request()
+      .execute('sp_GetAllDepartment');
+     const departments = result.recordset;
+    if (!departments) return NextResponse.json({ message: "departments not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+
+      else if (type === "categories") {
+      const result = await db.request()
+      .execute('sp_GetAllCategories');
+     const categories = result.recordset;
+
+    if (!categories) return NextResponse.json({ message: "Categories not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+      else if (type === "users") {
+      const result = await db.request()
+      .execute('sp_GetAllUsers');
+     const users = result.recordset;
+
+  
+    if (!users) return NextResponse.json({ message: "users not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+     else if (type === "capaassignusers") {
+      const result = await db.request()
+      .execute('sp_GetAllCapaAssignUsers');
+     const capaassignusers = result.recordset;
+
+
+    if (!capaassignusers) return NextResponse.json({ message: "capaassignusers not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+      else if (type === "status") {
+      const result = await db.request()
+      .execute('sp_GetAllStatus');
+     const status = result.recordset;
+
+    if (!status) return NextResponse.json({ message: "status not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+   else if (type === "colors") {
+      const result = await db.request()
+      .execute('sp_GetAllColors');
+     const colors = result.recordset;
+
+    if (!colors) return NextResponse.json({ message: "Colors not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+   else if (type === "forms") {
+      const result = await db.request()
+      .execute('sp_GetAllForms');
+     const forms = result.recordset;
+
+    if (!forms) return NextResponse.json({ message: "Forms not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+  else if (type === "RootCauseType") {
+      const result = await db.request()
+      .execute('sp_GetAllRootCauseType');
+     const RootCauseType = result.recordset;
+
+    if (!RootCauseType) return NextResponse.json({ message: "RootCauseType not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
+
+
+    else if (type === "analysiscategories") {
+      const result = await db.request()
+      .execute('sp_GetAll_AnalysisCategories');
+     const analysiscategories = result.recordset;
+
+     console.log(analysiscategories);
+    if (!analysiscategories) return NextResponse.json({ message: "analysiscategories not found" }, { status: 404 });
+      return NextResponse.json({ result });
+    }
+
     
     else {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });

@@ -48,11 +48,15 @@ export async function PUT(
             value: body.Limits,
           },
 
-              Status: {
-            type: sql.NVarChar,
-            value: body.Status,
-          },
+          //     Status: {
+          //   type: sql.NVarChar,
+          //   value: body.Status,
+          // },
 
+              Method: {
+            type: sql.NVarChar,
+            value: body.Method,
+          },
 
           IsActive: {
             type: sql.Bit,

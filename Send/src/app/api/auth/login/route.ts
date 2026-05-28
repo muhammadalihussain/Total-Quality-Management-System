@@ -13,20 +13,32 @@ export async function POST(req: Request) {
     .input("SiteID", site)
     .execute("sp_LoginUser");
 
-  const user = result.recordset[0];
-  console.log(email, password ,site )
 
-  if (!user) return NextResponse.json({ error: "Invalid login" }, { status: 401 });
+
+  const user = result.recordset[0];
+
+
+  if (!user) return NextResponse.json({ message: "Invalid login" }, { status: 401 });
 
   const match = await bcrypt.compare(password, user.PasswordHash);
   
-  if (!match) return NextResponse.json({ error: "Invalid login" }, { status: 401 });
+  if (!match) return NextResponse.json({ message: "Invalid login password" }, { status: 401 });
+  const urls = await db.request()
+  .input("RoleId", user.RoleId)
+  .execute("sp_GetAllowedUrls");
+
+const allowedUrls = urls.recordset.map((r:any)=>r.Url);
+
+
 
   const token = signToken({
     UserID: user.UserID,
     RoleId: user.RoleId,
     Email:user.Email,
     Username:user.Username,
+    SiteID:user.SiteID,
+    DepartmentId:user.DepartmentId,
+    urls: allowedUrls,
   });
 
   if(token)
@@ -39,6 +51,9 @@ export async function POST(req: Request) {
       UserID: user.UserID,
       Email:user.Email,
       Username:user.Username,
+      SiteID:user.SiteID,
+      DepartmentId:user.DepartmentId,
+      urls: allowedUrls,
     });
 
     // Save token in HTTP-only cookie
@@ -49,7 +64,7 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24, // 1 day
     });
 
-    console.log(response)
+    
 
     return response;
   }

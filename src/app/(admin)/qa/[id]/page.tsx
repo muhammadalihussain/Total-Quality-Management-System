@@ -12,12 +12,12 @@ import toast from 'react-hot-toast';
 import axios from "axios";
 import flatpickr from 'flatpickr';
 
-export default function RootCauseDetailsPage() {
+export default function QAPage() {
   const params = useParams();
   const router = useRouter();
 
   const [details, setDetails] = useState<any>(null);
-  const [capas, setCapas] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   const { isOpen, openModal, closeModal } = useModal();
@@ -30,17 +30,14 @@ export default function RootCauseDetailsPage() {
     try {
       setLoading(true);
 
-      const res = await fetch(`/api/capa?id=${params.id}`);
+      const res = await fetch(`/api/qa?id=${params.id}`);
       const result = await res.json();
 
       if (result.success) {
-        setDetails({ capa: result.data?.[0]?.[0] });
+        setDetails({ coa: result.data?.[0]?.[0] });
       }
 
-      const res1 = await fetch(`/api/capaeffectiveness?CAPAID=${params.id}`);
-      const data = await res1.json();
 
-      setCapas(data.data || []);
     } catch (err) {
       console.log(err);
     } finally {
@@ -53,83 +50,7 @@ export default function RootCauseDetailsPage() {
   }, [params.id, refreshGrid]);
 
   // ================= GRID =================
-  const onGridReady = (params: any) => {
-    params.api.sizeColumnsToFit();
-  };
 
-  const updateRow = (row: any) => {
-    setEditing(row);
-    openModal();
-  };
-
-  const deleteRow = async (id: number) => {
-    await fetch(`/api/capaeffectiveness/${id}`, { method: "DELETE" });
-    fetchDetails();
-    setrefreshGrid(!refreshGrid);
-  };
-
-  const columns: ColDef[] = [
-    { field: 'Name', headerName: 'Root Cause Type', width: 200 },
-    { field: 'DetailsOfRootCause', headerName: 'Root Cause', width: 220 },
-    { field: 'CorectiveAction', headerName: 'Corrective Action', width: 200 },
-    { field: 'FullName', headerName: 'Created By', width: 140 },
-
-    {
-      headerName: "Actions",
-      pinned: "right",
-      width: 140,
-      cellRenderer: (params: any) => (
-        <div className="flex gap-2">
-
-          {/* VIEW */}
-          <button
-            className="p-2 rounded-lg hover:bg-gray-100 text-blue-600"
-            onClick={(e) => {
-              e.stopPropagation();
-              setView(true);
-                updateRow(params.data);
-            }}
-          >
-            👁
-          </button>
-
-          {/* EDIT */}
-          <button
-            disabled={params.data.ActionTaken != 0}
-            onClick={(e) => {
-              e.stopPropagation();
-              setView(false)
-              updateRow(params.data);
-            }}
-            className={`p-2 rounded-lg ${
-              params.data.ActionTaken != 0
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-blue-600 hover:bg-gray-100"
-            }`}
-          >
-            ✏️
-          </button>
-
-          {/* DELETE */}
-          <button
-            disabled={params.data.ActionTaken != 0}
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteRow(params.data.ActionID);
-            }}
-            className={`p-2 rounded-lg ${
-              params.data.ActionTaken != 0
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-red-600 hover:bg-gray-100"
-            }`}
-          >
-            🗑
-          </button>
-
-        </div>
-      ),
-    },
-  ];
 
   // ================= LOADING =================
   if (loading) {
@@ -138,31 +59,26 @@ export default function RootCauseDetailsPage() {
         <div className="bg-white p-8 rounded-3xl shadow-xl flex flex-col items-center">
           <div className="animate-spin h-12 w-12 border-4 border-blue-200 border-t-blue-600 rounded-full"></div>
           <p className="mt-4 text-gray-600 font-medium">
-            Loading CAPA Details...
+            Loading COA Details...
           </p>
         </div>
       </div>
     );
   }
 
-  if (!details?.capa) {
+  if (!details?.coa) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white p-10 rounded-3xl shadow-xl text-center max-w-md">
           <div className="text-6xl mb-4">📄</div>
           <h2 className="text-2xl font-bold text-gray-800">
-            CAPA Not Found
+            QA Not Found
           </h2>
           <p className="text-gray-500 mt-2 mb-6">
             The requested record does not exist.
           </p>
 
-          <Button
-            onClick={() => router.push("/rootcause")}
-            className="rounded-xl px-6"
-          >
-            Back
-          </Button>
+
         </div>
       </div>
     );
@@ -172,30 +88,6 @@ export default function RootCauseDetailsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-100 p-6">
 
-      <div className="max-w-7xl mx-auto space-y-6">
-
-        {/* HEADER BAR */}
-        <div className="flex justify-between items-center">
-          
-          <button
-            onClick={() => router.back()}
-            className="text-blue-600 hover:text-blue-800 font-medium"
-          >
-            ← Back
-          </button>
-
-          <Button
-            onClick={() => {
-              openModal();
-              setView(false)
-              setEditing(null);
-            }}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-xl shadow"
-          >
-            + Add Root Cause
-          </Button>
-          
-        </div>
 
         {/* CAPA CARD */}
         <div className="bg-white rounded-3xl shadow-xl border overflow-hidden">
@@ -208,51 +100,110 @@ export default function RootCauseDetailsPage() {
               {/* LEFT */}
               <div className="space-y-4">
 
-              
+<a href='#'  onClick={() => router.back()}>
+                        ← Back
+                    </a>
 
                 <h2 className="text-xl font-semibold text-gray-800">
-                  {details.capa.Title}
+                  {details.coa.ACCOUNTNUM}
+
                 </h2>
 
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="bg-white p-4 rounded-xl border">
-                    <p className="text-gray-500 text-sm">Customer</p>
-                    <p className="font-semibold">{details.capa.Customer}</p>
+                <div className="grid md:grid-cols-3 gap-3">
+                  <div className="bg-white  p-4 rounded-xl border">
+                     <div className="flex gap-2">
+                    <p className="text-gray-500 text-sm">SOP # :</p>
+                    <p className="font-semibold">{details.coa.SalesId}</p>
+                    </div>
+
+
+                      <div className="flex gap-2">
+                    <p className="text-gray-500 text-sm">Production Date :</p>
+                    <p className="font-semibold"> { new Date(details.coa.ProductionDate).toISOString().split('T')[0]  }</p>
+
+
+                    </div>
+
+                  <div className="flex gap-2">
+                    <p className="text-gray-500 text-sm">Expiry Date :</p>
+                    <p className="font-semibold"> { new Date(details.coa.ExpiryDate).toISOString().split('T')[0]  }</p>
+
+                    </div>
+
+                     <div className="flex gap-2">
+                    <p className="text-gray-500 text-sm">LotNumber :</p>
+                    <p className="font-semibold"> { details.coa.LotNumber }</p>
+
+                    </div>
+
+                    <div className="flex gap-2">
+                    <p className="text-gray-500 text-sm">RFNItemNumber :</p>
+                    <p className="font-semibold"> { details.coa.RFNItemNumber }</p>
+
+                    </div>
                   </div>
 
                   <div className="bg-white p-4 rounded-xl border">
-                    <p className="text-gray-500 text-sm">Item</p>
-                    <p className="font-semibold">{details.capa.ItemName}</p>
+
+
+                     <p className="font-semibold">Item :  {details.coa.ItemId}</p>
+                       <p className="font-semibold">ItemVarietyID:  ({details.coa.ItemVarietyID})</p>
                   </div>
 
                   <div className="bg-white p-4 rounded-xl border">
-                    <p className="text-gray-500 text-sm">Sales ID</p>
-                    <p className="font-semibold">{details.capa.SalesId}</p>
+ <div className="flex gap-3">
+                    <p className="text-gray-500 text-sm">PreparedAt:</p>
+                   <p className="font-semibold"> { new Date(details.coa.PreparedAt).toISOString().split('T')[0]  }</p>
+                    </div>
+
+                     <div className="flex gap-3">
+                    <p className="text-gray-500 text-sm">CheckedAt:</p>
+                   <p className="font-semibold">
+
+                    {details.coa.CheckedAt
+                      ? new Date(details.coa.CheckedAt).toLocaleDateString()
+                      : '-'}
+
+                  </p>
+                    </div>
+
+                     <div className="flex gap-3">
+                    <p className="text-gray-500 text-sm">ApprovedAt:</p>
+                   <p className="font-semibold">
+
+                   {details.coa.ApprovedAt
+                      ? new Date(details.coa.ApprovedAt).toLocaleDateString()
+                      : '-'}
+
+                 </p>
+                    </div>
+
+
+
                   </div>
+
                 </div>
-      <div className="bg-white p-4 rounded-xl border">
-     <p className="text-gray-500 text-sm">
-                    Complaint Detail
-                  </p>
-
-                  <p className="font-semibold">
-                    {details.capa.Description}
-                  </p>
-             </div>
+               <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">ItemName</p>
+                  <p className="font-semibold">{ details.coa.ItemName|| '-'}</p>
+                </div>
               </div>
 
               {/* RIGHT */}
               <div className="w-full xl:w-80 bg-white p-6 rounded-2xl border shadow-sm">
 
                 <p className="text-gray-500 text-sm">Created By</p>
-                <p className="font-semibold mb-4">{details.capa.CreatedByName}</p>
+                <p className="font-semibold mb-4">{details.coa.CreatedByName}</p>
 
-                <p className="text-gray-500 text-sm">Department</p>
-                <p className="font-semibold mb-4">{details.capa.DepartmentName}</p>
+                <p className="text-gray-500 text-sm">Checked By</p>
+                <p className="font-semibold mb-4">{details.coa.CheckedBy}</p>
+
+                 <p className="text-gray-500 text-sm">Approved By</p>
+                <p className="font-semibold mb-4">{details.coa.ApprovedBy}</p>
 
                 <p className="text-gray-500 text-sm">Status</p>
                 <span className="inline-block mt-1 px-4 py-2 bg-green-100 text-green-700 rounded-xl font-semibold">
-               {details.capa.Status}
+               {details.coa.StatusName}
                 </span>
 
               </div>
@@ -260,36 +211,6 @@ export default function RootCauseDetailsPage() {
 
           </div>
         </div>
-
-        {/* GRID */}
-        <div className="bg-white rounded-3xl shadow border p-3">
-
-          <AgGridTable
-            onGridReady={onGridReady}
-            columns={columns}
-            data={capas}
-            height="600px"
-            pagination={true}
-          />
-
-        </div>
-
-      </div>
-
-      {/* MODAL */}
-      <CreateRootCauseModal
-        isOpen={isOpen}
-        onClose={closeModal}
-        editingData={editing}
-        capaID={params.id}
-        view={view}
-        onSuccess={() => {
-          closeModal();
-          fetchDetails();
-          toast.success("Saved successfully!");
-        }}
-      />
-
 
 
     </div>

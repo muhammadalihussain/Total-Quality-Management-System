@@ -10,7 +10,7 @@ import DemographicCard from "@/components/ecommerce/DemographicCard";
 export const metadata: Metadata = {
   title:
     "Dashboard TQMS ",
-  description: "Total Quality Management System (TQMS) software",
+     description: "Total Quality Management System (TQMS) software",
 };
 
 export default function Ecommerce() {

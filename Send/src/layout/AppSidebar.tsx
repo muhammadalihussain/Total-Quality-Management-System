@@ -1,9 +1,12 @@
 "use client";
 import React, { useEffect, useRef, useState,useCallback } from "react";
+import * as Icons from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import {
   BoxCubeIcon,
   CalenderIcon,
@@ -16,6 +19,11 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
+  GroupIcon,
+ PaperPlaneIcon,
+ DocsIcon,
+ TaskIcon,
+ FolderIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 
@@ -70,8 +78,8 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
-  {
-    icon: <PieChartIcon />,
+ /* {
+    icon: <PieChartIcon/>,
     name: "Charts",
     subItems: [
       { name: "Line Chart", path: "/line-chart", pro: false },
@@ -97,12 +105,82 @@ const othersItems: NavItem[] = [
       { name: "Sign In", path: "/signin", pro: false },
       { name: "Sign Up", path: "/signup", pro: false },
     ],
-  },
+  },*/
 ];
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const [navItems, setNavItems] = useState<any[]>([]);
+  const router = useRouter();
+
+
+ const handleLogout = async () => {
+    try {
+      await axios.post("/api/auth/logout"); // call your logout API
+
+      // Optional: clear any localStorage items
+      localStorage.removeItem("token");
+      localStorage.removeItem("roleId");
+      localStorage.removeItem("UserID");
+      localStorage.removeItem("Email");
+      localStorage.removeItem("Username");
+      localStorage.removeItem("PermissionIds");
+      // Redirect to sign page
+      router.push("/auth/signin");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+
+    // 🔥 Dynamic icon mapping
+    function getIcon(iconName: string) {
+
+      const IconComponent = (Icons as any)[iconName];
+      return IconComponent ? <IconComponent size={18} /> : null;
+    }
+
+   function buildNavItems(data:any) {
+  // 🔹 Get parents
+
+  if (!Array.isArray(data)) {
+  console.log("Data is not array:", data);
+  return [];
+}
+
+  const parents = data.filter((m) => !m.ParentId);
+
+  return parents.map((parent) => {
+    const children = data.filter((m) => m.ParentId === parent.Id);
+
+    return {
+      name: parent.Title,
+      icon: getIcon(parent.Icon),
+      path: parent.Url !== "#" ? parent.Url : undefined,
+
+      // ✅ Only add subItems if children exist
+      ...(children.length > 0 && {
+        subItems: children.map((child) => ({
+          name: child.Title,
+          path: child.Url,
+          pro: false,
+        })),
+      }),
+    };
+  });
+}
+
+    useEffect(() => {
+
+    fetch("/api/menu")
+      .then((res) => res.json())
+      .then((data) => {
+        const menu = buildNavItems(data);
+        setNavItems(menu);
+      });
+  }, []);
+
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -249,7 +327,7 @@ const AppSidebar: React.FC = () => {
       const items = menuType === "main" ? navItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
-          nav.subItems.forEach((subItem) => {
+          nav.subItems.forEach((subItem :any) => {
             if (isActive(subItem.path)) {
               setOpenSubmenu({
                 type: menuType as "main" | "others",
@@ -314,38 +392,35 @@ const AppSidebar: React.FC = () => {
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-        <Link href="/">
-          {isExpanded || isHovered || isMobileOpen ? (
-            <>
-              <Image
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-              <Image
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-            </>
-          ) : (
-            <Image
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
+        <Link
+
+        onClick={handleLogout}
+          href="#"
+          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+        >
+          <svg
+            className="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M15.1007 19.247C14.6865 19.247 14.3507 18.9112 14.3507 18.497L14.3507 14.245H12.8507V18.497C12.8507 19.7396 13.8581 20.747 15.1007 20.747H18.5007C19.7434 20.747 20.7507 19.7396 20.7507 18.497L20.7507 5.49609C20.7507 4.25345 19.7433 3.24609 18.5007 3.24609H15.1007C13.8581 3.24609 12.8507 4.25345 12.8507 5.49609V9.74501L14.3507 9.74501V5.49609C14.3507 5.08188 14.6865 4.74609 15.1007 4.74609L18.5007 4.74609C18.9149 4.74609 19.2507 5.08188 19.2507 5.49609L19.2507 18.497C19.2507 18.9112 18.9149 19.247 18.5007 19.247H15.1007ZM3.25073 11.9984C3.25073 12.2144 3.34204 12.4091 3.48817 12.546L8.09483 17.1556C8.38763 17.4485 8.86251 17.4487 9.15549 17.1559C9.44848 16.8631 9.44863 16.3882 9.15583 16.0952L5.81116 12.7484L16.0007 12.7484C16.4149 12.7484 16.7507 12.4127 16.7507 11.9984C16.7507 11.5842 16.4149 11.2484 16.0007 11.2484L5.81528 11.2484L9.15585 7.90554C9.44864 7.61255 9.44847 7.13767 9.15547 6.84488C8.86248 6.55209 8.3876 6.55226 8.09481 6.84525L3.52309 11.4202C3.35673 11.5577 3.25073 11.7657 3.25073 11.9984Z"
+              fill=""
             />
-          )}
+          </svg>
+          Sign out
         </Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
+              { /*
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
                   !isExpanded && !isHovered
@@ -354,14 +429,14 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  ""
                 ) : (
-                  <HorizontaLDots />
+               <HorizontaLDots />
                 )}
-              </h2>
+              </h2>  */ }
               {renderMenuItems(navItems, "main")}
             </div>
-
+{  /*
             <div className="">
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
@@ -373,11 +448,11 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Others"
                 ) : (
-                  <HorizontaLDots />
+               {    <HorizontaLDots /> }
                 )}
               </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div>
+            {renderMenuItems(othersItems, "others")}
+            </div>  */ }
           </div>
         </nav>
         {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}

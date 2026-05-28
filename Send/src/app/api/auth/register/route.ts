@@ -4,7 +4,7 @@ import {addUser}  from '@/lib/dal/userdbutils';
 
 export async function POST(req: Request) {
 
-  const { username,email,rawpassword,isActive,role_Id,sitesIds} = await req.json();
+  const { username,email,rawpassword,isActive,role_Id,sitesIds,departmentId} = await req.json();
 
   const salt = await bcrypt.genSalt(10);
   const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
@@ -18,6 +18,7 @@ export async function POST(req: Request) {
       isActive,
       sitesIds,
       role_Id,
+      departmentId
     };
 
 
