@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
          const body = await request.json();
         const { COAID  ,UserID} = body;
 
-        //console.log(Id+FieldName+Value )
+        
 
       const result = await executeQuery('sp_ApprovedAllTestResultByCOAID', {
          COAID ,UserID

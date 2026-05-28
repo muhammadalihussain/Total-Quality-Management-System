@@ -6,6 +6,8 @@ import {  AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+import ReportGenerator from './ReportGenerator';
+
 import {
   Search,
   Filter,
@@ -215,17 +217,12 @@ const addRow = async () => {
 
 const viewReport = async () => {
 
-   const response = await fetch('/api/qa/generate-coa-pdf', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ coaId: 'R0005' }), // pass the COA identifier
-  });
-  const blob = await response.blob();
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'COA_report.pdf';
-  a.click();
+
+
+  //const url =`/api/qa/coa/${id}`;
+
+// OPEN IN NEW TAB
+window.open('/coapdf', '_blank');
 
 }
 
@@ -345,19 +342,25 @@ const onGridReady = (params:any) => {
   { field: "ParameterName", headerName: "Parameter"  , flex: 2, minWidth: 200, editable: false, },
   { field: "Unit" , editable: false, },
   { field: "Limits", editable: false,  },
-  { field: "Result", editable: true, 
+  { field: "Result",  editable: (params: any) => {
+    return details?.coa.ApprovedBy==null ;
+  },
    },
 
     {
       field: "IsActive",
-      editable: true,
+      editable: (params: any) => {
+    return details?.coa.ApprovedBy==null ;
+  },
        cellEditor: "agCheckboxCellEditor",
        cellRenderer: "agCheckboxCellRenderer",
     },
 {
     field: "IsPassed",
     headerName: "Status",
-    editable: true,
+     editable: (params: any) => {
+    return details?.coa.ApprovedBy==null ;
+  },
     cellEditor: "agSelectCellEditor",
     cellEditorParams: {
       values: ["Pass", "Fail"],
@@ -395,6 +398,7 @@ const onGridReady = (params:any) => {
   colId: "action",
    pinned: "right" as const, 
   editable: false,
+  hide: details?.coa.CheckedBy!==null,
 
   cellRenderer: (params: any) => (
     <div className="flex gap-2">
@@ -411,9 +415,9 @@ const onGridReady = (params:any) => {
          </button> */}
 
 
-      {/* DELETE */}
+      {/* DELETE */} 
 
-
+{  details?.coa.CheckedBy==null ?( 
        <button  onClick={(e) => {
 
         e.stopPropagation();
@@ -425,6 +429,8 @@ const onGridReady = (params:any) => {
         className="inline-flex items-center p-1 rounded hover:bg-gray-100 text-red-600" title="Delete" >
                         <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
           </button>
+):""
+  }
 
       
 
@@ -457,7 +463,7 @@ const onGridReady = (params:any) => {
 
     }
     {Array.isArray(rowData) ? (
-  rowData.length > 0 ? (
+  rowData.length > 0  &&  details?.coa.ApprovedBy==null?  (
     <> 
 
     {[3, 1].includes(Number(RoleId))?(
@@ -484,16 +490,20 @@ const onGridReady = (params:any) => {
     Refresh 
     </button>
     
-
-      <button
-      onClick={viewReport}
-      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-    Report View 
-    </button>
     
     </>):""):""
 
-    }</div>
+    }
+    
+     {/* <ReportGenerator id={id} /> */}
+       <button
+      onClick={viewReport}
+      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+    Report View 
+    </button> 
+    
+   
+    </div>
   </div>
 <br/>
 
