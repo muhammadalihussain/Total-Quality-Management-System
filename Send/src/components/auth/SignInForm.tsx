@@ -12,18 +12,31 @@ import axios from 'axios';
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
-   const [site, setSite] = useState('1');
+  const [site, setSite] = useState('1');
   const [isChecked, setIsChecked] = useState(false);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const router = useRouter();
 
+   type FormError = {
+      email?: boolean;
+      password?: boolean;
+      }
+
+  const [error, setError] = useState<FormError>({});
   const handleLogin = async (e :any) => {
-    e.preventDefault();
-    // console.log(email)
-    // console.log(password)
+   e.preventDefault();
+
+     const newError: FormError = {}; // type-safe
+      if (!email.trim()) newError.email = true;
+      if (!password.trim()) newError.password = true;
+        setError(newError);
+      if (Object.keys(newError).length > 0)
+       {
+       return; // stop if error
+       }
+
     try {
       const { data } = await axios.post('/api/auth/login', { email, password ,site });
  
@@ -38,26 +51,23 @@ export default function SignInForm() {
       // window.location.href = "/";
       router.push('/');
     } catch (err :any) {
-      setError(err.error|| 'Login failed invalid credential');
+      setErrorMsg(err.error|| 'Login failed invalid credential');
     }
   };
 
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">
-
- 
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
-         {error && (
+         {errorMsg && (
   <p className="text-red-500 mt-1">
-    {error}
+    {errorMsg}
   </p>
 )}
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
               Sign In
             </h1>
-           
           </div>
           <div>
         
@@ -67,7 +77,11 @@ export default function SignInForm() {
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" type="email"    onChange={(e) => setEmail(e.target.value)}  />
+                  <Input placeholder="info@gmail.com" type="email"
+
+                       className={`w-full border rounded px-3 py-2 ${
+                       error?.email ? "border-red-500" : "border-gray-300" }`}
+                       onChange={(e) => setEmail(e.target.value)}  />
                 </div>
                
                 <div>
@@ -79,6 +93,8 @@ export default function SignInForm() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
 
+                        className={`w-full border rounded px-3 py-2 ${
+                      error?.password ? "border-red-500" : "border-gray-300" }`}
                        onChange={(e) => setPassword(e.target.value)}  
                     />
                     <span
@@ -99,7 +115,7 @@ export default function SignInForm() {
                   <Label>
                     Site <span className="text-error-500">*</span>{" "}
                   </Label>
-      <select value={''}   onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
+           <select value={''}   onChange={e => setSite(e.target.value)} className="w-full border rounded px-2 py-2" aria-label="site">
               <option value="1">RGD</option>
               <option value="2">MRP</option>
               <option value="3">MCS</option>

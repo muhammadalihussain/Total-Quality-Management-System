@@ -72,6 +72,7 @@ const initialForm = {
   StorageConditions: "",
   Uses: "",
   IsActive: true,
+  ItemVarietyID:"",
 };
 
 
@@ -95,6 +96,7 @@ type FormError = {
       Uses?: boolean;
       IsActive?: boolean;
        Status?: boolean;
+       ItemVarietyID?:boolean;
 };
 
 
@@ -129,6 +131,8 @@ type FormError = {
    if (!form.StorageConditions.trim()) newError.StorageConditions = true;
 
     if (!form.IsActive) newError.IsActive = true;
+     if (!form.ItemVarietyID) newError.ItemVarietyID = true;
+    
 
 
     if (Object.keys(newError).length > 0) {
@@ -161,6 +165,7 @@ ShelfLife: form.ShelfLife,
 StorageConditions: form.StorageConditions,
 Uses:form.Uses,
 IsActive: form.IsActive,
+ItemVarietyID:form.ItemVarietyID,
 
       }),
     });
@@ -444,6 +449,17 @@ openFullscreenModal()
           />
         </div>
 
+
+
+         <div>
+          <Label>ItemVarietyID</Label>
+            {/* Status */}
+          <select name="ItemVarietyID" onChange={handleChange} value={form.ItemVarietyID}  className={`w-full border rounded px-3 py-2 ${
+            error?.ItemVarietyID ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
+            <option value={"V0040"}>V0040</option>
+          
+          </select>
+        </div>
       </div>
 
 

@@ -180,6 +180,11 @@ export async function PUT(
             type: sql.Bit,
             value: body.IsActive,
           },
+            ItemVarietyID: {
+            type: sql.NVarChar,
+            value: body.ItemVarietyID,
+          },
+          
 
         });
 

@@ -28,7 +28,7 @@ export default function CAPAList() {
 const [searchText, setSearchText] = useState("");
 const [status, setStatus] = useState("");
 const [page, setPage] = useState(1);
-const [pageSize] = useState(20);
+const [pageSize] = useState(7);
 
 
 const [totalRecords, setTotalRecords] = useState(0);
@@ -192,7 +192,7 @@ const columns: ColDef[] = [
     <div className="flex gap-2">
 
     <button
-  onClick={(e) => {
+    onClick={(e) => {
     e.stopPropagation();
 
     router.push(`/capa/${params.data.CAPAID}`)
@@ -346,20 +346,17 @@ const columns: ColDef[] = [
                 </div>
 
   {/* 🔥 STATUS DASHBOARD (NEW) */}
-      <div className="grid grid-cols-6 gap-3 mb-4">
+      <div className="grid grid-cols-5 gap-4 mb-4">
 
         <div className="p-3 bg-blue-100 rounded">OPEN: {statusSummary.OPEN}</div>
         <div className="p-3 bg-green-100 rounded">ACCEPTED: {statusSummary.ACCEPTED}</div>
         <div className="p-3 bg-yellow-100 rounded">IN PROGRESS: {statusSummary.IN_PROGRESS}</div>
-        <div className="p-3 bg-teal-100 rounded">QC: {statusSummary.READY_FOR_QC}</div>
+      {/*  <div className="p-3 bg-teal-100 rounded">QC: {statusSummary.READY_FOR_QC}</div> */}
         <div className="p-3 bg-purple-100 rounded">CLOSED: {statusSummary.CLOSED}</div>
         <div className="p-3 bg-red-100 rounded">REJECTED: {statusSummary.REJECTED}</div>
 
       </div>
 
-      <div className="p-3 bg-gray-200 rounded mb-4">
-        TOTAL RECORDS: {totalRecords}
-      </div>
 
 
              <ComponentCard title=''>
@@ -409,7 +406,7 @@ const columns: ColDef[] = [
     </button>
 
   </div>
-
+ TOTAL RECORDS: {totalRecords}
 </div>
                 </ComponentCard>
             </div>

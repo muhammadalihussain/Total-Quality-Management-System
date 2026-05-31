@@ -1,0 +1,370 @@
+export const yearsSinceStart = () => {
+  const pastDate = new Date('2018-04-01T07:00:00.000Z');
+  const currentDate = new Date();
+  return currentDate.getFullYear() - pastDate.getFullYear();
+};
+
+export const resume = {
+  basics: {
+    name: 'Kelvin Mai',
+    label: 'Senior Software Engineer',
+    image: null,
+    email: 'kelvin.mai002@gmail.com',
+    phone: null,
+    url: 'kelvinmai.io',
+    summary: `Full-stack software engineer with ${yearsSinceStart()}+ years building microservices and distributed systems — from travel e-commerce to healthcare to insurance infrastructure. Specializes in TypeScript, Clojure, React, and Go. Strong track record designing REST and GraphQL APIs, leading frontend modernization efforts, and delivering scalable backend services across remote teams.`,
+    openToWork: false,
+    bio: `I've spent the last ${yearsSinceStart()} years building microservices and distributed systems across full-stack teams — from a travel e-commerce platform at Vegas.com to a COVID-era healthcare app at Luminare, to insurance infrastructure at Gravie. I'm passionate about functional programming, especially Clojure, and love working at the intersection of clean backend architecture and modern React frontends. Outside of work I run a YouTube channel where I make tutorials on web development and software engineering. Looking for a remote-friendly team tackling interesting systems problems where functional ideas are welcome.`,
+    location: {
+      address: null,
+      postalCode: null,
+      city: 'Las Vegas',
+      countryCode: 'US',
+      region: 'Nevada',
+    },
+    profiles: [
+      {
+        network: 'Youtube',
+        url: 'https://youtube.com/c/kelvinmai',
+        username: 'kelvinmai',
+      },
+      {
+        network: 'Github',
+        url: 'https://github.com/kelvin-mai',
+        username: 'kelvinmai',
+      },
+      {
+        network: 'Buy Me A Coffee',
+        url: 'https://www.buymeacoffee.com/kelvinmai',
+        username: 'kelvinmai',
+      },
+      {
+        network: 'Linkedin',
+        url: 'https://www.linkedin.com/in/kelvin-mai-461756152/',
+        username: 'Kelvin Mai',
+      },
+      {
+        network: 'Instagram',
+        url: 'https://instagram.com/iamnivlek',
+        username: 'iamnivlek',
+      },
+    ],
+  },
+  work: [
+    {
+      name: 'Gravie',
+      location: 'Minneapolis, MN',
+      locationType: 'Remote',
+      description: null,
+      skills: [
+        'clojure',
+        'react',
+        'mysql',
+        'aws',
+        'docker',
+        'groovy',
+        'grails',
+        'redis',
+        'kotlin',
+      ],
+      url: 'https://www.gravie.com/',
+      image:
+        'https://pttjrd5bylwkefgv.public.blob.vercel-storage.com/jobs/gravie.jpg',
+      position: 'Senior Software Engineer',
+      dateRanges: [
+        { startDate: '2024-07-15', endDate: '2025-01-02' },
+        { startDate: '2025-07-28', endDate: '2026-04-02' },
+      ],
+      summary:
+        'Engineered internal admin tooling and AWS/Redis infrastructure supporting SFTP automation for insurance client file processing.',
+      highlights: [
+        'Developed internal admin tools for SFTP file automation by introducing a dry run feature, eliminating silent failures in insurance client file processing.',
+        'Enhanced the Admin UI for Gravie employees and insurance clients, streamlining multi-step workflows and reducing manual intervention.',
+        'Optimized AWS & Redis infrastructure for high-throughput file processing, reducing error rates in insurance client pipelines.',
+        'Mentored Java engineers in React and ClojureScript, accelerating a full frontend modernization effort.',
+        'Contributed to claims and payments infrastructure; building a payment authorization tool, a Kotlin/Ktor invoice microservice, and supporting migration of SQS-based payment processing to a new banking provider.',
+      ],
+    },
+    {
+      name: 'Yieldmos',
+      location: 'Mountain View, CA',
+      locationType: 'Remote',
+      description: null,
+      skills: ['typescript', 'react', 'web3', 'nextjs'],
+      url: 'https://www.yieldmos.com/',
+      image:
+        'https://pttjrd5bylwkefgv.public.blob.vercel-storage.com/jobs/yieldmos.png',
+      position: 'Software Consultant',
+      dateRanges: [{ startDate: '2023-08-16', endDate: '2024-02-21' }],
+      summary:
+        'Consulted on a non-custodial DeFi yield optimization platform, leading frontend architecture and smart contract integration.',
+      highlights: [
+        'Collaborated with Rust backend engineers to reduce on-chain transaction overhead through optimized smart contract interaction patterns.',
+        'Developed compounding outpost strategy for automated yield optimization across multiple DeFi protocols.',
+        'Migrated frontend from React 16 to Next.js, improving page load performance and enabling server-side rendering.',
+        'Mentored junior developers on React and TypeScript best practices, establishing code review standards that improved team velocity.',
+      ],
+    },
+    {
+      name: 'Luminare Inc.',
+      location: 'Houston, TX',
+      locationType: 'Remote',
+      description: null,
+      skills: ['clojure', 'react', 'postgresql', 'java', 'docker', 'node.js'],
+      url: 'https://www.luminare.io/',
+      image:
+        'https://pttjrd5bylwkefgv.public.blob.vercel-storage.com/jobs/luminare.png',
+      position: 'Software Engineer',
+      dateRanges: [{ startDate: '2021-02-08', endDate: '2023-01-20' }],
+      summary:
+        'Helped ship a COVID-19 vaccination management platform, migrating backend services to Clojure and building patient notification infrastructure.',
+      highlights: [
+        'Developed and optimized a COVID-19 vaccination management platform deployed across multiple healthcare facilities.',
+        'Migrated core services from Node.js to Clojure, improving throughput and reducing memory overhead.',
+        'Built SMS and email notification system for patient vaccination updates across multiple healthcare facilities.',
+        'Maintained frontend reliability using Cypress end-to-end testing, catching regressions before production.',
+        'Mentored junior developers in Clojure/ClojureScript, growing team functional programming proficiency.',
+      ],
+    },
+    {
+      name: 'Bonotel Exclusive Travel',
+      location: 'Las Vegas, NV',
+      locationType: 'Remote',
+      description: null,
+      skills: [
+        'golang',
+        'python',
+        'java',
+        'redis',
+        'react',
+        'angular',
+        'docker',
+        'spring boot',
+      ],
+      url: 'https://www.bonotel.com/',
+      image:
+        'https://pttjrd5bylwkefgv.public.blob.vercel-storage.com/jobs/bonotel.png',
+      position: 'Software Developer',
+      dateRanges: [{ startDate: '2020-03-01', endDate: '2021-02-04' }],
+      summary:
+        'Built microservices and internal tooling across a Travel B2B platform handling hotel and travel inventory at scale.',
+      highlights: [
+        'Developed client-facing and administrative frontend applications in React and Angular serving Travel B2B clients.',
+        'Developed Java and Golang microservices for a Travel B2B platform handling hotel and travel inventory at scale.',
+        'Built a Python-based ETL worker to optimize Redis data propagation, significantly reducing cache update latency.',
+        'Automated SFTP file transfers using Java and Docker, eliminating manual file handling across multiple vendor integrations.',
+      ],
+    },
+    // {
+    //   name: 'Nucamp Coding Bootcamp',
+    //   location: 'Las Vegas, NV',
+    //   locationType: 'Hybrid',
+    //   description: null,
+    //   skills: ['mongodb', 'react native', 'react', 'node.js'],
+    //   url: 'https://www.nucamp.co/',
+    //   image: 'nucamp.png',
+    //   position: 'Bootcamp Instructor',
+    //   startDate: '2020-01-01T08:00:00.000Z',
+    //   endDate: '2020-08-01T08:00:00.000Z',
+    //   summary:
+    //     'Bootcamp instructor responsible for teaching students web development technologies.',
+    //   highlights: [
+    //     'Taught aspiring developers on the MERN stack as well as React Native',
+    //     'Lead classes in person and asynchronously through Zoom meetings',
+    //     'Offer one-on-one tutoring and troubleshooting with web development students',
+    //   ],
+    // },
+    {
+      name: 'Vegas.com',
+      location: 'Las Vegas, NV',
+      locationType: null,
+      description: null,
+      skills: ['react', 'redux', 'docker', 'node.js', 'react native'],
+      url: 'https://www.vegas.com/',
+      image:
+        'https://pttjrd5bylwkefgv.public.blob.vercel-storage.com/jobs/vegas.png',
+      position: 'Front End Developer',
+      dateRanges: [{ startDate: '2019-07-01', endDate: '2020-03-01' }],
+      summary:
+        'Shipped features across desktop and mobile retail travel e-commerce apps serving millions of users.',
+      highlights: [
+        'Built React-based transactional email templates for purchase confirmations, replacing a fragmented legacy templating system and unifying the notification stack.',
+        'Implemented mobile cart functionality using React Router, streamlining the checkout flow and improving mobile conversion experience.',
+        'Upgraded React Router (v2 to v5) across a large-scale e-commerce codebase, improving navigation reliability and performance.',
+        'Developed React Native Windows kiosk application features for on-site hotel and entertainment bookings.',
+      ],
+    },
+    {
+      name: 'Motivis Learning',
+      location: 'Boston, MA',
+      locationType: 'Hybrid',
+      description: null,
+      skills: [
+        'react',
+        'angular',
+        'postgresql',
+        'graphql',
+        'node.js',
+        'typescript',
+        'c#',
+        'dotnet',
+      ],
+      url: null,
+      image:
+        'https://pttjrd5bylwkefgv.public.blob.vercel-storage.com/jobs/motivis.png',
+      position: 'Software Developer',
+      dateRanges: [{ startDate: '2018-04-01', endDate: '2019-06-01' }],
+      summary:
+        'R&D and feature development on a cloud-hosted LMS, contributing to API design, full-text search, and frontend migration.',
+      highlights: [
+        'Designed and prototyped an internal GraphQL API, replacing fragmented REST endpoints and simplifying data querying for frontend teams.',
+        'Added C# .NET full-text search endpoint using PostgreSQL, enabling complex content discovery across the cloud-hosted LMS.',
+        'Created and maintained internal React data dashboard used by the operations team for student progress tracking.',
+        'Led migration from Angular 5 to Angular 6 across the full LMS frontend, improving build tooling and long-term maintainability.',
+      ],
+    },
+    // {
+    //   name: 'DigitalCrafts',
+    //   location: 'Houston, TX',
+    //   locationType: null,
+    //   skills: [
+    //     'javascript',
+    //     'react',
+    //     'mongodb',
+    //     'node.js',
+    //     'python',
+    //     'postgresql',
+    //   ],
+    //   description: null,
+    //   url: 'https://www.digitalcrafts.com/',
+    //   image: 'digitalcrafts.png',
+    //   position: 'Developer Intern',
+    //   startDate: '2018-01-01T08:00:00.000Z',
+    //   endDate: '2018-04-01T07:00:00.000Z',
+    //   summary:
+    //     'Three month paid internship to work with and assist experienced instructors in developing and teach full stack web applications.',
+    //   highlights: [
+    //     'Assist in teaching incoming coding bootcamp students in various web technologies',
+    //     'Offer one-on-one tutoring and troubleshooting with web development students',
+    //     'Worked with experienced instructors to accelerate web development career',
+    //     'Assist in development of internal bootcamp CMS and client-facing bootcamp landing page',
+    //   ],
+    // },
+  ],
+  education: [
+    {
+      institution: 'DigitalCrafts',
+      area: 'Full Stack Immersive Bootcamp',
+      location: 'Houston, TX',
+      startDate: '2017-11-01',
+      endDate: '2018-03-01',
+      studyType: null,
+      gpa: null,
+      courses: null,
+    },
+    {
+      institution: 'University of California, Riverside',
+      area: 'Computer Science — Coursework Completed (No Degree)',
+      location: 'Riverside, CA',
+      startDate: '2008-09-01',
+      endDate: '2011-02-01',
+      studyType: null,
+      gpa: null,
+      courses: null,
+    },
+  ],
+  skills: [
+    {
+      name: 'Programming Languages',
+      keywords: [
+        'TypeScript',
+        'JavaScript',
+        'Clojure',
+        'ClojureScript',
+        'Go (Golang)',
+        'Java',
+        'Groovy',
+        'Python',
+        'C#',
+        'HTML & CSS',
+      ],
+    },
+    {
+      name: 'Frontend Technologies',
+      keywords: [
+        'React',
+        'React Native',
+        'React Router',
+        'Redux',
+        'Next.js',
+        'Angular',
+        'Bootstrap',
+        'Material UI',
+        'Tailwind CSS',
+        'Web3',
+        'Cypress',
+        'Jest',
+      ],
+    },
+    {
+      name: 'Backend & Databases',
+      keywords: [
+        'Node.js',
+        'Express.js',
+        'ASP.NET Core',
+        'Spring Boot',
+        'REST APIs',
+        'GraphQL',
+        'PostgreSQL',
+        'MySQL',
+        'MongoDB',
+      ],
+    },
+    {
+      name: 'DevOps & Tools',
+      keywords: [
+        'Docker',
+        'Kubernetes',
+        'AWS (Amazon Web Services)',
+        'GCP (Google Cloud Platform)',
+        'Microsoft Azure',
+        'RabbitMQ',
+        'Jenkins',
+        'CI/CD',
+        'Github Actions',
+        'Git',
+        'Redis',
+        'Linux',
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: 'Youtube Channel',
+      url: 'https://youtube.com/@kelvinmai',
+      startDate: '2017-06-21',
+      endDate: null,
+      description:
+        'Tutorial and course content creation about web development and software engineering topics.',
+      highlights: [
+        'Grew an audience of over 7,000 subscribers on YouTube.',
+        'Developed project-based learning resources to simplify complex programming concepts.',
+      ],
+    },
+    {
+      name: 'Daggerheart Brews',
+      url: 'https://www.daggerheartbrews.com/',
+      startDate: '2024-03-22',
+      endDate: null,
+      description:
+        'Daggerheart TTRPG fan application for generating homebrew cards for gameplay.',
+      highlights: [
+        'Developed a Next.js application for designing and exporting custom printable gameplay cards.',
+        'Implemented a card template engine supporting multiple card types with real-time preview.',
+        'Grew to 2,000+ total users with ~1,200 weekly active visitors.',
+      ],
+    },
+  ],
+};
+
+export type Resume = typeof resume;

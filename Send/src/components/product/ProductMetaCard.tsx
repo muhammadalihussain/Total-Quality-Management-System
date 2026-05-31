@@ -63,6 +63,7 @@ const {
   StorageConditions: "",
   Uses: "",
   IsActive: true,
+  ItemVarietyID:""
 };
 
 
@@ -86,6 +87,8 @@ type FormError = {
       Uses?: boolean;
       IsActive?: boolean;
       Status?: boolean;
+      ItemVarietyID?: boolean;
+      
 };
 
 
@@ -168,6 +171,8 @@ if (!id) return;
  if (!form.StorageConditions.trim()) newError.StorageConditions = true;
 
     if (!form.IsActive) newError.IsActive = true;
+
+     if (!form.ItemVarietyID.trim()) newError.ItemVarietyID = true;
     setError(newError);
 
 
@@ -199,7 +204,7 @@ ShelfLife: form.ShelfLife,
 StorageConditions: form.StorageConditions,
 Uses:form.Uses,
 IsActive: form.IsActive,
-
+ItemVarietyID:form.ItemVarietyID
       }),
     });
 
@@ -240,6 +245,7 @@ if (product) {
     StorageConditions: product.StorageConditions,
     Uses: product.Uses,
     IsActive: product.IsActive,
+    ItemVarietyID :product.ItemVarietyID 
   });
 }
  openFullscreenModal();
@@ -385,10 +391,13 @@ if (!product) {
       <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
 
  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Status:
+                ItemVarietyID :
               </p>
 
-                 <p className="text-sm text-gray-500 dark:text-gray-400">{product.IsActive ? "Active" : "Inactive"}</p>
+                 <p className="text-sm text-gray-500 dark:text-gray-400">{product.ItemVarietyID}</p>
+  
+  
+  
    </div>
 
 
@@ -659,6 +668,20 @@ if (!product) {
           className={`w-full border rounded px-3 py-2 ${
             error.Description ? "border-red-500" : "border-gray-300" }`} aria-label="Description"
           />
+        </div>
+
+         <div>
+          <Label>ItemVarietyID </Label>
+
+
+  <select name="ItemVarietyID" onChange={handleChange} value={form.ItemVarietyID}  className={`w-full border rounded px-3 py-2 ${
+            error.ItemVarietyID ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
+            <option value={"V0040"}>V0040</option>
+           
+          </select>
+
+
+         
         </div>
 
       </div>

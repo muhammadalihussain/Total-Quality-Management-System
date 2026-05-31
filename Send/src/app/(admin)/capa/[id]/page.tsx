@@ -16,9 +16,9 @@ import AssignUserModal from '@/components/CAPA/AssignUserModal';
 interface CAPADetails {
     capa: any;
     rootCauses: any[];
-    qcTests: any[];
+ //   qcTests: any[];
     coa: any;
-    coaTests: any[];
+   // coaTests: any[];
     timeline: any[];
 }
 
@@ -164,9 +164,9 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                 setDetails({
                     capa: result.data[0]?.[0],
                     rootCauses: result.data[1] || [],
-                    qcTests: result.data[2] || [],
-                    coa: result.data[3]?.[0],
-                    coaTests: result.data[4] || [],
+                  //  qcTests: result.data[2] || [],
+                 //   coa: result.data[3]?.[0],
+                   // coaTests: result.data[4] || [],
                     timeline: timelineResult.success ? timelineResult.data : []
                 });
             }
@@ -391,7 +391,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                  <>
                 <div className="border-b border-gray-200 mb-6">
                     <nav className="flex gap-4">
-                        {['assign-user', 'root-causes', 'qc-tests', 'coa', 'timeline'].map((tab) => (
+                        {['assign-user', 'root-causes', 'timeline'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -410,7 +410,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                 {/* Tab Content */}
                 <div>
                     {  activeTab === 'assign-user' && (
-                        <div className="grid grid-cols-2 gap-6">
+
                           
 
 
@@ -466,37 +466,14 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                             </div>
 )}
 
-                                {/* <div className="space-y-3">
-                                    <div>
-                                        <p className="text-sm text-gray-500">CAPA Code</p>
-                                        <p className="font-medium">{details.capa.CAPA_Code}</p>
-                                    </div>
 
-                                    <div>
-                                        <p className="text-sm text-gray-500">Description</p>
-                                        <p>{details.capa.Description}</p>
-                                    </div>
-                                </div> */}
                             </ComponentCard>
-                            <ComponentCard title="Summary">
-                                <div className="space-y-3">
-                                    <div>
-                                        <p className="text-sm text-gray-500">Total Root Causes</p>
-                                        <p className="text-2xl font-bold">{details.rootCauses.length}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Total Actions</p>
-                                        <p className="text-2xl font-bold">
-                                            {details.rootCauses.filter(rc => rc.ActionID).length}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">QC Tests Performed</p>
-                                        <p className="text-2xl font-bold">{details.qcTests.length}</p>
-                                    </div>
-                                </div>
-                            </ComponentCard>
-                        </div>
+
+
+
+
+
+
                     )}
 
                     {activeTab === 'root-causes' && (
@@ -509,72 +486,9 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                         </ComponentCard>
                     )}
 
-                    {activeTab === 'qc-tests' && (
-                        <ComponentCard title="QC Test Results">
-                            <AgGridTable
-                                columns={qcTestColumns}
-                                data={details.qcTests}
-                                height="500px"
-                            />
-                        </ComponentCard>
-                    )}
 
-                    {activeTab === 'coa' && details.coa && (
-                        <ComponentCard title="Certificate of Analysis">
-                            <div className="mb-6">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <p className="text-sm text-gray-500">COA Code</p>
-                                        <p className="font-medium text-lg">{details.coa.COA_Code}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Status</p>
-                                        <p className={`font-medium ${
-                                            details.coa.COA_Status === 'APPROVED' ? 'text-green-600' : 'text-yellow-600'
-                                        }`}>
-                                            {details.coa.COA_Status}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Result</p>
-                                        <p className={`font-bold text-xl ${
-                                            details.coa.Result === 'PASS' ? 'text-green-600' : 'text-red-600'
-                                        }`}>
-                                            {details.coa.Result}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Valid Until</p>
-                                        <p>{details.coa.ValidUntil ? new Date(details.coa.ValidUntil).toLocaleDateString() : '-'}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="border-t pt-4">
-                                <h3 className="font-semibold mb-2">Approval Chain</h3>
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div>
-                                        <p className="text-sm text-gray-500">Prepared By (QA)</p>
-                                        <p className="font-medium">{details.coa.PreparedByName}</p>
-                                        <p className="text-xs text-gray-400">{new Date(details.coa.PreparedAt).toLocaleString()}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Checked By (Manager)</p>
-                                        <p className="font-medium">{details.coa.CheckedByName || '-'}</p>
-                                        {details.coa.CheckedAt && (
-                                            <p className="text-xs text-gray-400">{new Date(details.coa.CheckedAt).toLocaleString()}</p>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Approved By (Head QA)</p>
-                                        <p className="font-medium">{details.coa.ApprovedByName || '-'}</p>
-                                        {details.coa.ApprovedAt && (
-                                            <p className="text-xs text-gray-400">{new Date(details.coa.ApprovedAt).toLocaleString()}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </ComponentCard>
-                    )}
+
+
 
                     {activeTab === 'timeline' && (
                         <ComponentCard title="Workflow Timeline">
@@ -586,6 +500,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                         </ComponentCard>
                     )}
                 </div>
+
                  </>) }
             </div>
         </div>

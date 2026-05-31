@@ -31,7 +31,7 @@ export default function AuthLayout({
                 </Link> */}
                 
 
-         <div className="text-center text-gray-400 dark:text-white/60 text-4xl space-y-3">
+  <div className="text-center text-gray-400 dark:text-white/60 text-4xl space-y-3">
 
   <div className="flex justify-center">
     <Image
@@ -43,14 +43,16 @@ export default function AuthLayout({
   </div>
 
   <p>Total Quality Management System</p>
-  <p >Matco Foods Ltd.</p>
+  <p className="text-2xl">Matco Foods Ltd.</p>
 
 </div>
               
             </div>
           </div>
             {children}
-
+          <div className="fixed bottom-6 right-6 z-50 hidden sm:block">
+            <ThemeTogglerTwo />
+          </div>
         </div>
       </ThemeProvider>
     </div>

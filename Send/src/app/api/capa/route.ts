@@ -79,15 +79,24 @@ const SMTP_CONFIG = {
 */
        // console.log(Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID,FromDepartmentID);
 
-        return NextResponse.json({ success: true, data: 'test' });
-    } catch (error) {
+        return NextResponse.json({ success: true, data: result });
+    }
+
+    catch (error) {
         console.error('Error creating CAPA:', error);
-        return NextResponse.json(
-            { success: false, error: error },
+         if (error.code === 'EREQUEST' &&error.originalError?.info?.number) {
+
+           return NextResponse.json(
+            { success: false, error: error.originalError?.info.message },
             { status: 500 }
         );
+
+
     }
 }
+}
+
+
 
 
 
