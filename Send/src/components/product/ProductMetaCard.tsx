@@ -8,7 +8,7 @@ import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Image from "next/image";
 import { useSearchParams, useParams } from "next/navigation";
-
+import Select from 'react-select';
 
 const ProductMetaCard = ({  id }:any) => {
 
@@ -105,8 +105,14 @@ try {
          alert(err );
       }
 
-}
 
+    }
+
+const [dataITEMVARIETYIDRecords, setDataITEMVARIETYIDRecords] = useState<any[]>([]);
+    const options = (dataITEMVARIETYIDRecords || []).map(opt => ({
+  value: opt.Id,
+  label: opt.NAME,
+}));
 
 useEffect(() => {
 
@@ -129,6 +135,12 @@ if (!id) return;
        const res3 = await axios.get(`/api/dynamics?type=forms`);
         setDataFormsRecords( res3.data.result.recordset);
 
+         const res4 = await fetch(`/api/products/getapi/${localStorage.getItem("site")}`);
+      const result4 = await res4.json();
+      const  testResults= result4.data; // array of test objects
+   
+    setDataITEMVARIETYIDRecords(testResults[0])
+
 
     } catch (err :any) {
      alert(err );
@@ -148,6 +160,25 @@ if (!id) return;
     ...prev,
     [name]: name === "IsActive" ? value === "1" : value,
   }));
+
+
+
+
+ // If the changed field is ItemVarietyID, auto-fill ProductName
+  if (name === 'ItemVarietyID') {
+     setForm(prev => ({ ...prev, ItemVarietyID: value}));
+    const selectedVariety = dataITEMVARIETYIDRecords.find(item => item.Id === value);
+    if (selectedVariety) {
+
+      setForm(prev => ({ ...prev, ProductName: selectedVariety.NAME }));
+     
+    
+    } else {
+      // Optionally clear ProductName if no selection
+      setForm(prev => ({ ...prev, ProductName: '' }));
+    }
+  }
+
   };
 
 
@@ -220,8 +251,6 @@ ItemVarietyID:form.ItemVarietyID
 
   };
   
-
-
 
   const handleOpen = async() => {
 
@@ -337,7 +366,7 @@ if (!product) {
               </p>
 
                  <p className="text-sm text-gray-500 dark:text-gray-400">{product.Additives}</p>
-  </div><br/>
+              </div><br/>
                    <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
 
 
@@ -349,22 +378,19 @@ if (!product) {
 
                    <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
 
-  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
                 ShelfLife:
               </p>
 
                  <p className="text-sm text-gray-500 dark:text-gray-400">{product.ShelfLife}</p>
 
+            <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
 
-         <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
-
-  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+           <p className="text-sm font-medium text-gray-800 dark:text-white/90">
                 StorageConditions:
               </p>
 
                  <p className="text-sm text-gray-500 dark:text-gray-400">{product.StorageConditions}</p>
-
-
     </div>
 <br/>
 
@@ -450,7 +476,45 @@ if (!product) {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
- <div>
+          <div>
+          <Label>ItemVarietyID</Label>
+            {/* Status */}
+          {/* <select name="ItemVarietyID" onChange={handleChange} value={form.ItemVarietyID}  className={`w-full border rounded px-3 py-2 ${
+            error?.ItemVarietyID ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
+            <option value={"V0040"}>V0040</option>
+          
+          </select> */}
+
+
+<Select
+  name="ItemVarietyID"
+  id="ItemVarietyID"
+  options={options}   // [{ value: 101, label: "Electronics" }, ...]
+  value={options.find(opt => opt.value === form.ItemVarietyID) || null}
+  onChange={(selected) => 
+    handleChange({ target: { name: 'ItemVarietyID', value: selected?.value || '' } })
+  }
+  formatOptionLabel={(option, { context }) => {
+    // In the dropdown menu → show label (name)
+    // In the selected value (after selection) → show value (ID)
+    return context === 'menu' ? option.label : option.value;
+  }}
+  placeholder="Select ItemVarietyID"
+  className="w-full"
+  styles={{
+    control: (base, { isFocused }) => ({
+      ...base,
+      borderColor: error?.ItemVarietyID ? '#ef4444' : isFocused ? '#3b82f6' : '#d1d5db',
+      boxShadow: 'none',
+      '&:hover': { borderColor: '#9ca3af' }
+    })
+  }}
+/>
+
+
+
+        </div>
+        <div>
           <Label>Product Name</Label>
             <input name="ProductName" placeholder="" onChange={handleChange} value={form.ProductName}
 
@@ -670,7 +734,7 @@ if (!product) {
           />
         </div>
 
-         <div>
+         {/* <div>
           <Label>ItemVarietyID </Label>
 
 
@@ -682,7 +746,7 @@ if (!product) {
 
 
          
-        </div>
+        </div> */}
 
       </div>
 

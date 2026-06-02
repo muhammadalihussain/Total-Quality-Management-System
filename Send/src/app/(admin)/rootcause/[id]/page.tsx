@@ -70,8 +70,9 @@ export default function RootCauseDetailsPage() {
 
   const columns: ColDef[] = [
     { field: 'Name', headerName: 'Root Cause Type', width: 200 },
-    { field: 'DetailsOfRootCause', headerName: 'Root Cause', width: 220 },
+    { field: 'DetailsOfRootCause', headerName: 'Root Cause Details', width: 220 },
     { field: 'CorectiveAction', headerName: 'Corrective Action', width: 200 },
+    { field: 'PreventiveAction', headerName: 'Preventive Action', width: 200 },
     { field: 'FullName', headerName: 'Created By', width: 140 },
 
     {
@@ -183,7 +184,7 @@ export default function RootCauseDetailsPage() {
           >
             ← Back
           </button>
-
+{ details.capa.StatusId!=5?(
           <Button
             onClick={() => {
               openModal();
@@ -193,8 +194,8 @@ export default function RootCauseDetailsPage() {
             className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-xl shadow"
           >
             + Add Root Cause
-          </Button>
-          
+          </Button>):""
+          }
         </div>
 
         {/* CAPA CARD */}
@@ -283,6 +284,7 @@ export default function RootCauseDetailsPage() {
         onClose={closeModal}
         editingData={editing}
         capaID={params.id}
+        setrefreshGrid={setrefreshGrid}
         view={view}
         onSuccess={() => {
           closeModal();

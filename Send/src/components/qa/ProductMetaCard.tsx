@@ -14,7 +14,7 @@ const ProductMetaCard = ({  id }:any) => {
 
 const { isOpen, openModal, closeModal } = useModal();
 
-
+const [refreshGrid, setrefreshGrid] = useState(null);
 const [details, setDetails] = useState<any>(null);
 const [loading, setLoading] = useState(false);
 
@@ -42,10 +42,10 @@ const [loading, setLoading] = useState(false);
    if (id) {
      fetchDetails(id);
    }
- }, [id]);
+ }, [id,refreshGrid]);
  
 
-const [refreshGrid, setrefreshGrid] = useState('');
+
 
 const handleOpen = async() => {
 
@@ -208,8 +208,10 @@ if (!details) {
                   }}
                     />
 
-          
+          {details?.coa.ApprovedByName==null?(
          <button
+
+         
             onClick={handleOpen }
             className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
           >
@@ -229,7 +231,8 @@ if (!details) {
               />
             </svg>
             Edit
-          </button>
+          </button>) :""
+}
         </div>
      </div>
        
