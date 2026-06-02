@@ -64,10 +64,10 @@ if (!details) {
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
+          <div className="flex flex-col items-center w-full gap-4 xl:flex-row">
   <div className="order-3 xl:order-2">
 
-            <div className="flex flex-col xl:flex-row justify-between gap-3">
+            <div className="flex flex-col xl:flex-row justify-between gap-4">
 
               {/* LEFT */}
               <div className="space-y-4">
@@ -78,7 +78,7 @@ if (!details) {
 
                 </h2>
 
-                <div className="grid md:grid-cols-3 gap-3">
+                <div className="grid md:grid-cols-2 gap-2">
                   <div className="bg-white  p-4 rounded-xl border">
                      <div className="flex gap-2">
                     <p className="text-gray-500 text-sm">SOP # :</p>
@@ -131,38 +131,6 @@ if (!details) {
                        <p className="font-semibold">ItemVarietyID:  ({details?.coa.ItemVarietyID})</p>
                   </div>
 
-                  <div className="bg-white p-4 rounded-xl border">
-                  <div className="flex gap-3">
-                    <p className="text-gray-500 text-sm">PreparedAt:</p>
-                   <p className="font-semibold"> 
-                     {details?.coa.CheckedAt
-                      ? new Date(details?.coa.PreparedAt).toLocaleDateString()
-                      : '-'}
-                   </p>
-                    </div>
-
-                     <div className="flex gap-3">
-                    <p className="text-gray-500 text-sm">CheckedAt:</p>
-                   <p className="font-semibold">
-
-                    {details?.coa.CheckedAt
-                      ? new Date(details?.coa.CheckedAt).toLocaleDateString()
-                      : '-'}
-
-                  </p>
-                    </div>
-
-                     <div className="flex gap-3">
-                    <p className="text-gray-500 text-sm">ApprovedAt:</p>
-                   <p className="font-semibold">
-
-                   {details?.coa.ApprovedAt
-                      ? new Date(details?.coa.ApprovedAt).toLocaleDateString()
-                      : '-'}
-
-                 </p>
-                    </div>
-                  </div>
 
                 </div>
                <div className="bg-gray-50 p-3 rounded-lg">
@@ -175,13 +143,33 @@ if (!details) {
               <div className="w-full xl:w-80 bg-white p-6 rounded-2xl border shadow-sm">
 
                 <p className="text-gray-500 text-sm">Created By</p>
-                <p className="font-semibold mb-4">{details?.coa.CreatedByName}</p>
+                <p className="font-semibold mb-4">{details?.coa.CreatedByName}
+<br></br>
+
+                     {details?.coa.PreparedAt
+                      ? new Date(details?.coa.PreparedAt).toLocaleDateString()
+                      : '-'}
+                 
+
+                </p>
 
                 <p className="text-gray-500 text-sm">Checked By</p>
-                <p className="font-semibold mb-4">{details?.coa.CheckedByName}</p>
+                <p className="font-semibold mb-4">{details?.coa.CheckedByName}
+
+<br></br>
+                   {details?.coa.CheckedAt
+                      ? new Date(details?.coa.CheckedAt).toLocaleDateString()
+                      : '-'}
+                </p>
 
                  <p className="text-gray-500 text-sm">Approved By</p>
-                <p className="font-semibold mb-4">{details?.coa.ApprovedByName}</p>
+                <p className="font-semibold mb-4">{details?.coa.ApprovedByName}
+<br></br>
+  {details?.coa.ApprovedAt
+                      ? new Date(details?.coa.ApprovedAt).toLocaleDateString()
+                      : '-'}
+
+                </p>
 
                 <p className="text-gray-500 text-sm">Status</p>
                 <span className="inline-block mt-1 px-4 py-2 bg-green-100 text-green-700 rounded-xl font-semibold">
