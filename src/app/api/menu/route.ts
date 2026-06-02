@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
   //const token = req.headers.get("authorization")?.split(" ")[1]!;
     const token = req.cookies.get("token")?.value;
 
-    
 
   // If no token → 
   if (!token) {

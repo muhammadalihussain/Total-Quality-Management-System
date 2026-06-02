@@ -17,6 +17,7 @@ interface AgGridTableProps {
     onGridReady?: (params: GridReadyEvent) => void; // ✅ ADD THIS
     height?: string;
     width?: string;
+    defalColDef?:any 
 }
 
 export const AgGridTable: React.FC<AgGridTableProps> = ({
@@ -26,7 +27,8 @@ export const AgGridTable: React.FC<AgGridTableProps> = ({
     pagination = true,
     paginationPageSize = 10,
     height = '500px',
-    width = '100%'
+    width = '100%',
+    defalColDef
 }) => {
     const [gridApi, setGridApi] = useState<GridApi | null>(null);
 
@@ -59,7 +61,7 @@ export const AgGridTable: React.FC<AgGridTableProps> = ({
              domLayout="autoHeight"
                 rowData={data}
                 columnDefs={columns}
-                defaultColDef={defaultColDef}
+                defaultColDef={defalColDef==null?defaultColDef:defalColDef}
                 onGridReady={onGridReady}
                 onRowClicked={onRowClickedHandler}
                 pagination={pagination}

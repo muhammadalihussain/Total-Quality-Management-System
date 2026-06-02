@@ -289,34 +289,30 @@ const rows = buildRows(data);
         <Text style={styles.title}>{companyInfo?.Title}</Text>
 
         <View style={styles.infoContainer}>
-           <View style={styles.infoRow}><Text style={styles.infoLabel}>Product:</Text><Text style={styles.infoValue}>{COAInfo.ProductName}</Text></View>
-          <View style={styles.infoRow}><Text style={styles.infoLabel}>Product Number:</Text><Text style={styles.infoValue}>{COAInfo.ProductCode}</Text></View>
-          <View style={styles.infoRow}><Text style={styles.infoLabel}>RNF Item Number:</Text><Text style={styles.infoValue}>{COAInfo.RFNItemNumber}</Text></View>
+           <View style={styles.infoRow}><Text style={styles.infoLabel}>Product:</Text><Text style={styles.infoValue}>{COAInfo?.ProductName}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoLabel}>Product Number:</Text><Text style={styles.infoValue}>{COAInfo?.ProductCode}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoLabel}>RNF Item Number:</Text><Text style={styles.infoValue}>{COAInfo?.RFNItemNumber}</Text></View>
           <View style={styles.infoRow}><Text style={styles.infoLabel}>Production Date:</Text><Text style={styles.infoValue}>
                         
-            {COAInfo.ProductionDate ? new Date(COAInfo.ProductionDate).toLocaleDateString() : " "}
+            {COAInfo?.ProductionDate ? new Date(COAInfo?.ProductionDate).toLocaleDateString() : " "}
             </Text></View>
           <View style={styles.infoRow}><Text style={styles.infoLabel}>Expiry Date:</Text><Text style={styles.infoValue}>
             
-            {COAInfo.ExpiryDate ? new Date(COAInfo.ExpiryDate).toLocaleDateString() : " "}
+            {COAInfo?.ExpiryDate ? new Date(COAInfo?.ExpiryDate).toLocaleDateString() : " "}
           
 
           </Text></View>
-          <View style={styles.infoRow}><Text style={styles.infoLabel}>Lot Number:</Text><Text style={styles.infoValue}>{COAInfo.LotNumber}</Text></View>
-          <View style={styles.infoRow}><Text style={styles.infoLabel}>SOP#:</Text><Text style={styles.infoValue}>{COAInfo.SalesId}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoLabel}>Lot Number:</Text><Text style={styles.infoValue}>{COAInfo?.LotNumber}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoLabel}>SOP#:</Text><Text style={styles.infoValue}>{COAInfo?.SalesId}</Text></View>
            {/* <View style={styles.infoRow}><Text style={styles.infoLabel}>PO#:</Text><Text style={styles.infoValue}>{poNumber}</Text></View> */}
-          <View style={styles.infoRow}><Text style={styles.infoLabel}>Country of Origin:</Text><Text style={styles.infoValue}>{COAInfo.CountryOfOrigin}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoLabel}>Country of Origin:</Text><Text style={styles.infoValue}>{COAInfo?.CountryOfOrigin}</Text></View>
           {/* <View style={styles.infoRow}><Text style={styles.infoLabel}>Supplier Address:</Text><Text style={styles.infoValue}>{supplierAddress}</Text></View>  */}
         </View>
 
        
 
-     
-
-      
-
-
-        <View style={styles.table}>
+    
+  <View style={styles.table}>
   {rows.map((row, idx) => {
     const isEven = idx % 2 === 0;
 
@@ -355,7 +351,7 @@ const rows = buildRows(data);
     <View style={styles.signatureBox}>
 
   <Text >
-  {COAInfo.CreatedByName}
+  {COAInfo?.CreatedByName}
   </Text>
 
   <View style={[styles.signatureLine, { marginVertical: 5 }]} />
@@ -368,7 +364,7 @@ const rows = buildRows(data);
           <View style={styles.signatureBox}>
             
   <Text >
-  {COAInfo.CheckedByName}
+  {COAInfo?.CheckedByName}
   </Text>
 
 
@@ -378,7 +374,7 @@ const rows = buildRows(data);
           </View>
           <View style={styles.signatureBox}>
              <Text >
-  {COAInfo.ApprovedByName}
+  {COAInfo?.ApprovedByName}
   </Text>
 
             <View  style={[styles.signatureLine, { marginVertical: 5 }]} />
@@ -399,7 +395,15 @@ const rows = buildRows(data);
         </View>
 
 
-        <View style={styles.footer} fixed>
+        <View  style={{
+      position: 'absolute',
+      bottom: 0,
+      left: 30,
+      right: 30,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }} fixed>
           <Text style={styles.leftFooterText}>visit us at: www.matcofoods.com, www.falakrice.com</Text>
           {logoUrlFooter && <Image src={logoUrlFooter} style={styles.footerLogo} />}
         </View> 

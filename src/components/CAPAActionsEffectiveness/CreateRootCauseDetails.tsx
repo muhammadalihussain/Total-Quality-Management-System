@@ -6,7 +6,7 @@ import ComponentCard from "../common/ComponentCard";
 import { Modal } from "../ui/modal";
 import { useModal } from "@/hooks/useModal";
 
-export default function CreateRootCauseModal({ isOpen, onClose, onSuccess ,editingData , capaID ,setrefreshGrid ,view }: any) {
+export default function CreateRootCauseDetails({ isOpen, onClose, onSuccess ,editingData , capaID ,setrefreshGrid ,view,StatusId }: any) {
 
   // =====================
   // ✅ STATE (ALL HOOKS FIRST)
@@ -27,7 +27,9 @@ type FormType = {
   PreventiveAction: string;
   CreatedBy: string | null;
   CAPAID: string | null;
-
+  ActionTaken:number;
+  IsEffective:number;
+  Remarks :string ;
 };
 
 
@@ -39,6 +41,9 @@ const initialForm: FormType = {
   PreventiveAction: '',
   CreatedBy:userId,
   CAPAID: capaID,
+  ActionTaken:0,
+  IsEffective:0,
+  Remarks:''
 
 };
 
@@ -49,7 +54,12 @@ const fetchUpdate = async (payload :any) => {
   try {
 
 
-    setFormData(payload);
+  setFormData({
+      ...payload,
+      IsEffective: Number(editingData.IsEffective),
+      ActionTaken: Number(editingData.ActionTaken),
+    });
+
     setMessage('');
 
      } catch (error) {
@@ -58,24 +68,20 @@ const fetchUpdate = async (payload :any) => {
   };
 
 
+useEffect(() => {
 
-  useEffect(() => {
-    const UserID = localStorage.getItem('UserID');
 
-     setUserId(UserID);
-    if (editingData!=null) {
+  if (!isOpen) return;
+
+  const UserID = localStorage.getItem('UserID');
+  setUserId(UserID);
+
+  if (editingData) {
+
 
     fetchUpdate(editingData);
-    }
-
- else
-  {
-     setFormData(initialForm);
-
-    }
-
-
-  }, [capaID,editingData?.ActionID]);
+  }
+}, [isOpen, capaID, editingData?.length]);
 
 
 
@@ -84,6 +90,9 @@ const fetchUpdate = async (payload :any) => {
        DetailsOfRootCause?: boolean;
        CorectiveAction?: boolean;
        PreventiveAction?: boolean;
+       ActionTaken?: boolean;
+       IsEffective?: boolean;
+       Remarks?:boolean;
       
       }
 
@@ -94,12 +103,11 @@ const fetchUpdate = async (payload :any) => {
   const [rootCauseType, setRootCauseTypes] = useState([]);
 
     useEffect(() => {
-
      const fetchData = async () => {
 
         try {
            const res2 = await axios.get(`/api/dynamics?type=RootCauseType`);
-               setRootCauseTypes( res2.data.result.recordset);
+           setRootCauseTypes( res2.data.result.recordset);
 
 } catch (error: any) {
   console.log("ERROR:", error.response?.data || error.message);
@@ -108,19 +116,14 @@ const fetchUpdate = async (payload :any) => {
     fetchData();
   }, []);
 
-
-
-
-
   if (!isOpen) return null;
-
-
 
     const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...form, [name]: value });
-
     }
+
+    
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -133,6 +136,7 @@ const fetchUpdate = async (payload :any) => {
       if (!form.DetailsOfRootCause.trim()) newError.DetailsOfRootCause = true;
        if (!form.CorectiveAction.trim()) newError.CorectiveAction = true;
        if (!form.PreventiveAction.trim()) newError.PreventiveAction = true;
+   
 
       setError(newError);
       if (Object.keys(newError).length > 0)
@@ -146,21 +150,21 @@ const fetchUpdate = async (payload :any) => {
        {
 
        try {
-      const response = await fetch('/api/capaeffectiveness', {
-        method: 'PUT',
+      const response = await fetch('/api/capaeffectiveness/updateCAPAActionsIsEffective', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         ActionID:editingData.ActionID,
-         RootCauseID: form.RootCauseID,
-  DetailsOfRootCause:form.DetailsOfRootCause ,
-  CorectiveAction: form.CorectiveAction,
-  PreventiveAction: form.PreventiveAction,
-  CreatedBy:userId,
+        ActionTaken: form.ActionTaken,
+         IsEffective : form.IsEffective ,
+  VerifiedBy :userId,
   CAPAID: capaID,
+  Remarks:form.Remarks
 
         })
       });
-setrefreshGrid(new Date().toLocaleString());
+    setrefreshGrid(new Date().toLocaleString());
+    onClose()
       if (!response.ok)
       {
 
@@ -170,8 +174,8 @@ setrefreshGrid(new Date().toLocaleString());
 }
 
      setEditing(null);
-     toast.success("CAPA Created Successfully");
-      onSuccess();
+  
+     
 
     } catch (error) {
       toast.error('Failed to create CAPA');
@@ -181,45 +185,7 @@ setrefreshGrid(new Date().toLocaleString());
     }
 }
 
-else
 
-    try {
-      const response = await fetch('/api/capaeffectiveness', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-  RootCauseID: form.RootCauseID,
-  DetailsOfRootCause:form.DetailsOfRootCause ,
-  CorectiveAction: form.CorectiveAction,
-  PreventiveAction: form.PreventiveAction,
-  CreatedBy:userId,
-  CAPAID: capaID,
-
-         })
-      });
-
-        
-         setrefreshGrid(new Date().toLocaleString());
-      
-        
-
-      if (!response.ok)
-      {
-
-      setMessage ("Error occurred")
-  return;
-}
-
-setEditing(null);
-toast.success("CAPA Created Successfully");
- onSuccess();
-
-    } catch (error) {
-      toast.error('Failed to create CAPA');
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
 
 
 
@@ -286,7 +252,7 @@ toast.success("CAPA Created Successfully");
             </div>
 
             {/* CUSTOMER */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-1">
                 CAPAID
               </label>
@@ -298,7 +264,39 @@ toast.success("CAPA Created Successfully");
                 value={capaID || ''}
                 className="w-full px-3 py-2 border rounded"
               />
-            </div>
+            </div> */}
+
+                  <div className="grid grid-cols-2 gap-4">
+  <div>
+    <label className="block mb-1">Action Taken</label>
+    <select
+        disabled={StatusId==5}
+      name="ActionTaken"
+     onChange={handleChange}  value={form.ActionTaken }
+      className={`w-full border rounded px-3 py-2  border-gray-300"
+      }`}
+    >
+      <option value={1}>Yes</option>
+      <option value={0}>No</option>
+    </select>
+  </div>
+
+  <div>
+    <label className="block mb-1">Is Effective</label>
+    <select
+      name="IsEffective"
+    disabled={StatusId==5}
+       value={form.IsEffective }
+       onChange={handleChange}
+    
+     className={`w-full border rounded px-3 py-2  border-gray-300"
+      }`}
+    >
+      <option value={1}>Yes</option>
+      <option value={0}>No</option>
+    </select>
+  </div>
+</div>
           </div>
 
           {/* ROW 2 */}
@@ -336,7 +334,7 @@ className={`w-full border rounded px-3 py-2 ${
               </label>
 
                <textarea
-disabled={view}
+               disabled={view}
               name="PreventiveAction"
               value={form.PreventiveAction}
               onChange={handleChange}
@@ -359,7 +357,7 @@ className={`w-full border rounded px-3 py-2 ${
           {/* ROW 3 */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Enter Details Of Root Cause
+             { !view ? ( "Enter"):( "Details Of Root Cause")}
             </label>
 
             <textarea
@@ -376,13 +374,35 @@ className={`w-full border rounded px-3 py-2 ${
 
 
             />
+  <label className="block text-sm font-medium mb-1">
+          Enter Remarks
+            </label>
+              <textarea
+
+              name="Remarks"
+          
+    disabled={StatusId==5}
+              value={form.Remarks ?? ''}
+              
+              onChange={handleChange}
+              rows={3}
+
+
+className={`w-full border rounded px-3 py-2 ${
+  error?.Remarks ? "border-red-500" : "border-gray-300"
+}`}
+
+
+            />
           </div>
-{ !view && (
+
+          { StatusId!=5?  (  
+
           <div className="flex gap-3 pt-4">
 
             <button 
 
-            disabled={view}
+          
               type="button"
               onClick={onClose}
               className="flex-1 px-4 py-2 border rounded"
@@ -390,11 +410,13 @@ className={`w-full border rounded px-3 py-2 ${
               Cancel
             </button>
 
-            <button
 
+            <button
+  
+    disabled={StatusId==5}
             
               type="submit"
-              disabled={loading || view }
+         
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded"
             >
 
@@ -402,8 +424,8 @@ className={`w-full border rounded px-3 py-2 ${
                 {loading ? "Creating..." :  editingData ? ("Update CAPA") : "Create CAPA"}
             </button>
 
-          </div>)
-             }
+          </div>):""}
+             
         </form>
       </Modal>
     </ComponentCard>

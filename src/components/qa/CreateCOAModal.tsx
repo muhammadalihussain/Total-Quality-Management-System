@@ -26,7 +26,7 @@ export default function CreateCAPAModal({ isOpen, onClose, onSuccess ,editingDat
    const [editing, setEditing] = useState<any | null>(null);
 
  
-
+console.log(editingData)
 
 type FormType = {
   SalesId: string;
@@ -37,7 +37,7 @@ type FormType = {
   ACCOUNTNUM:any;
   ProductionDate:string;
   RFNItemNumber:string;
-  lotNumber:string;
+  LotNumber:string;
   ExpiryDate:string
 };
 
@@ -51,7 +51,7 @@ const initialForm: FormType = {
   ACCOUNTNUM:'',
   ProductionDate:'',
   RFNItemNumber:'',
-  lotNumber:'',
+  LotNumber:'',
   ExpiryDate:''
 };
 
@@ -143,6 +143,8 @@ const fetchSalesUpdate = async (payload :any) => {
     }));
   }
 
+
+  
     setFormData(payload);
 
     setMessage('');
@@ -217,7 +219,7 @@ const fetchSalesUpdate = async (payload :any) => {
       CreatedBy?: boolean;
       ItemVarietyID?: boolean;
       RFNItemNumber?: boolean;
-      lotNumber?:boolean;
+      LotNumber?:boolean;
       ExpiryDate?:boolean;
       ProductionDate?:boolean;
       }
@@ -248,6 +250,20 @@ const fetchSalesUpdate = async (payload :any) => {
     }
   };
 
+ // Convert SQL datetime (e.g., "2025-06-01 14:30:00") to datetime-local string ("2025-06-01T14:30")
+const sqlToDatetimeLocal = (sqlDateTime :any) => {
+  if (!sqlDateTime) return '';
+  // Replace space with 'T' and truncate seconds if present
+  return sqlDateTime.replace(' ', 'T').slice(0, 16);
+};
+
+// Convert datetime-local string to SQL datetime string
+const datetimeLocalToSql = (localDateTime :any) => {
+  if (!localDateTime) return null;
+  // Replace 'T' with space and add seconds (or keep as needed)
+  return localDateTime.replace('T', ' ') + ':00';
+};
+
     const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...form, [name]: value });
@@ -270,7 +286,7 @@ const fetchSalesUpdate = async (payload :any) => {
   if (!form.ItemId.trim()) newError.ItemId = true;
  if (!form.ProductionDate.trim()) newError.ProductionDate = true;
  if (!form.RFNItemNumber.trim()) newError.RFNItemNumber = true;
- if (!form.lotNumber.trim()) newError.lotNumber = true;
+ if (!form.LotNumber.trim()) newError.LotNumber = true;
  if (!form.ExpiryDate.trim()) newError.ExpiryDate = true;
 
 
@@ -315,13 +331,14 @@ const fetchSalesUpdate = async (payload :any) => {
 }
 
       setEditing(null);
-      toast.success("CAPA Created Successfully");
+      toast.success("COA Created Successfully");
       onSuccess();
     } catch (error) {
-      toast.error('Failed to create CAPA');
+      toast.error('Failed to create COA');
       console.error(error);
     } finally {
       setLoading(false);
+     setrefreshGrid(new Date().toISOString());
     }
 
 
@@ -357,7 +374,7 @@ else
       setMessage (data.message);
       return;
 }
- setrefreshGrid(true);
+ setrefreshGrid(new Date().toISOString());
 setEditing(null);
 toast.success("CAPA Created Successfully");
  onSuccess();
@@ -520,30 +537,18 @@ toast.success("CAPA Created Successfully");
               Production Date
               </label>
 
-              <input
-                 type="datetime-local"
-  value={form.ProductionDate || ''}
-
-
-
-
+            <input
+  type="datetime-local"
+  value={form.ProductionDate ? sqlToDatetimeLocal(form.ProductionDate) : ''}
   onChange={(e) => {
-  // Convert YYYY-MM-DD to SQL Server compatible format
-  const dateValue = e.target.value;
-  if (dateValue) {
-    const formattedDate = new Date(dateValue).toISOString().split('T')[0]; // Or specific format
-    setFormData({ ...form, ProductionDate: e.target.value });
-  } else {
-    setFormData({ ...form, ProductionDate: null });
-  }
-}}
-
-
-
-                      className={`w-full border rounded px-3 py-2 ${
-  error?.ProductionDate ? "border-red-500" : "border-gray-300"
-}`}
-              />
+    const localValue = e.target.value;
+    const sqlValue = datetimeLocalToSql(localValue);
+    setFormData({ ...form, ProductionDate: sqlValue });
+  }}
+  className={`w-full border rounded px-3 py-2 ${
+    error?.ProductionDate ? "border-red-500" : "border-gray-300"
+  }`}
+/>
             </div>
 
 
@@ -552,26 +557,18 @@ toast.success("CAPA Created Successfully");
             Expiry Date
               </label>
 
-              <input
-                  type="datetime-local"
-
-  value={form.ExpiryDate || ''}
-
-
+             <input
+  type="datetime-local"
+  value={form.ExpiryDate ? sqlToDatetimeLocal(form.ExpiryDate) : ''}
   onChange={(e) => {
-  // Convert YYYY-MM-DD to SQL Server compatible format
-  const dateValue = e.target.value;
-  if (dateValue) {
-    const formattedDate = new Date(dateValue).toISOString().split('T')[0]; // Or specific format
-    setFormData({ ...form, ExpiryDate: e.target.value });
-  } else {
-    setFormData({ ...form, ExpiryDate: null });
-  }
-}}
-                      className={`w-full border rounded px-3 py-2 ${
-                error?.ExpiryDate ? "border-red-500" : "border-gray-300"
-}`}
-              />
+    const localValue = e.target.value;
+    const sqlValue = datetimeLocalToSql(localValue);
+    setFormData({ ...form, ExpiryDate: sqlValue });
+  }}
+  className={`w-full border rounded px-3 py-2 ${
+    error?.ExpiryDate ? "border-red-500" : "border-gray-300"
+  }`}
+/>
             </div>
 
           </div>
@@ -584,11 +581,11 @@ toast.success("CAPA Created Successfully");
 
               <input
                 type="text"
-                value={form.lotNumber}
-                 onChange={(e) =>{ setFormData({ ...form, lotNumber: e.target.value }); }}
+                value={form.LotNumber}
+                 onChange={(e) =>{ setFormData({ ...form, LotNumber: e.target.value }); }}
 
                  className={`w-full border rounded px-3 py-2 ${
-  error?.lotNumber ? "border-red-500" : "border-gray-300"
+  error?.LotNumber ? "border-red-500" : "border-gray-300"
 }`}
               />
             </div>

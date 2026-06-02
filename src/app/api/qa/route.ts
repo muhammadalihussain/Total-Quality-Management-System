@@ -7,11 +7,11 @@ import nodemailer from 'nodemailer';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { PreparedBy,lotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM } = body;
+        const { PreparedBy,LotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM } = body;
 
 
       const result = await executeStoredProcedure('sp_CreateCOA', {
-           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,lotNumber
+           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,LotNumber
         });
 
 
@@ -85,9 +85,6 @@ const results = await executeQueryWithMultipleResults('sp_GetCOA', {
       });
 
 
-    //  console.log(results[0]?.[0].TotalRecords)
-    //  console.log(results[1])
-
   return Response.json({
     total: results[0]?.[0].TotalRecords,
     data: results[1],
@@ -96,60 +93,22 @@ const results = await executeQueryWithMultipleResults('sp_GetCOA', {
 
 
 
-/*
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-
-    const capaId = searchParams.get('id');
-    const status = searchParams.get('status'); // ✅ ADD THIS
-
-    // 🔹 GET BY ID
-    if (capaId) {
-      const results = await executeQueryWithMultipleResults('sp_GetCAPADetails', {
-        CAPAID: parseInt(capaId)
-      });
-
-      return NextResponse.json({ success: true, data: results });
-    }
-
-
-    const result = await executeStoredProcedure("sp_GetCAPADetailsWithStatus", {
-      status : { type: sql.NVarChar, value: status  },
-    });
-
-    return NextResponse.json({
-      success: true,
- 
-      data: result.recordsets[0]
-    });
-
-
-
-  } catch (error) {
-    console.error('Error fetching CAPAs:', error);
-
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch CAPAs' },
-      { status: 500 }
-    );
-  }
-}
-
-*/
 
 
 export async function PUT(request: NextRequest) {
     try {
-         const body = await request.json();
-        const { CAPAID, Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID ,customer ,ItemName } = body;
 
-   const result = await executeQuery('sp_UpdateCAPA', {
-          CAPAID, Description, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID ,FromDepartmentID,customer ,ItemName
+       const body = await request.json();
+      const { PreparedBy,LotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM } = body;
+
+      const result = await executeQuery('sp_UpdateCOA', {
+           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,LotNumber
         });
+        
+    
 
 
-        return NextResponse.json({ success: true, message: 'CAPA updated successfully' });
+        return NextResponse.json({ success: true, message: 'COA updated successfully' });
     } catch (error) {
         console.error('Error updating CAPA:', error);
         return NextResponse.json(

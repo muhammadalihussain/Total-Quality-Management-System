@@ -12,6 +12,11 @@ import axios from "axios";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 import AssignUserModal from '@/components/CAPA/AssignUserModal';
+import { useModal } from "@/hooks/useModal";
+
+import AllRootCauseDetails from '@/components/CAPAActionsEffectiveness/AllRootCauseDetails';
+import CreateRootCauseDetails from '@/components/CAPAActionsEffectiveness/CreateRootCauseDetails';
+import CreateRootCauseModal from '@/components/CAPAActionsEffectiveness/CreateRootCauseModal';
 
 interface CAPADetails {
     capa: any;
@@ -28,22 +33,111 @@ export default function CAPADetailsPage() {
     const [details, setDetails] = useState<CAPADetails | null>(null);
     const [activeTab, setActiveTab] = useState('assign-user');
     const [loading, setLoading] = useState(true);
-    const [openModal, setOpenModal] = useState(false);
+    const [openMod, setOpenMod] = useState(false);
     const [openModalAssign, setOpenModalAssign] = useState(false);
+    const [openModalAll, setOpenModalAll] = useState(false);
+  
     const [selectedCAPA, setSelectedCAPA] = useState<number | null>(null);
     const [refreshGrid, setrefreshGrid] = useState(false);
     const [users, setUsers] = useState([]);
     const [gridApi, setGridApi] = useState<any>(null);
     const [refreshAssignGrid, setrefreshAssignGrid] = useState(false);
      const [showDelete, setShowDelete] = useState(false);
+    const [capas, setCapas] = useState<any[]>([]);
+    const [view, setView] = useState(false);
+    const { isOpen, openModal, closeModal } = useModal();
 
+  const [editing, setEditing] = useState<any | null>(null);
+const [RoleId, setRoleId] = useState<any>(null);
+  
+  const updateRow = (row: any) => {
+    setEditing(row);
+    openModal();
+  };
+
+ // ================= FETCH =================
+  const fetchData = async () => {
+    try {
+
+         const RoleId = localStorage.getItem("roleId");
+         setRoleId((RoleId));
+      setLoading(true);
+
+      const res1 = await fetch(`/api/capaeffectiveness?CAPAID=${params.id}`);
+      const data = await res1.json();
+
+      setCapas(data.data || [])
+   
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+     
+    fetchData();
+}, params.id ? [params.id, refreshGrid] : [refreshGrid]);
+
+
+  const columns: ColDef[] = [
+    { field: 'Name', headerName: 'Root Cause Type', width: 200 },
+    { field: 'DetailsOfRootCause', headerName: 'Root Cause Details', width: 220 },
+    { field: 'CorectiveAction', headerName: 'Corrective Action', width: 200 },
+    { field: 'PreventiveAction', headerName: 'Preventive Action', width: 200 },
+    { field: 'FullName', headerName: 'Created By', width: 140 },
+    { field: 'ActionTaken', headerName: 'ActionTaken', width: 115,
+          valueFormatter: (params) =>
+    params.value === 1 || params.value === true ? 'Yes' : 'No',
+
+     },
+    { field: 'IsEffective', headerName: 'IsEffective', width: 115 ,
+
+ valueFormatter: (params) =>
+    params.value === 1 || params.value === true ? 'Yes' : 'No',
+
+    },
+ {
+      headerName: "Actions",
+      pinned: "right",
+      width: 100,
+      cellRenderer: (params: any) => (
+        <div className="flex gap-2">
+
+          {/* VIEW */}
+          <button
+            className="p-2 rounded-lg hover:bg-gray-100 text-blue-600"
+            onClick={(e) => {
+              e.stopPropagation();
+                setView(true);
+                
+                updateRow(params.data);
+            }}
+          >
+         View
+          </button>
+          </div>
+ )}
+
+  ];
+
+const  Verified= (e:any)=>{
+  
+ e.stopPropagation(); // prevent row click
+    setOpenModalAll(true);
+     setrefreshGrid(false);
+    setView(true);
+}
+
+  
 
     const handleOpen = (e: any, capaId: number) => {
     e.stopPropagation(); // prevent row click
     setSelectedCAPA(capaId);
 
     setrefreshGrid(false);
-    setOpenModal(true);
+    setOpenMod(true);
   };
 
 
@@ -107,6 +201,8 @@ await fetch("/api/capa/assign/delete", {
 
 
    {
+
+  hide:details?.capa.StatusId==5,
   headerName: "Actions",
   minWidth: 30,
   colId: "action",
@@ -114,6 +210,8 @@ await fetch("/api/capa/assign/delete", {
   editable: false,
 
   cellRenderer: (params: any) => (
+    <> 
+    { details?.capa.StatusId!=5? (
     <div className="flex gap-2">
 
       {/* DELETE */}
@@ -132,18 +230,14 @@ await fetch("/api/capa/assign/delete", {
        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
        <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
 
-       </button>
+       </button> </div>):""
 
-
-
-    </div>
+    
+    }</>
   ),
 },
 
-
 ];
-
-
 
     
 const onGridReady = (params:any) => {
@@ -158,8 +252,8 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
             const response = await fetch(`/api/capa?id=${params.id}`);
             const result = await response.json();
             if (result.success && result.data) {
-                const timelineRes = await fetch(`/api/timeline?capaId=${params.id}`);
-                const timelineResult = await timelineRes.json();
+                // const timelineRes = await fetch(`/api/timeline?capaId=${params.id}`);
+                // const timelineResult = await timelineRes.json();
 
                 setDetails({
                     capa: result.data[0]?.[0],
@@ -167,7 +261,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                   //  qcTests: result.data[2] || [],
                  //   coa: result.data[3]?.[0],
                    // coaTests: result.data[4] || [],
-                    timeline: timelineResult.success ? timelineResult.data : []
+                  //  timeline: timelineResult.success ? timelineResult.data : []
                 });
             }
         } catch (error) {
@@ -177,65 +271,65 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
         }
     };
 
-    const rootCauseColumns: ColDef[] = [
-        { field: 'RootCauseCode', headerName: 'RC ID', width: 100 },
-        { field: 'RootCauseTitle', headerName: 'Root Cause', width: 200 },
-        { field: 'Category', headerName: 'Category', width: 120 },
-        { field: 'ActionTitle', headerName: 'Action', width: 200 },
-        { field: 'ActionType', headerName: 'Type', width: 100 },
-        { field: 'AssignedToName', headerName: 'Assigned To', width: 150 },
-        {
-            field: 'ActionTaken',
-            headerName: 'Taken',
-            width: 80,
-            cellRenderer: (params: any) => params.value ? '✅' : '❌'
-        },
-        {
-            field: 'IsEffective',
-            headerName: 'Effective',
-            width: 80,
-            cellRenderer: (params: any) => params.value ? '✅' : '❌'
-        },
-        { field: 'AssignmentStatus', headerName: 'Status', width: 120 }
-    ];
+    // const rootCauseColumns: ColDef[] = [
+    //     { field: 'RootCauseCode', headerName: 'RC ID', width: 100 },
+    //     { field: 'RootCauseTitle', headerName: 'Root Cause', width: 200 },
+    //     { field: 'Category', headerName: 'Category', width: 120 },
+    //     { field: 'ActionTitle', headerName: 'Action', width: 200 },
+    //     { field: 'ActionType', headerName: 'Type', width: 100 },
+    //     { field: 'AssignedToName', headerName: 'Assigned To', width: 150 },
+    //     {
+    //         field: 'ActionTaken',
+    //         headerName: 'Taken',
+    //         width: 80,
+    //         cellRenderer: (params: any) => params.value ? '✅' : '❌'
+    //     },
+    //     {
+    //         field: 'IsEffective',
+    //         headerName: 'Effective',
+    //         width: 80,
+    //         cellRenderer: (params: any) => params.value ? '✅' : '❌'
+    //     },
+    //     { field: 'AssignmentStatus', headerName: 'Status', width: 120 }
+    // ];
 
-    const qcTestColumns: ColDef[] = [
-        { field: 'TestCode', headerName: 'Test ID', width: 100 },
-        { field: 'TestName', headerName: 'Test Name', width: 200 },
-        { field: 'TestParameters', headerName: 'Parameters', width: 150 },
-        { field: 'ExpectedResult', headerName: 'Expected', width: 150 },
-        { field: 'ActualResult', headerName: 'Actual', width: 150 },
-        {
-            field: 'IsPassed',
-            headerName: 'Result',
-            width: 100,
-            cellRenderer: (params: any) => (
-                <span className={params.value ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
-                    {params.value ? 'PASS' : 'FAIL'}
-                </span>
-            )
-        },
-        { field: 'TestedByName', headerName: 'Tested By', width: 150 }
-    ];
+    // const qcTestColumns: ColDef[] = [
+    //     { field: 'TestCode', headerName: 'Test ID', width: 100 },
+    //     { field: 'TestName', headerName: 'Test Name', width: 200 },
+    //     { field: 'TestParameters', headerName: 'Parameters', width: 150 },
+    //     { field: 'ExpectedResult', headerName: 'Expected', width: 150 },
+    //     { field: 'ActualResult', headerName: 'Actual', width: 150 },
+    //     {
+    //         field: 'IsPassed',
+    //         headerName: 'Result',
+    //         width: 100,
+    //         cellRenderer: (params: any) => (
+    //             <span className={params.value ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
+    //                 {params.value ? 'PASS' : 'FAIL'}
+    //             </span>
+    //         )
+    //     },
+    //     { field: 'TestedByName', headerName: 'Tested By', width: 150 }
+    // ];
 
-    const timelineColumns: ColDef[] = [
-        {
-            field: 'EventDate',
-            headerName: 'Date & Time',
-            width: 180,
-            valueFormatter: (params) => new Date(params.value).toLocaleString()
-        },
-        { field: 'EventType', headerName: 'Event', width: 150 },
-        { field: 'EventDescription', headerName: 'Description', width: 400 },
-        { field: 'PerformedBy', headerName: 'Performed By', width: 150 },
-        { field: 'Role', headerName: 'Role', width: 120 }
-    ];
+    // const timelineColumns: ColDef[] = [
+    //     {
+    //         field: 'EventDate',
+    //         headerName: 'Date & Time',
+    //         width: 180,
+    //         valueFormatter: (params) => new Date(params.value).toLocaleString()
+    //     },
+    //     { field: 'EventType', headerName: 'Event', width: 150 },
+    //     { field: 'EventDescription', headerName: 'Description', width: 400 },
+    //     { field: 'PerformedBy', headerName: 'Performed By', width: 150 },
+    //     { field: 'Role', headerName: 'Role', width: 120 }
+    // ];
 
     const getStatusColor = (status: string) => {
         const colors: any = {
             OPEN: 'bg-blue-100 text-blue-900',
             IN_PROGRESS: 'bg-yellow-100 text-yellow-800',
-             ACCEPTED: 'bg-green-100 text-yellow-800',
+            ACCEPTED: 'bg-green-100 text-yellow-800',
             READY_FOR_QC: 'bg-green-100 text-green-800',
             READY_FOR_COA: 'bg-purple-100 text-purple-800',
             CLOSED: 'bg-gray-100 text-gray-800',
@@ -283,17 +377,19 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(details.capa.Status)}`}>
                                     {details.capa.Status}
                                 </span>
+
+                                {   details?.capa.StatusId!=5? ( 
                                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                                     details.capa.Priority === 'HIGH' ? 'bg-red-100 text-red-800' :
                                     details.capa.Priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
                                     'bg-green-100 text-green-800'
                                 }`}>
                                     {details.capa.Priority}
-                                </span>
-
+                                </span>):""
+ }
                                 {   
                                 
-                                details.capa.StatusId !=7 && (
+                                (details.capa.StatusId !=7 &&   details?.capa.StatusId!=5 ) &&  (
                              <span
   className="px-4 py-2 cursor-pointer rounded-full text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 shadow-sm inline-block"
   onClick={(e) => {
@@ -310,10 +406,10 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
 
  {/* Popup Render */}
       {
-        openModal && (
+        openMod && (
         <AssignCAPAModal
           capaId={selectedCAPA}
-          onClose={() => setOpenModal(false)}
+          onClose={() => setOpenMod(false)}
           setrefreshGrid={setrefreshGrid}
           StatusId ={details.capa.StatusId}
           TargetDate={ details.capa.TargetDate}
@@ -345,7 +441,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
               </div>
 
                         {/* RIGHT SIDE */}
-              <div className="w-full md:w-64 bg-white p-4 rounded-xl shadow border space-y-2">
+            <div className="w-full md:w-64 bg-white p-4 rounded-xl shadow border flex flex-col  gap-4">
                 <div>
                   <p className="text-xs text-gray-500">Created By</p>
                   <p className="font-semibold">{details.capa.CreatedByName}</p>
@@ -387,11 +483,13 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                 {/* Tabs */}
 
 
-   { !openModal && (
+   { !openMod
+    
+    && (
                  <>
                 <div className="border-b border-gray-200 mb-6">
                     <nav className="flex gap-4">
-                        {['assign-user', 'root-causes', 'timeline'].map((tab) => (
+                        {['assign-user', 'root-causes'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -410,12 +508,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                 {/* Tab Content */}
                 <div>
                     {  activeTab === 'assign-user' && (
-
-                          
-
-
-
-                            
+  
 <ComponentCard title="">
 {  details.capa.StatusId==6  ? (
         <div >
@@ -427,6 +520,8 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
   </button>
   </div>) : ""
   }
+  
+
 
                                  {/* Popup Render */}
                                       {
@@ -446,12 +541,12 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
 
 
  <div style={{ width: "100%", height: "300px" }}>
-    <div className="ag-theme-alpine w-full h-full">
+ <div className="ag-theme-alpine w-full h-full">
                             <AgGridReact
-                            rowSelection="multiple"
+                              rowSelection="multiple"
                              
-                             theme="legacy"
-                              domLayout="autoHeight"
+                               theme="legacy"
+                                domLayout="autoHeight"
                                 onGridReady={onGridReady}
                                 columnDefs={columnDefsAssign}
                                 defaultColDef={defaultColDef}
@@ -466,30 +561,73 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                             </div>
 )}
 
-
                             </ComponentCard>
-
-
-
-
-
 
                     )}
 
                     {activeTab === 'root-causes' && (
                         <ComponentCard title="Root Causes & Actions">
-                            <AgGridTable
-                                columns={rootCauseColumns}
-                                data={details.rootCauses}
-                                height="500px"
-                            />
+
+                                { Array.isArray(capas)  && details?.capa.StatusId!=5 &&  capas.length > 0  &&
+ [12, 1].includes(Number(RoleId))?
+      (<div className="flex items-center">
+  <div className="ml-auto">
+    <button
+      onClick={Verified}
+      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+    >
+      Verify all actions
+    </button>
+  </div>
+</div>):""
+}
+
+
+
+{
+                                        openModalAll && (
+                                        <AllRootCauseDetails
+                                          
+                                          onClose={() => setOpenModalAll(false)}
+                                          isOpen={openModalAll}
+                                            editingData={editing}
+                                            capaID={params.id}
+                                            setrefreshGrid={setrefreshGrid}
+                                            view={view}
+                                           
+                                          
+                                
+                                        />
+                                      )}
+        
+                {/* MODAL */}
+              
+      <CreateRootCauseDetails
+        isOpen={isOpen}
+      onClose={closeModal}
+        editingData={editing}
+        capaID={params.id}
+        setrefreshGrid={setrefreshGrid}
+        view={view}
+        StatusId={ details?.capa.StatusId}
+       
+      />
+        
+        <AgGridTable
+            onGridReady={onGridReady}
+            columns={columns}
+            data={capas}
+            height="600px"
+            pagination={true}
+            defalColDef={{filter: false,}}
+          />
+
+  
                         </ComponentCard>
                     )}
 
 
-
-
-
+{/* 
                     {activeTab === 'timeline' && (
                         <ComponentCard title="Workflow Timeline">
                             <AgGridTable
@@ -498,7 +636,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
                                 height="500px"
                             />
                         </ComponentCard>
-                    )}
+                    )} */}
                 </div>
 
                  </>) }

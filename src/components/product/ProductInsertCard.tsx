@@ -8,7 +8,7 @@ import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import axios from 'axios';
-
+import Select from 'react-select';
 
 
 
@@ -23,27 +23,43 @@ export default function ProductInsertCard({ refreshGrid  }: any) {
 const [dataCategoriesRecords, setDataCategoriesRecords] = useState<any[]>([]);
 const [dataFormsRecords, setDataFormsRecords] = useState<any[]>([]);
 const [dataColorsRecords, setDataColorsRecords] = useState<any[]>([]);
+const [dataITEMVARIETYIDRecords, setDataITEMVARIETYIDRecords] = useState<any[]>([]);
 
-  useEffect(() => {
+
+
+ useEffect(() => {
   async function fetchData() {
     try {
-         const res1 = await axios.get(`/api/dynamics?type=categories`);
-         setDataCategoriesRecords( res1.data.result.recordset);
+      const res1 = await axios.get(`/api/dynamics?type=categories`);
+      setDataCategoriesRecords(res1.data.result.recordset);
 
-           const res2 = await axios.get(`/api/dynamics?type=colors`);
-           setDataColorsRecords( res2.data.result.recordset);
+      const res2 = await axios.get(`/api/dynamics?type=colors`);
+      setDataColorsRecords(res2.data.result.recordset);
+
+      const res3 = await axios.get(`/api/dynamics?type=forms`);
+      setDataFormsRecords(res3.data.result.recordset);
 
 
-          const res3 = await axios.get(`/api/dynamics?type=forms`);
-          setDataFormsRecords( res3.data.result.recordset);
 
-
+ const res = await fetch(`/api/products/getapi/${localStorage.getItem("site")}`);
+      const result = await res.json();
+      const  testResults= result.data; // array of test objects
+   
+    setDataITEMVARIETYIDRecords(testResults[0])
     } catch (error) {
-     alert(error );
+      alert(error);
+
+     
     }
   }
+
   fetchData();
 }, []);
+const options = (dataITEMVARIETYIDRecords || []).map(opt => ({
+  value: opt.Id,
+  label: opt.NAME,
+}));
+
 
 
     const successModal = useModal();
@@ -108,6 +124,24 @@ type FormError = {
     ...prev,
     [name]: name === "IsActive" ? value === "1" : value,
   }));
+
+
+
+ // If the changed field is ItemVarietyID, auto-fill ProductName
+  if (name === 'ItemVarietyID') {
+     setForm(prev => ({ ...prev, ItemVarietyID: value}));
+    const selectedVariety = dataITEMVARIETYIDRecords.find(item => item.Id === value);
+    if (selectedVariety) {
+
+      setForm(prev => ({ ...prev, ProductName: selectedVariety.NAME }));
+     
+    
+    } else {
+      // Optionally clear ProductName if no selection
+      setForm(prev => ({ ...prev, ProductName: '' }));
+    }
+  }
+
   };
 
 
@@ -184,16 +218,7 @@ ItemVarietyID:form.ItemVarietyID,
   };
 
 
-/*
-  useEffect(() => {
-    if (editData) {
-      setForm({ ...initialState, ...editData });
-    } else {
-      setForm(initialState);
-    }
-  }, [editData]);
 
-  */
 
 
 const handleAdd = () => {
@@ -232,9 +257,48 @@ openFullscreenModal()
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
+          <div>
+          <Label>ItemVarietyID</Label>
+            {/* Status */}
+          {/* <select name="ItemVarietyID" onChange={handleChange} value={form.ItemVarietyID}  className={`w-full border rounded px-3 py-2 ${
+            error?.ItemVarietyID ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
+            <option value={"V0040"}>V0040</option>
+          
+          </select> */}
+
+
+<Select
+  name="ItemVarietyID"
+  id="ItemVarietyID"
+  options={options}   // [{ value: 101, label: "Electronics" }, ...]
+  value={options.find(opt => opt.value === form.ItemVarietyID) || null}
+  onChange={(selected) => 
+    handleChange({ target: { name: 'ItemVarietyID', value: selected?.value || '' } })
+  }
+  formatOptionLabel={(option, { context }) => {
+    // In the dropdown menu → show label (name)
+    // In the selected value (after selection) → show value (ID)
+    return context === 'menu' ? option.label : option.value;
+  }}
+  placeholder="Select ItemVarietyID"
+  className="w-full"
+  styles={{
+    control: (base, { isFocused }) => ({
+      ...base,
+      borderColor: error?.ItemVarietyID ? '#ef4444' : isFocused ? '#3b82f6' : '#d1d5db',
+      boxShadow: 'none',
+      '&:hover': { borderColor: '#9ca3af' }
+    })
+  }}
+/>
+
+
+
+        </div>
+
         <div>
           <Label>Product Name</Label>
-          <Input type="text"  name="ProductName" placeholder="" onChange={handleChange} value={form.ProductName}
+          <Input type="text" disabled={true}  name="ProductName" placeholder="" onChange={handleChange} value={form.ProductName}
           className={`w-full border rounded px-3 py-2 ${
             error?.ProductName ? "border-red-500" : "border-gray-300" }`} aria-label="Product name"
           />
@@ -451,15 +515,7 @@ openFullscreenModal()
 
 
 
-         <div>
-          <Label>ItemVarietyID</Label>
-            {/* Status */}
-          <select name="ItemVarietyID" onChange={handleChange} value={form.ItemVarietyID}  className={`w-full border rounded px-3 py-2 ${
-            error?.ItemVarietyID ? "border-red-500" : "border-gray-300" }`} aria-label="Role">
-            <option value={"V0040"}>V0040</option>
-          
-          </select>
-        </div>
+         
       </div>
 
 

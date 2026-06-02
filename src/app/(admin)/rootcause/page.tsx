@@ -43,6 +43,7 @@ export default function RootCauseList() {
 
   //---------------------------------------
   // LOAD DATA
+  
   //---------------------------------------
   const loadData = async () => {
     try {
