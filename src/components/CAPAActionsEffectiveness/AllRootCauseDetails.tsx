@@ -51,15 +51,11 @@ const initialForm: FormType = {
 
 const [form, setFormData] = useState<FormType>(initialForm);
 
-
-
 useEffect(() => {
-
 
   const UserID = localStorage.getItem('UserID');
   setUserId(UserID);
 
- 
 }, []);
 
 
@@ -95,8 +91,6 @@ useEffect(() => {
 
      const newError: FormError = {}; // type-safe
 
-   
-
       setError(newError);
       if (Object.keys(newError).length > 0)
        {
@@ -116,9 +110,9 @@ useEffect(() => {
         // ActionID:editingData.ActionID,
          ActionTaken: form.ActionTaken,
          IsEffective : form.IsEffective ,
-  VerifiedBy :userId,
-  CAPAID: capaID,
-  Remarks:form.Remarks
+          VerifiedBy :userId,
+          CAPAID: capaID,
+          Remarks:form.Remarks
 
         })
       });
@@ -128,8 +122,7 @@ useEffect(() => {
       {
 
          setMessage("Request failed");
-      
-  return;
+         return;
 }
 
      setEditing(null);
@@ -170,9 +163,6 @@ useEffect(() => {
 )}
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-
-       
-
 
                   <div className="grid grid-cols-2 gap-4">
   <div>

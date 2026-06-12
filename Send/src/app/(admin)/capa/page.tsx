@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import ComponentCard from "@/components/common/ComponentCard";
@@ -87,8 +86,7 @@ const [dataStatusRecords, setDataStatusRecords] = useState<any[]>([]);
     useEffect(() => {
   
        const fetchData = async () => {
-  
-                const res1 = await axios.get(`/api/dynamics?type=status`);
+               const res1 = await axios.get(`/api/dynamics?type=status`);
                setDataStatusRecords( res1.data.result.recordset);
        }
   
@@ -109,9 +107,6 @@ const onGridReady = (params:any) => {
     "Content-Type": "application/json",
   },
 })
-
-
-
     setShowDelete(false)
   };
 
@@ -151,13 +146,12 @@ const columns: ColDef[] = [
            width: 80,  // Use width instead of minWidth for fixed small size
   minWidth: 60,  // Optional: set minimum if you want responsive behavior
   maxWidth: 100,
-
-            cellStyle: (params) => {
+  cellStyle: (params) => {
               const colors: any = {
-  OPEN: { backgroundColor: '#e3f2fd', color: '#0d47a1' },           // Light blue
-  ACCEPTED: { backgroundColor: '#c8e6c9', color: '#1b5e20' },       // Light green
-  IN_PROGRESS: { backgroundColor: '#fff9c4', color: '#f57f17' },    // Light yellow
-  READY_FOR_QC: { backgroundColor: '#e0f2f1', color: '#004d40' },   // Light teal
+  OPEN: { backgroundColor: '#e3f2fd', color: '#0d47a1' },            // Light blue
+  ACCEPTED: { backgroundColor: '#c8e6c9', color: '#1b5e20' },        // Light green
+  IN_PROGRESS: { backgroundColor: '#fff9c4', color: '#f57f17' },     // Light yellow
+  READY_FOR_QC: { backgroundColor: '#e0f2f1', color: '#004d40' },    // Light teal
   READY_FOR_COA: { backgroundColor: '#e1f5fe', color: '#01579b' },   // Light cyan
   CLOSED: { backgroundColor: '#f3e5f5', color: '#4a148c' },         // Light purple
   REJECTED: { backgroundColor: '#ffebee', color: '#b71c1c' }        // Light red
@@ -211,11 +205,8 @@ const columns: ColDef[] = [
 
         {/* UPDATE */}
 
-
        <button
-
         disabled={params.data.StatusId != 1}
-
            onClick={(e) => {
            e.stopPropagation();
            updateRow(params.data)
@@ -287,8 +278,6 @@ const columns: ColDef[] = [
        onClose={closeModal}
        editingData={editing}
        capaID={selectedCAPAID}
-
-
        onSuccess={() => {
        closeModal();
       
@@ -331,8 +320,7 @@ const columns: ColDef[] = [
               <option disabled>Loading...</option>
             )}
           </select>
-
-                        <Button  onClick={() => {
+  <Button  onClick={() => {
     openModal();
     setEditing(null);
     setSelectedCAPAID('');
@@ -340,25 +328,19 @@ const columns: ColDef[] = [
                             + Create
                         </Button>
                     </div>
-
-
-
                 </div>
 
   {/* 🔥 STATUS DASHBOARD (NEW) */}
-      <div className="grid grid-cols-5 gap-4 mb-4">
+      <div className="grid grid-cols-4 gap-4 mb-4">
 
         <div className="p-3 bg-blue-100 rounded">OPEN: {statusSummary.OPEN}</div>
         <div className="p-3 bg-green-100 rounded">ACCEPTED: {statusSummary.ACCEPTED}</div>
-        <div className="p-3 bg-yellow-100 rounded">IN PROGRESS: {statusSummary.IN_PROGRESS}</div>
-      {/*  <div className="p-3 bg-teal-100 rounded">QC: {statusSummary.READY_FOR_QC}</div> */}
+        {/* <div className="p-3 bg-yellow-100 rounded">IN PROGRESS: {statusSummary.IN_PROGRESS}</div>
+       <div className="p-3 bg-teal-100 rounded">QC: {statusSummary.READY_FOR_QC}</div> */}
         <div className="p-3 bg-purple-100 rounded">CLOSED: {statusSummary.CLOSED}</div>
         <div className="p-3 bg-red-100 rounded">REJECTED: {statusSummary.REJECTED}</div>
 
       </div>
-
-
-
              <ComponentCard title=''>
 
                 {!capas ? (
@@ -366,13 +348,10 @@ const columns: ColDef[] = [
 ) : capas.length === 0 ? (
   <div>No data found</div>
 ) : (
-
-
                     <AgGridTable
                         onGridReady={onGridReady}
                         columns={columns}
                         data={capas}
-
                         height="600px"
                         pagination={false}
                     /> )}
@@ -380,8 +359,7 @@ const columns: ColDef[] = [
                     <div className="flex items-center justify-between mt-4">
 
   <div>
-   
-  </div>
+   </div>
 
   <div className="flex gap-2">
 

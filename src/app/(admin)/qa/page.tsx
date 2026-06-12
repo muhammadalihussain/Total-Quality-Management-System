@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import QA from '@/components/qa/QA';
 
 
-export default function ProductsPage() {
+export default function QAPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <QA />

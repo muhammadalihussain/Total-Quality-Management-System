@@ -7,11 +7,11 @@ import nodemailer from 'nodemailer';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { PreparedBy,LotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM } = body;
+        const { PreparedBy,LotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,Customer} = body;
 
 
       const result = await executeStoredProcedure('sp_CreateCOA', {
-           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,LotNumber
+           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,LotNumber,Customer
         });
 
 
@@ -99,10 +99,10 @@ export async function PUT(request: NextRequest) {
     try {
 
        const body = await request.json();
-      const { PreparedBy,LotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM } = body;
+      const { PreparedBy,LotNumber, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,Customer } = body;
 
       const result = await executeQuery('sp_UpdateCOA', {
-           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,LotNumber
+           PreparedBy, SalesId,Site,ItemId,ItemVarietyID  ,ItemName,ProductionDate ,ExpiryDate,RFNItemNumber ,ACCOUNTNUM ,LotNumber ,Customer
         });
         
     

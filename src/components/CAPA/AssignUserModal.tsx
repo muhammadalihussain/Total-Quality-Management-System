@@ -106,7 +106,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
     CreatedBy:UserID
   });
 
-  setrefreshAssignGrid(true);
+  setrefreshAssignGrid(new Date().toLocaleString());
   onClose();
 };
 

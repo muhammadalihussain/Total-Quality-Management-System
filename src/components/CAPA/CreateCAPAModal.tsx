@@ -214,7 +214,6 @@ const handleCheckboxChange = (id: any) => {
 
   const [error, setError] = useState<FormError>({});
   const [loading, setLoading] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState('');
   const [selectedItemName, setSelectedItemName] = useState('');
 
 

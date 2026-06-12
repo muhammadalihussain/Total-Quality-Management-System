@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(result);
 
-  } catch (error) {
+  } catch (error :any) {
     console.error(error);
     return NextResponse.json(
       { error: "Server error" },

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         });
 
         return NextResponse.json({ success: true, data: result[0] });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error entering QC test results:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to enter QC test results' },

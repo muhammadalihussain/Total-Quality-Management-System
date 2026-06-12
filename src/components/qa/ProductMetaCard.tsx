@@ -74,7 +74,7 @@ if (!details) {
 
 
                 <h2 className="text-xl font-semibold text-gray-800">
-                  {details?.coa.ACCOUNTNUM}
+                  {details?.coa.ACCOUNTNUM}   ({details?.coa.Customer})
 
                 </h2>
 

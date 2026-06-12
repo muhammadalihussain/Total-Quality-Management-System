@@ -21,10 +21,7 @@ import CreateRootCauseModal from '@/components/CAPAActionsEffectiveness/CreateRo
 interface CAPADetails {
     capa: any;
     rootCauses: any[];
- //   qcTests: any[];
-    coa: any;
-   // coaTests: any[];
-    timeline: any[];
+
 }
 
 export default function CAPADetailsPage() {
@@ -38,10 +35,10 @@ export default function CAPADetailsPage() {
     const [openModalAll, setOpenModalAll] = useState(false);
   
     const [selectedCAPA, setSelectedCAPA] = useState<number | null>(null);
-    const [refreshGrid, setrefreshGrid] = useState(false);
+    const [refreshGrid, setrefreshGrid] = useState('');
     const [users, setUsers] = useState([]);
     const [gridApi, setGridApi] = useState<any>(null);
-    const [refreshAssignGrid, setrefreshAssignGrid] = useState(false);
+    const [refreshAssignGrid, setrefreshAssignGrid] = useState('');
      const [showDelete, setShowDelete] = useState(false);
     const [capas, setCapas] = useState<any[]>([]);
     const [view, setView] = useState(false);
@@ -61,7 +58,7 @@ const [RoleId, setRoleId] = useState<any>(null);
 
          const RoleId = localStorage.getItem("roleId");
          setRoleId((RoleId));
-      setLoading(true);
+         setLoading(true);
 
       const res1 = await fetch(`/api/capaeffectiveness?CAPAID=${params.id}`);
       const data = await res1.json();
@@ -126,7 +123,7 @@ const  Verified= (e:any)=>{
   
  e.stopPropagation(); // prevent row click
     setOpenModalAll(true);
-     setrefreshGrid(false);
+     setrefreshGrid(new Date().toLocaleString());
     setView(true);
 }
 
@@ -136,7 +133,7 @@ const  Verified= (e:any)=>{
     e.stopPropagation(); // prevent row click
     setSelectedCAPA(capaId);
 
-    setrefreshGrid(false);
+    setrefreshGrid(new Date().toLocaleString());
     setOpenMod(true);
   };
 
@@ -144,8 +141,8 @@ const  Verified= (e:any)=>{
    const handleOpenAssing = (e: any, capaId: number) => {
     e.stopPropagation(); // prevent row click
 
-    setrefreshGrid(false);
-    setrefreshAssignGrid(false);
+    setrefreshGrid(new Date().toLocaleString());
+    setrefreshAssignGrid(new Date().toLocaleString());
     setOpenModalAssign(true);
   };
 
@@ -164,7 +161,7 @@ const  Verified= (e:any)=>{
 
      useEffect(() => {
         fetchCAPAs();
-         setrefreshGrid(true);
+         setrefreshGrid(new Date().toLocaleString());
     }, [refreshAssignGrid]);
   
 // DELETE
@@ -180,8 +177,8 @@ await fetch("/api/capa/assign/delete", {
   })
 });
 
-    setrefreshGrid(false);
-    setrefreshAssignGrid(false);
+    setrefreshGrid(new Date().toLocaleString());
+    setrefreshAssignGrid(new Date().toLocaleString());
     fetchCAPAs();
     setShowDelete(false)
   };
@@ -435,7 +432,7 @@ const defaultColDef = { editable: true, minWidth: 140, sortable: true, flex: 1, 
 
                 <div className="bg-red-50 p-3 rounded-lg">
                   <p className="text-sm text-red-500">Reject Remarks</p>
-                  <p className="text-gray-700">{details.capa.RejectRemarks || '-'}</p>
+                  <p className="text-gray-700">{details.capa?.RejectRemarks }</p>
                 </div>
 
               </div>

@@ -37,6 +37,8 @@ export default function QAPage() {
         setDetails({ coa: result.data?.[0]?.[0] });
       }
 
+  
+
 
     } catch (err) {
       console.log(err);
@@ -105,7 +107,7 @@ export default function QAPage() {
                     </a>
 
                 <h2 className="text-xl font-semibold text-gray-800">
-                  {details.coa.ACCOUNTNUM}
+                  {details.coa.ACCOUNTNUM}  ({details.coa.Customer})
 
                 </h2>
 

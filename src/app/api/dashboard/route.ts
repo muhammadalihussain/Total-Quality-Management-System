@@ -3,10 +3,11 @@ import { executeQueryWithMultipleResults } from '@/lib/dal/dbutils';
 
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
+       /* const { searchParams } = new URL(request.url);
         const userId = searchParams.get('userId');
         const roleId = searchParams.get('roleId');
         const departmentId = searchParams.get('departmentId');
+
 
         const results = await executeQueryWithMultipleResults('sp_GetDashboardData', {
             UserID: userId ? parseInt(userId) : null,
@@ -23,9 +24,27 @@ export async function GET(request: NextRequest) {
             recentCAPAs: results[5] || [],
             pendingAssignments: results[6]?.[0]?.PendingAssignments || 0
         };
+        */
 
-        return NextResponse.json({ success: true, data: dashboardData });
-    } catch (error) {
+
+     const { searchParams } = new URL(request.url);
+        const fromdate = searchParams.get('fromdate');
+        const toDate = searchParams.get('toDate');
+
+
+           const results = await executeQueryWithMultipleResults('sp_GetDashboardData', {
+            fromdate: fromdate ? (fromdate) : null,
+            toDate: toDate ? (toDate) : null
+        });
+
+const cleaned = {
+  monthly: results?.[0]?.length ? results[0] : null,
+  products: results?.[1]?.length ? results[1] : null,
+};
+
+
+        return NextResponse.json({ success: true, data: cleaned });
+    } catch (error :any) {
         console.error('Error fetching dashboard data:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to fetch dashboard data' },

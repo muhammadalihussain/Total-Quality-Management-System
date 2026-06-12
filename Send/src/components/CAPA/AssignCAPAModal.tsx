@@ -18,7 +18,7 @@ export default function AssignCAPAModal({ capaId, onClose ,setrefreshGrid,Status
   const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
   const [showDelete, setShowDelete] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [refreshAssignGrid, setrefreshAssignGrid] = useState(false);
+  const [refreshAssignGrid, setrefreshAssignGrid] = useState('');
 
   const [searchText, setSearchText] = useState("");
   const [gridApi, setGridApi] = useState<any>(null);
@@ -117,7 +117,7 @@ const columnDefs: ColDef<any>[] = [
 
      useEffect(() => {
         fetchCAPAs();
-         setrefreshGrid(true);
+         setrefreshGrid(new Date().toLocaleString());
     }, [refreshAssignGrid]);
 
 // DELETE
@@ -133,8 +133,8 @@ await fetch("/api/capa/assign/delete", {
   })
 });
 
-    setrefreshGrid(false);
-    setrefreshAssignGrid(false);
+    setrefreshGrid(new Date().toLocaleString());
+    setrefreshAssignGrid(new Date().toLocaleString());
     fetchCAPAs();
     setShowDelete(false)
   };

@@ -34,11 +34,15 @@ export async function GET(req: Request) {
 
   const Id = searchParams.get('id');
 
+  if (!Id) {
+  throw new Error("CAPAID is required");
+}
+
       const results = await executeQueryWithMultipleResults('sp_ProductAnalysis_GetAllTestResultbyCOAID', {
-        COAID: parseInt(Id)
+        COAID: parseInt(Id ?? 0)
       });
 
       return NextResponse.json({ success: true, data: results[0] });
-    
+
 }
 

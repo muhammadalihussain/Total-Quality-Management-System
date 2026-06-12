@@ -9,7 +9,7 @@ import ComponentCard from "@/components/common/ComponentCard";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import { useModal } from "@/hooks/useModal";
 import Button from "@/components/ui/button/Button";
-
+import styles from './UserFormModal.module.css'
 import Label from "@/components/form/Label";
 import { Modal } from "@/components/ui/modal";
 
@@ -31,9 +31,9 @@ type User = {
 };
 
  
-function uid(): number {
-  return Date.now() + Math.floor(Math.random() * 1000);
-}
+// function uid(): number {
+//   return Date.now() + Math.floor(Math.random() * 1000);
+// }
 
 export default function UsersPage() {
 
@@ -59,6 +59,17 @@ export default function UsersPage() {
  
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<User | null>(null);
+
+  
+useEffect(() => {
+  if (error) {
+    const timer = setTimeout(() =>{ 
+    setError("");
+
+    }, 3000);
+    return () => clearTimeout(timer);
+  }
+}, [error]);
 
 
 // Debounce typing
@@ -138,7 +149,7 @@ if(res.data.success){
     }
 
  } catch (err:any) {
-    setError(err.response?.data?.message || "Something went wrong");
+    setError(err.response?.data?.message);
     errorModal.openModal();
   }
 
@@ -148,8 +159,8 @@ if(res.data.success){
 };
 const handleSave = async (payload: UpdateUserPayload) => {
   const { UserID, ...data } = payload;
-
-    if (editing) {
+let dt;
+if (editing) {
 
 try
 {
@@ -172,7 +183,7 @@ if(res.data.success){
     }
 
  } catch (err:any) {
-    setError(err.response?.data?.message || "Something went wrong");
+    setError(err.response?.data?.message );
     errorModal.openModal();
   }
 
@@ -197,28 +208,35 @@ if(res.data.success){
       })
     });
 
-    if(res){
-     // setMessage(res.data.message);
-    //  successModal.openModal();
-      setError("");
-    }else{
-      setError(res);
-    }
+
+ dt = await res.json();
+
+if (dt.error === "Email Exists") {
+setError(dt.error );
+
+return false
+}
 
  } catch (err:any) {
-    setError(err.response?.data?.message || "Something went wrong");
-    errorModal.openModal();
+    setError(err );
+
+    //errorModal.openModal();
   }
  
-
+    
 
       // const newUser: User = { id: uid(), ...payload };
       // setUsers((prev) => [newUser, ...prev]);
 
     }
+
+
+    if(error == '')
+    {
     fetchUsersData();
     setModalOpen(false);
     setEditing(null);
+    }
   };
 
 
@@ -397,7 +415,7 @@ if(res.data.success){
   </div>
 )}
 
-   {/* Error Modal */}
+   {/* Error Modal 
       <Modal
         isOpen={errorModal.isOpen}
         onClose={errorModal.closeModal}
@@ -457,7 +475,7 @@ if(res.data.success){
             </button>
           </div>
         </div>
-      </Modal>
+      </Modal>*/}
 
 {/* Success Modal */}
       <Modal
@@ -530,7 +548,7 @@ if(res.data.success){
               <button onClick={() => { setModalOpen(false); setEditing(null); }} className="text-gray-500 hover:text-gray-700" aria-label="Close modal">✕</button>
             </div>
 
-            <UserForm initial={editing} onCancel={() => { setModalOpen(false); setEditing(null); }} onSave={handleSave} />
+            <UserForm initial={editing} onCancel={() => { setModalOpen(false); setEditing(null); }} onSave={handleSave} message={error} />
           </div>
         </div>
       )
@@ -547,9 +565,11 @@ type UserFormProps = {
   initial: User | null;
    onSave: (payload: UpdateUserPayload) => void; // single argument
   onCancel: () => void;
+  message :string
+  
 };
 
-function UserForm({ initial, onSave, onCancel }: UserFormProps) {
+function UserForm({ initial, onSave, onCancel,message }: UserFormProps) {
  
 
   const [error, setError] = useState<FormError>({});
@@ -560,6 +580,18 @@ function UserForm({ initial, onSave, onCancel }: UserFormProps) {
   const [selectedSites, setSelectedSites] = useState<number[]>(
   initial?.SiteIDs ? initial.SiteIDs.split(',').map(Number) : []
 );
+
+useEffect(() => {
+  if (message) {
+    const timer = setTimeout(() =>{ 
+      
+      message="";
+
+
+    }, 3000);
+    return () => clearTimeout(timer);
+  }
+}, [message]);
    
   useEffect(() => {
   async function fetchData() {
@@ -593,10 +625,7 @@ function UserForm({ initial, onSave, onCancel }: UserFormProps) {
   };
 
    const [showPassword, setShowPassword] = useState(false);
-   const [site, setSite] = useState('');
 
-
-  const [password, setPassword] = useState('');
 
 
 const [form, setForm] = useState(() => ({
@@ -692,6 +721,12 @@ backdrop-blur-md backdrop-saturate-150 bg-white/90 backdrop-blur-xl rounded-2xl 
     {/* BODY (SCROLLABLE) */}
     <div className="p-6 overflow-y-auto">
 
+
+ {message && (
+              <div className={styles.errorBanner}>
+                <p>{message}</p>
+              </div>
+            )}
    <form onSubmit={submit} className="space-y-5">
 
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

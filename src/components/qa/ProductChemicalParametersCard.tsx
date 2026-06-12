@@ -387,7 +387,7 @@ const onGridReady = (params:any) => {
       if(params.data.Result==null && params.newValue === "Pass")
       {
         alert("enter result value")
-        return;
+        return false;
       }
      // console.log('Setting new value:', params.newValue);
       params.data.IsPassed = params.newValue === "Pass" ? true : false;
@@ -469,6 +469,8 @@ const onGridReady = (params:any) => {
 {
   rowData.length ==0 ? (
     <button
+
+      disabled={(details?.coa.IsItemAvailableProduct==0  || details?.coa.IsParameterAvailable==0 )}
       onClick={addRow}
       className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
       Generate Parameters
@@ -480,7 +482,7 @@ const onGridReady = (params:any) => {
     <> 
 
     {[3, 1].includes(Number(RoleId))?(
-      <button  
+      <button
       onClick={Verified}
       className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
      Verified
@@ -510,6 +512,8 @@ const onGridReady = (params:any) => {
     
      {/* <ReportGenerator id={id} /> */}
        <button
+
+      disabled={(details?.coa.IsItemAvailableProduct==0  || details?.coa.IsParameterAvailable==0) }
       onClick={viewReport}
       className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
     Report View 
@@ -543,13 +547,16 @@ const onGridReady = (params:any) => {
   </div>
 </div>
   ) : (
-    <div>No data found</div>
+    <div>
+
+    { details?.coa.IsItemAvailableProduct==0 ?(<div> Firstly add product in product table  </div >):"" }
+   { details?.coa.IsParameterAvailable==0 ?(<div> Add  parameters in product table </div >):"" }
+
+    No data found</div>
   )
 ) : (
   <div>Loading...</div>
 )}
-
-
 
 
   {showDelete && (

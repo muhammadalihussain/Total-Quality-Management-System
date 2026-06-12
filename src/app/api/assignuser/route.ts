@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
        // console.log(Description, CreatedBy, SalesId,Site,ItemId,ToDepartmentID,ItemVarietyID,FromDepartmentID);
 
         return NextResponse.json({ success: true, data: 'test' });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error creating CAPA:', error);
         return NextResponse.json(
             { success: false, error: error },

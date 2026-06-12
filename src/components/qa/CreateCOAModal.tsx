@@ -26,7 +26,7 @@ export default function CreateCAPAModal({ isOpen, onClose, onSuccess ,editingDat
    const [editing, setEditing] = useState<any | null>(null);
 
  
-console.log(editingData)
+
 
 type FormType = {
   SalesId: string;
@@ -38,7 +38,8 @@ type FormType = {
   ProductionDate:string;
   RFNItemNumber:string;
   LotNumber:string;
-  ExpiryDate:string
+  ExpiryDate:string,
+  customer:string,
 };
 
 
@@ -52,7 +53,8 @@ const initialForm: FormType = {
   ProductionDate:'',
   RFNItemNumber:'',
   LotNumber:'',
-  ExpiryDate:''
+  ExpiryDate:'',
+  customer:''
 };
 
 
@@ -157,7 +159,7 @@ const fetchSalesUpdate = async (payload :any) => {
   useEffect(() => {
 
  if(Id==null)
- {    setFormData(null)
+ {    //setFormData(null)
      setFormData(initialForm);
      setCustomer('');
       setSelectedItemName('');
@@ -190,8 +192,6 @@ const fetchSalesUpdate = async (payload :any) => {
  else
   {
 
-
-      setFormData(null)
      setFormData(initialForm);
      setCustomer('');
       setSelectedItemName('');
@@ -308,11 +308,13 @@ const datetimeLocalToSql = (localDateTime :any) => {
         body: JSON.stringify({
           ...form,
           PreparedBy :userId,
+           Customer:customer,
           Site:site,
           ItemVarietyID:selectedITEMVARIETYID,
           ItemName:selectedItemName,
           ACCOUNTNUM:ACCOUNTNUM,
           ProductionDate: form.ProductionDate
+         
     ? new Date(form.ProductionDate).toISOString()
     : null
 ,
@@ -324,6 +326,7 @@ const datetimeLocalToSql = (localDateTime :any) => {
 
       if (!response.ok)
       {
+        
 
          setMessage("Request failed");
       
@@ -352,12 +355,14 @@ else
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          Customer:customer,
           PreparedBy :userId,
           Site:site,
           ItemVarietyID:selectedITEMVARIETYID,
           ItemName:selectedItemName,
           ACCOUNTNUM:ACCOUNTNUM,
           ProductionDate: form.ProductionDate
+          
     ? new Date(form.ProductionDate).toISOString()
     : null
 ,
@@ -543,7 +548,10 @@ toast.success("CAPA Created Successfully");
   onChange={(e) => {
     const localValue = e.target.value;
     const sqlValue = datetimeLocalToSql(localValue);
-    setFormData({ ...form, ProductionDate: sqlValue });
+    setFormData({
+  ...form,
+  ProductionDate: sqlValue ?? ""
+});
   }}
   className={`w-full border rounded px-3 py-2 ${
     error?.ProductionDate ? "border-red-500" : "border-gray-300"
@@ -563,7 +571,13 @@ toast.success("CAPA Created Successfully");
   onChange={(e) => {
     const localValue = e.target.value;
     const sqlValue = datetimeLocalToSql(localValue);
-    setFormData({ ...form, ExpiryDate: sqlValue });
+
+        setFormData({
+  ...form,
+  ExpiryDate: sqlValue ?? ""
+});
+
+
   }}
   className={`w-full border rounded px-3 py-2 ${
     error?.ExpiryDate ? "border-red-500" : "border-gray-300"

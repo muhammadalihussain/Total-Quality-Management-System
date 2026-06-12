@@ -17,7 +17,7 @@ export async function PUT(request: NextRequest) {
       .execute('sp_MarkEffectiveness');
 
     return NextResponse.json(result.recordset[0]);
-  } catch (error) {
+  } catch (error :any) {
     console.error('Error marking effectiveness:', error);
     return NextResponse.json({ error: 'Failed to mark effectiveness' }, { status: 500 });
   }

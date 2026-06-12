@@ -32,6 +32,8 @@ type ProductType = {
   ColorName:string;
   Uses: string;
   IsActive: boolean;
+  ItemVarietyID:string;
+
 };
 
 const [product, setProduct] = useState<ProductType | null>(null);

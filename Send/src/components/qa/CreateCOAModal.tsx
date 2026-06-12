@@ -26,7 +26,7 @@ export default function CreateCAPAModal({ isOpen, onClose, onSuccess ,editingDat
    const [editing, setEditing] = useState<any | null>(null);
 
  
-console.log(editingData)
+
 
 type FormType = {
   SalesId: string;
@@ -38,7 +38,8 @@ type FormType = {
   ProductionDate:string;
   RFNItemNumber:string;
   LotNumber:string;
-  ExpiryDate:string
+  ExpiryDate:string,
+  customer:string,
 };
 
 
@@ -52,7 +53,8 @@ const initialForm: FormType = {
   ProductionDate:'',
   RFNItemNumber:'',
   LotNumber:'',
-  ExpiryDate:''
+  ExpiryDate:'',
+  customer:''
 };
 
 
@@ -308,11 +310,13 @@ const datetimeLocalToSql = (localDateTime :any) => {
         body: JSON.stringify({
           ...form,
           PreparedBy :userId,
+           Customer:customer,
           Site:site,
           ItemVarietyID:selectedITEMVARIETYID,
           ItemName:selectedItemName,
           ACCOUNTNUM:ACCOUNTNUM,
           ProductionDate: form.ProductionDate
+         
     ? new Date(form.ProductionDate).toISOString()
     : null
 ,
@@ -324,6 +328,7 @@ const datetimeLocalToSql = (localDateTime :any) => {
 
       if (!response.ok)
       {
+        
 
          setMessage("Request failed");
       
@@ -352,12 +357,14 @@ else
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          Customer:customer,
           PreparedBy :userId,
           Site:site,
           ItemVarietyID:selectedITEMVARIETYID,
           ItemName:selectedItemName,
           ACCOUNTNUM:ACCOUNTNUM,
           ProductionDate: form.ProductionDate
+          
     ? new Date(form.ProductionDate).toISOString()
     : null
 ,
