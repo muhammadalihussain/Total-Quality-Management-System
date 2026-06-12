@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
 
         return NextResponse.json({ success: true, message: ' updated successfully' });
-    } catch (error) {
+    } catch (error : any) {
         console.error('Error updating CAPA:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to update ' },

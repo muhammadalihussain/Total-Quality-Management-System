@@ -21,34 +21,38 @@ const [certificationName, setProductAnalysisName] =useState('')
   const [rowData, setRowData] = useState<any[]>([]);
   const [ProductName, setProductName] = useState('');
   const [editing, setEditing] = useState<any | null>(null);
-const [records, setRecords] = useState<any[]>([]);
+  const [records, setRecords] = useState<any[]>([]);
 
 type FormType = {
-  Id: string;
-  ProductId: string;
-  CategoryId: string;
+  Id: number;
+  ProductId: number;
+  CategoryId: number;
   ParameterName: string;
   Material: string;
-  NetWeight: string;
+  NetWeight: number;
   Unit: string;
   Limits: string;
-  Status: string;
   IsActive: boolean;
-  Method:string;
+  Method: string;
+  Status?: string; // 👈 optional
 };
-const [form, setForm] = useState<FormType>({
-  Id: "",
-  ProductId: "",
-  CategoryId: "",
+
+const emptyForm: FormType = {
+  Id: 0,
+  ProductId: 0,
+  CategoryId: 0,
   ParameterName: "",
   Material: "",
-  NetWeight: "",
+  NetWeight: 0,
   Unit: "",
   Limits: "",
+  IsActive: true,
+  Method: "",
   Status: "",
-  IsActive: false,
-  Method:''
-});
+};
+
+const [form, setForm] = useState<FormType>(emptyForm);
+
 
 type ErrorType = {
   ProductAnalysisName?: string;
@@ -89,19 +93,7 @@ const [error, setError] = useState<ErrorType>({});
   const addRow = async () => {
 
    setEditing(null);
-setForm({
-  Id: "",
-  ProductId: id,
-  CategoryId: "",
-  ParameterName: "",
-  Material: "",
-  NetWeight: "",
-  Unit: "",
-  Limits: "",
-  Status: "",
-  IsActive: true,
-  Method: '',
-});
+  setForm(emptyForm);
     setShowModal(true);
 
   };
@@ -112,7 +104,7 @@ setForm({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-      if (!form.CategoryId) {
+    if (!form || !form.CategoryId) {
     setError({ CategoryId: "Required" });
     return false;
   }
@@ -178,16 +170,13 @@ await fetch(`/api/productanalysis/${editing.Id}`, {
     ProductId: id,
     CategoryId: form.CategoryId,
     ParameterName: form.ParameterName,
-     Unit: form.Unit,
-      Limits: form.Limits,
-   //   Status: form.Status,
+    Unit: form.Unit,
+    Limits: form.Limits,
+   // Status: form.Status,
       IsActive: form.IsActive,
       Method: form.Method,
       }),
     });
-
-
-
 
     }
 
@@ -201,6 +190,7 @@ await fetch(`/api/productanalysis/${editing.Id}`, {
 
      setEditing(row);
 setForm({
+  ...emptyForm,
   Id: row.Id,
   ProductId: id,
   CategoryId: row.CategoryId,
@@ -280,7 +270,7 @@ const onGridReady = (params:any) => {
 
 
       {/* DELETE */}
-
+{  params.data.IsAvailale==0?( 
 
        <button  onClick={(e) => {
 
@@ -292,8 +282,8 @@ const onGridReady = (params:any) => {
 
         className="inline-flex items-center p-1 rounded hover:bg-gray-100 text-red-600" title="Delete" >
                         <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-          </button>
-
+          </button>) : ("")
+  }
 
     </div>
   ),
@@ -364,11 +354,15 @@ const onGridReady = (params:any) => {
              readOnly
               className="border p-2 w-full mb-2 hidden"
               placeholder="Product Id"
-              value={form.ProductId}
-              onChange={(e) =>
-                setForm({ ...form, ProductId: e.target.value })
+            value={form?.ProductId ?? 0}
+onChange={(e) =>
+  setForm({
+    ...form,
+    ProductId: Number(e.target.value),
+  })
+}
 
-              }
+
             />
 
          
@@ -377,10 +371,14 @@ const onGridReady = (params:any) => {
             key={"0"}
             name="CategoryId"
             id="CategoryId"
-            value={form.CategoryId}
+
+
+            value={form?.CategoryId ?? 0}
             onChange={(e) =>{ 
-                setForm({ ...form, CategoryId : e.target.value })
-              }}
+                setForm({ ...form, CategoryId : Number(e.target.value) })
+              }
+
+              }
 
             className={`w-full border rounded px-3 py-2 ${
             error.CategoryId ? "border-red-500" : "border-gray-300" }`} aria-label="CategoryName"
@@ -402,7 +400,8 @@ const onGridReady = (params:any) => {
             <input
               className={`w-full px-3 py-2 border rounded-lg ${error?.ParameterName  ? "border-red-500" : "border-gray-300"}`}
               placeholder="ParameterName "
-              value={form.ParameterName }
+              value={form?.ParameterName ?? ""}
+
                onChange={(e) =>
                 setForm({ ...form, ParameterName : e.target.value })
               }
@@ -423,8 +422,8 @@ const onGridReady = (params:any) => {
      <input
            className={`w-full px-3 py-2 border rounded-lg ${error?.Limits  ? "border-red-500" : "border-gray-300"}`}
               placeholder="Limits "
-              value={form.Limits }
 
+   value={form?.Limits ?? ""}
               onChange={(e) =>
                 setForm({ ...form, Limits: e.target.value })
               }
@@ -435,8 +434,8 @@ const onGridReady = (params:any) => {
   <input
            className="w-full px-3 py-2 border rounded-lg  border-gray-300"
               placeholder="Method "
-              value={form.Method }
 
+              value={form?.Method ?? ""}
               onChange={(e) =>
                 setForm({ ...form, Method: e.target.value })
               }

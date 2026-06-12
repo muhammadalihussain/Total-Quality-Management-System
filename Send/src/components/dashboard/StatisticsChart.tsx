@@ -11,7 +11,7 @@ import ProductsChart from "./ProductsChart";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function StatisticsChart() {
- const datePickerRef = useRef(null);
+const datePickerRef = useRef<HTMLInputElement | null>(null);
 
 const [fromDate, setFromDate] = useState("");
 const [toDate, setToDate] = useState("");
@@ -47,9 +47,12 @@ useEffect(() => {
         setFromDate(fromFormatted);
         setToDate(toFormatted);
 
+if (datePickerRef.current) {
+  datePickerRef.current.value = `${formatDate(from)} → ${formatDate(to)}`;
+}
+
         // ✅ BEAUTIFUL DISPLAY
-        datePickerRef.current.value =
-          `${formatDate(from)} → ${formatDate(to)}`;
+
       }
     },
   });
@@ -122,7 +125,9 @@ setSelected("optionTwo")
  setError("");
 setFromDate("")
 setToDate("")
-datePickerRef.current.value=null;
+if (datePickerRef.current) {
+  datePickerRef.current.value = '';
+}
 
   loadData();
 
@@ -204,7 +209,8 @@ datePickerRef.current.value=null;
       <div className="max-w-full overflow-x-auto custom-scrollbar">
 
 {
-  (!details?.monthly?.length > 0 && !details?.products?.length> 0) ? (
+  (!(details?.monthly?.length > 0) &&
+   !(details?.products?.length > 0)) ? (
     <div className="text-center text-gray-500 py-10">
       No Data Found
     </div>

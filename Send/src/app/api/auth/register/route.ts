@@ -6,6 +6,8 @@ export async function POST(req: Request) {
 
   const { username,email,rawpassword,isActive,role_Id,sitesIds,departmentId} = await req.json();
 
+
+
   const salt = await bcrypt.genSalt(10);
   const hashedPasswordCovert = await bcrypt.hash(rawpassword, salt);
 
@@ -22,10 +24,13 @@ export async function POST(req: Request) {
     };
 
 
-    const adduser :any = await addUser(newUser);
 
-    if (adduser[0][0][""] === "Email Exists") {
-      return NextResponse.json({ error: "Email Exists" }, { status: 400 });
+  const adduser :any = await addUser(newUser);
+
+  if (adduser?.[0]?.Message === "Email Exists") {
+
+       console.log(adduser?.[0]?.Message)
+      return NextResponse.json({ error: "Email Exists" });
       
     } else {
      //return NextResponse.json({ message: "User registered successfully" });
@@ -34,8 +39,8 @@ export async function POST(req: Request) {
     }
 
     
-  } catch (error) {
-   
+  } catch (error :any) {
+   console.log(error)
     return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 }

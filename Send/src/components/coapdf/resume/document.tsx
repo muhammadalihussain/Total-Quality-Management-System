@@ -11,6 +11,14 @@ Font.register({
 });
 
 const styles = StyleSheet.create({
+
+companyInfoContainer:{
+
+},
+
+companyAddress:{}
+,
+contactLine:{},
   page: {
     padding: 20,
     fontSize: 10,

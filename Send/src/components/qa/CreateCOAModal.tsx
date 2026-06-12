@@ -159,7 +159,7 @@ const fetchSalesUpdate = async (payload :any) => {
   useEffect(() => {
 
  if(Id==null)
- {    setFormData(null)
+ {    //setFormData(null)
      setFormData(initialForm);
      setCustomer('');
       setSelectedItemName('');
@@ -192,8 +192,6 @@ const fetchSalesUpdate = async (payload :any) => {
  else
   {
 
-
-      setFormData(null)
      setFormData(initialForm);
      setCustomer('');
       setSelectedItemName('');
@@ -550,7 +548,10 @@ toast.success("CAPA Created Successfully");
   onChange={(e) => {
     const localValue = e.target.value;
     const sqlValue = datetimeLocalToSql(localValue);
-    setFormData({ ...form, ProductionDate: sqlValue });
+    setFormData({
+  ...form,
+  ProductionDate: sqlValue ?? ""
+});
   }}
   className={`w-full border rounded px-3 py-2 ${
     error?.ProductionDate ? "border-red-500" : "border-gray-300"
@@ -570,7 +571,13 @@ toast.success("CAPA Created Successfully");
   onChange={(e) => {
     const localValue = e.target.value;
     const sqlValue = datetimeLocalToSql(localValue);
-    setFormData({ ...form, ExpiryDate: sqlValue });
+
+        setFormData({
+  ...form,
+  ExpiryDate: sqlValue ?? ""
+});
+
+
   }}
   className={`w-full border rounded px-3 py-2 ${
     error?.ExpiryDate ? "border-red-500" : "border-gray-300"

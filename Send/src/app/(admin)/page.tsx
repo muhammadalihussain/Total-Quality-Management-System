@@ -66,44 +66,44 @@ export default function Dashboard() {
 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
 
   {/* CAPA */}
-  <button className="rounded-2xl border-l-4 border-red-500 bg-red-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+  <div className="rounded-2xl border-l-4 border-red-500 bg-red-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
     <h3 className="font-bold text-red-700 text-lg">
       CAPA Management
     </h3>
     <p className="mt-2 text-red-600">
       Track corrective and preventive actions
     </p>
-  </button>
+  </div>
 
   {/* Audit */}
-  <button className="rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+  <div className="rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
     <h3 className="font-bold text-blue-700 text-lg">
       COA Management
     </h3>
     <p className="mt-2 text-blue-600">
      Certification of Analysis
     </p>
-  </button>
+  </div>
 
   {/* Document */}
-  <button className="rounded-2xl border-l-4 border-emerald-500 bg-emerald-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+  <div className="rounded-2xl border-l-4 border-emerald-500 bg-emerald-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
     <h3 className="font-bold text-emerald-700 text-lg">
      Root Cause Analysis
     </h3>
     <p className="mt-2 text-emerald-600">
       SOPs, policies and procedures
     </p>
-  </button>
+  </div>
 
   {/* Reports */}
-  <button className="rounded-2xl border-l-4 border-purple-500 bg-purple-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+  <div className="rounded-2xl border-l-4 border-purple-500 bg-purple-50 p-6 text-left shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
     <h3 className="font-bold text-purple-700 text-lg">
       Quality Reports
     </h3>
     <p className="mt-2 text-purple-600">
       Analytics and performance trends
     </p>
-  </button>
+  </div>
 
 </div>
       </div>

@@ -21,10 +21,7 @@ import CreateRootCauseModal from '@/components/CAPAActionsEffectiveness/CreateRo
 interface CAPADetails {
     capa: any;
     rootCauses: any[];
- //   qcTests: any[];
-    coa: any;
-   // coaTests: any[];
-    timeline: any[];
+
 }
 
 export default function CAPADetailsPage() {

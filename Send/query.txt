@@ -1,0 +1,113 @@
+USE [TQMS]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_GetAllByProductId]    Script Date: 6/12/2026 9:51:36 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_ProductAnalysis_GetAllByProductId]
+(@ProductId int)
+AS
+BEGIN
+SELECT ProductAnalysis.Id
+      ,[ProductId]
+      ,[CategoryId],
+      (select count(*)  from  [QCTestResults] where ProductAnalysisID=ProductAnalysis.Id) as IsAvailale
+      ,
+       CategoryName
+      ,[ParameterName]
+      ,[Unit]
+      ,[Limits]
+      --,[Status]
+      ,Method
+      ,ProductAnalysis.IsActive
+  FROM ProductAnalysis  inner join AnalysisCategories
+  on ProductAnalysis.CategoryId=AnalysisCategories.Id
+  where ProductId=@ProductId
+
+  order by CategoryName
+  
+  end
+  
+  -- exec  sp_ProductAnalysis_GetAllByProductId 1
+go
+
+
+USE [TQMS]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_AssignCAPA_MultipleUsers]    Script Date: 6/12/2026 11:39:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_AssignCAPA_MultipleUsers]
+    @CAPAID INT,
+    @UserIDs NVARCHAR(MAX), -- comma separated: '1,2,3'
+    @CreatedBy INT
+   
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+
+    -- Convert CSV to table
+    DECLARE @Users TABLE (UserID INT);
+
+    INSERT INTO @Users(UserID)
+   SELECT [Param] FROM dbo.fun_splitstring(@UserIDs)
+
+    -- Validate users
+    IF EXISTS (
+        SELECT 1
+        FROM @Users u
+        LEFT JOIN [Users] us ON u.UserID = us.UserID
+        WHERE us.UserID IS NULL OR us.IsActive = 0
+    )
+    BEGIN
+        RAISERROR('Invalid user in list', 16, 1);
+        RETURN;
+    END
+
+
+    delete from [CAPA_Assignments]
+    where CAPAID=@CAPAID and UserID in ( SELECT [Param] FROM dbo.fun_splitstring(@UserIDs))
+    
+    -- Insert assignments
+    INSERT INTO [CAPA_Assignments]
+    (CAPAID, UserID ,CreatedBy)
+    SELECT 
+        @CAPAID,
+        UserID,
+        @CreatedBy
+        
+    FROM @Users;
+
+
+
+ DECLARE @Emails NVARCHAR(max);
+  DECLARE @SalesId NVARCHAR(max);
+  DECLARE @ItemName NVARCHAR(max);
+  DECLARE @Description NVARCHAR(max);
+  DECLARE @customer NVARCHAR(max);
+    
+ SELECT 
+    @Emails =STUFF((
+        SELECT ',' + us.Email
+        FROM @Users u
+        INNER JOIN [Users] us 
+            ON u.UserID = us.UserID
+        WHERE us.IsActive = 1
+        FOR XML PATH(''), TYPE
+    ).value('.', 'NVARCHAR(MAX)'), 1, 1, '') 
+
+
+
+select @SalesId=SalesId ,@ItemName=ItemName ,@Description=Description ,@customer=customer  from CAPA
+
+where CAPAID=@CAPAID
+
+    SELECT 'SUCCESS' AS Message ,@Emails as Emails ,@SalesId as SalesId  ,@ItemName as ItemName ,@Description 
+    as Description ,@customer as customer ;
+END
+
+--exec [sp_AssignCAPA_MultipleUsers] 1,'1,2,3' ,1

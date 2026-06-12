@@ -225,7 +225,7 @@ const handleSubmit = async () => {
     CreatedBy:UserID
   });
 
-  setrefreshGrid(true);
+  setrefreshGrid(new Date().toISOString());
   onClose();
 };
 

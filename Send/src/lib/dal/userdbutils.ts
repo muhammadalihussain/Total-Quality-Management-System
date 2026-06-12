@@ -53,7 +53,7 @@ export async function executeStoredProcedure(procedureName: any, params = {}) {
 
 export  async function addUser(user: any) {
 
-    
+
   try {
     const result = await executeStoredProcedure("sp_RegisterUser", {
       username: {
@@ -75,18 +75,18 @@ export  async function addUser(user: any) {
         value: user.rawpassword,
       },
       isActive: {
-        type: sql.NVarChar,
+        type: sql.Bit,
         value: user.isActive,
       },
 
       role_id: {
-        type: sql.NVarChar,
-        value: user.role_Id,
+        type: sql.Int,
+        value: parseInt(user.role_Id),
       },
 
       departmentId: {
-        type: sql.NVarChar,
-        value: user.departmentId,
+        type: sql.Int,
+        value: parseInt(user.departmentId),
       },
    
       site_Ids: {
@@ -96,8 +96,13 @@ export  async function addUser(user: any) {
     
     });
 
+
+
+
     return result.recordsets[0];
-  } catch (err) {
+  } catch (err :any) {
+
+  console.log(err)
     // Handle errors
     return err;
   } finally {

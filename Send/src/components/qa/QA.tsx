@@ -48,8 +48,8 @@ export default function QA() {
   const [editing, setEditing] = useState<any | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
   
- const [refreshGrid, setrefreshGrid] = useState('');
- const [selectedCOAID, setSelectedCOAID] =useState('')
+ const [refreshGrid, setrefreshGrid] = useState<string | null>(null);
+const [selectedCOAID, setSelectedCOAID] = useState<string | null>(null);
 
 const [isOpenView, setIsOpenView] = useState(false);
   const [Id, setID] = useState<number | null>(null);

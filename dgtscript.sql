@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [TQMS]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Database [TQMS]    Script Date: 6/12/2026 12:01:55 PM ******/
 CREATE DATABASE [TQMS]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -89,7 +89,7 @@ ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
 USE [TQMS]
 GO
-/****** Object:  UserDefinedFunction [dbo].[fun_splitstring]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[fun_splitstring]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -124,7 +124,7 @@ END
 
 --SELECT [Param] FROM dbo.splitstring('a,b,c')
 GO
-/****** Object:  Table [dbo].[AnalysisCategories]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[AnalysisCategories]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -139,7 +139,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CAPA]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[CAPA]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -170,7 +170,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CAPA_Assignments]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[CAPA_Assignments]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -188,7 +188,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CAPAActions]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[CAPAActions]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -214,7 +214,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CAPAActionsEffectiveness]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[CAPAActionsEffectiveness]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -240,7 +240,7 @@ CREATE TABLE [dbo].[CAPAActionsEffectiveness](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CAPAAssignments]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[CAPAAssignments]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -268,7 +268,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Categories]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Categories]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -283,7 +283,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Certifications]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Certifications]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -299,7 +299,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[COA]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[COA]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -330,7 +330,7 @@ CREATE TABLE [dbo].[COA](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Colors]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Colors]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -345,7 +345,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CompanyInfo]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[CompanyInfo]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -368,7 +368,7 @@ CREATE TABLE [dbo].[CompanyInfo](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Departments]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Departments]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -388,7 +388,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[EmailConcernDeparts]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[EmailConcernDeparts]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -403,7 +403,7 @@ CREATE TABLE [dbo].[EmailConcernDeparts](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Forms]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Forms]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -418,7 +418,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[IssueName]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[IssueName]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -433,7 +433,7 @@ CREATE TABLE [dbo].[IssueName](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[MenuItems]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[MenuItems]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -453,7 +453,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Packaging]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Packaging]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -470,7 +470,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Permissions]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Permissions]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -484,7 +484,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ProductAnalysis]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[ProductAnalysis]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -505,7 +505,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Products]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Products]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -536,7 +536,7 @@ CREATE TABLE [dbo].[Products](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QCTestResults]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[QCTestResults]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -554,7 +554,7 @@ CREATE TABLE [dbo].[QCTestResults](
 	[IsActive] [bit] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RoleMenus]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[RoleMenus]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -569,7 +569,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Roles]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Roles]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -588,7 +588,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RootCauses]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[RootCauses]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -611,7 +611,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RootCauseType]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[RootCauseType]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -625,7 +625,7 @@ CREATE TABLE [dbo].[RootCauseType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Sites]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Sites]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -642,7 +642,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Status]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Status]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -657,14 +657,13 @@ CREATE TABLE [dbo].[Status](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Users](
 	[UserID] [int] IDENTITY(1,1) NOT NULL,
-	[UserCode] [nvarchar](50) NOT NULL,
 	[FullName] [nvarchar](255) NOT NULL,
 	[Email] [nvarchar](255) NULL,
 	[PasswordHash] [nvarchar](255) NULL,
@@ -683,7 +682,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserSiteAccess]    Script Date: 6/7/2026 11:44:07 PM ******/
+/****** Object:  Table [dbo].[UserSiteAccess]    Script Date: 6/12/2026 12:01:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -732,6 +731,8 @@ INSERT [dbo].[CAPA] ([CAPAID], [CAPA_Code], [Description], [FromDepartmentID], [
 INSERT [dbo].[CAPA] ([CAPAID], [CAPA_Code], [Description], [FromDepartmentID], [CreatedBy], [Priority], [StatusId], [TargetDate], [ClosureDate], [CreatedAt], [UpdatedAt], [ClosedAt], [ItemId], [ItemVarietyID], [SalesId], [Site], [Customer], [ItemName], [RejectRemarks]) VALUES (29, N'C-029', N'test', 1, 1, N'MEDIUM', N'6', CAST(N'2026-06-05' AS Date), CAST(N'2026-06-06' AS Date), CAST(N'2026-06-05T19:10:16.803' AS DateTime), CAST(N'2026-06-05T19:12:43.333' AS DateTime), NULL, N'ITM-000010', N'V0003', N'001233', N'1         ', N'CREST ENTERPRISE', N'Conventional Clarified Rice Syrup 42 DE (43 BE)', N'')
 INSERT [dbo].[CAPA] ([CAPAID], [CAPA_Code], [Description], [FromDepartmentID], [CreatedBy], [Priority], [StatusId], [TargetDate], [ClosureDate], [CreatedAt], [UpdatedAt], [ClosedAt], [ItemId], [ItemVarietyID], [SalesId], [Site], [Customer], [ItemName], [RejectRemarks]) VALUES (30, N'C-030', N'test', 1, 1, N'MEDIUM', N'6', CAST(N'2026-06-05' AS Date), CAST(N'2026-06-05' AS Date), CAST(N'2026-06-05T19:11:18.370' AS DateTime), CAST(N'2026-06-05T19:23:55.830' AS DateTime), NULL, N'ITM-000010', N'V0003', N'001233', N'1         ', N'CREST ENTERPRISE', N'Conventional Clarified Rice Syrup 42 DE (43 BE)', NULL)
 INSERT [dbo].[CAPA] ([CAPAID], [CAPA_Code], [Description], [FromDepartmentID], [CreatedBy], [Priority], [StatusId], [TargetDate], [ClosureDate], [CreatedAt], [UpdatedAt], [ClosedAt], [ItemId], [ItemVarietyID], [SalesId], [Site], [Customer], [ItemName], [RejectRemarks]) VALUES (31, N'C-031', N'dsfds', 1, 1, N'MEDIUM', N'6', CAST(N'2026-06-05' AS Date), CAST(N'2026-06-05' AS Date), CAST(N'2026-06-05T20:23:37.007' AS DateTime), CAST(N'2026-06-05T20:45:12.107' AS DateTime), NULL, N'ITM-000029', N'V0005', N'001234', N'1         ', N'BRIGHT TRADER', N'TIN 25Kg Rice Glucose 45 BE', NULL)
+INSERT [dbo].[CAPA] ([CAPAID], [CAPA_Code], [Description], [FromDepartmentID], [CreatedBy], [Priority], [StatusId], [TargetDate], [ClosureDate], [CreatedAt], [UpdatedAt], [ClosedAt], [ItemId], [ItemVarietyID], [SalesId], [Site], [Customer], [ItemName], [RejectRemarks]) VALUES (32, N'C-032', N'test', 1, 1, N'MEDIUM', N'1', NULL, NULL, CAST(N'2026-06-08T14:42:45.380' AS DateTime), CAST(N'2026-06-08T14:42:45.380' AS DateTime), NULL, N'ITM-000029', N'V0005', N'000123', N'1         ', N'FARHAN AGENCIES', N'TIN 25Kg Rice Glucose 45 BE', NULL)
+INSERT [dbo].[CAPA] ([CAPAID], [CAPA_Code], [Description], [FromDepartmentID], [CreatedBy], [Priority], [StatusId], [TargetDate], [ClosureDate], [CreatedAt], [UpdatedAt], [ClosedAt], [ItemId], [ItemVarietyID], [SalesId], [Site], [Customer], [ItemName], [RejectRemarks]) VALUES (33, N'C-033', N'test', 1, 1, N'MEDIUM', N'6', CAST(N'2026-06-07' AS Date), CAST(N'2026-06-07' AS Date), CAST(N'2026-06-08T14:43:37.727' AS DateTime), CAST(N'2026-06-08T15:41:42.023' AS DateTime), NULL, N'ITM-000029', N'V0005', N'000123', N'1         ', N'FARHAN AGENCIES', N'TIN 25Kg Rice Glucose 45 BE', NULL)
 SET IDENTITY_INSERT [dbo].[CAPA] OFF
 GO
 SET IDENTITY_INSERT [dbo].[CAPA_Assignments] ON 
@@ -748,6 +749,7 @@ INSERT [dbo].[CAPA_Assignments] ([AssignmentID], [CAPAID], [UserID], [IsActive],
 INSERT [dbo].[CAPA_Assignments] ([AssignmentID], [CAPAID], [UserID], [IsActive], [CreatedAt], [CreatedBy]) VALUES (33, 14, 1, 1, CAST(N'2026-06-02T16:55:11.530' AS DateTime), 1)
 INSERT [dbo].[CAPA_Assignments] ([AssignmentID], [CAPAID], [UserID], [IsActive], [CreatedAt], [CreatedBy]) VALUES (1033, 11, 1, 1, CAST(N'2026-06-02T18:11:42.103' AS DateTime), 1)
 INSERT [dbo].[CAPA_Assignments] ([AssignmentID], [CAPAID], [UserID], [IsActive], [CreatedAt], [CreatedBy]) VALUES (1034, 31, 1, 1, CAST(N'2026-06-05T20:45:43.430' AS DateTime), 1)
+INSERT [dbo].[CAPA_Assignments] ([AssignmentID], [CAPAID], [UserID], [IsActive], [CreatedAt], [CreatedBy]) VALUES (1040, 33, 1, 1, CAST(N'2026-06-08T15:50:09.770' AS DateTime), 1)
 SET IDENTITY_INSERT [dbo].[CAPA_Assignments] OFF
 GO
 SET IDENTITY_INSERT [dbo].[CAPAActions] ON 
@@ -861,6 +863,10 @@ INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (45, 
 INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (46, 2, 30)
 INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (47, 1, 30)
 INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (48, 1, 31)
+INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (49, 1, 32)
+INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (50, 2, 32)
+INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (51, 1, 33)
+INSERT [dbo].[EmailConcernDeparts] ([Id], [DepartmentID], [CAPAID]) VALUES (52, 2, 33)
 SET IDENTITY_INSERT [dbo].[EmailConcernDeparts] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Forms] ON 
@@ -884,7 +890,7 @@ INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [Created
 INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (6, N'Products  Specification ', N'#', 0, 0, CAST(N'2026-03-23T14:38:29.397' AS DateTime), N'FolderIcon', 5)
 INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (7, N'Complaints', N'/capa', 0, 1, CAST(N'2026-03-23T14:41:40.813' AS DateTime), N'FolderIcon', 2)
 INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (8, N'Root Cause', N'/rootcause', 9, 1, CAST(N'2026-05-12T12:08:15.953' AS DateTime), N'GroupIcon', 7)
-INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (9, N'Corrective & Preventive ', N'#', 0, 1, CAST(N'2026-05-12T12:16:55.213' AS DateTime), N'Forms', 8)
+INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (9, N'Corrective & Preventive ', N'#', 0, 1, CAST(N'2026-05-12T12:16:55.213' AS DateTime), N'FolderIcon', 8)
 INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (10, N'QA', N'/qa', 11, 1, CAST(N'2026-05-17T21:30:26.190' AS DateTime), N'FolderIcon', 9)
 INSERT [dbo].[MenuItems] ([Id], [Title], [Url], [ParentId], [IsActive], [CreatedDate], [Icon], [Sort]) VALUES (11, N'Certification Of Analysis', N'#', 0, 1, CAST(N'2026-05-19T15:23:51.970' AS DateTime), N'FolderIcon', 6)
 SET IDENTITY_INSERT [dbo].[MenuItems] OFF
@@ -1047,33 +1053,21 @@ SET IDENTITY_INSERT [dbo].[Status] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Users] ON 
 
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (1, N'01303', N'Muhammad Ali Hussain', N'muhammad.ali@matcofoods.com.pk', N'$2b$10$5tVrlI7COxNl7BYeoFEZY.j4SyQDC2VKDqHpMbDtJ.geoK.Go/bPW', NULL, 1, 1, NULL, 1, CAST(N'2026-04-03T11:47:49.017' AS DateTime), CAST(N'2026-04-03T11:47:49.017' AS DateTime), NULL, N'12345')
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (16, N'EMP001', N'Ali', N'test1@company.com', NULL, NULL, 1, 7, NULL, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (17, N'EMP002', N'Akber', N'test2@company.com', NULL, NULL, 1, 2, NULL, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (18, N'EMP003', N'Kamran', N'test3@company.com', NULL, NULL, 1, 8, 2, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (19, N'EMP004', N'Imran', N'test4@company.com', NULL, NULL, 4, 10, NULL, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (20, N'EMP005', N'Dawood', N'test5@company.com', NULL, NULL, 2, 6, NULL, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (21, N'EMP006', N'Ibrahim', N'test6@company.com', NULL, NULL, 6, 11, NULL, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (22, N'EMP007', N'Muzamil', N'test7@company.com', N'$2b$10$h1M4pcxScLH1sblO1wXHBOEa023/.c3UakUSWIs3yx4ZbUeZKTUsC', NULL, 3, 12, NULL, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
-INSERT [dbo].[Users] ([UserID], [UserCode], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (23, N'EMP008', N'Umer', N'test8@company.com', NULL, NULL, 3, 9, 2, 1, CAST(N'2026-04-03T12:04:10.983' AS DateTime), CAST(N'2026-04-03T12:04:10.983' AS DateTime), NULL, NULL)
+INSERT [dbo].[Users] ([UserID], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (1, N'Muhammad Ali Hussain', N'muhammad.ali@matcofoods.com.pk', N'$2b$10$5tVrlI7COxNl7BYeoFEZY.j4SyQDC2VKDqHpMbDtJ.geoK.Go/bPW', NULL, 1, 1, NULL, 1, CAST(N'2026-04-03T11:47:49.017' AS DateTime), CAST(N'2026-04-03T11:47:49.017' AS DateTime), NULL, N'12345')
+INSERT [dbo].[Users] ([UserID], [FullName], [Email], [PasswordHash], [PhoneNumber], [DepartmentID], [RoleID], [ReportingTo], [IsActive], [CreatedAt], [UpdatedAt], [LastLogin], [RawPassword]) VALUES (7, N'ss', N'muhammadmunirhussain1981@gmail.com1', N'$2b$10$iWgBKXbZeDTBAiSAS1ePH.ujX00xFMuEZIC.Gv/olvukHiT7g80j6', NULL, 1, 11, NULL, 1, CAST(N'2026-06-12T11:29:24.843' AS DateTime), CAST(N'2026-06-12T11:29:24.843' AS DateTime), NULL, N'sadsa')
 SET IDENTITY_INSERT [dbo].[Users] OFF
 GO
 SET IDENTITY_INSERT [dbo].[UserSiteAccess] ON 
 
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (7, 16, 1, 1, CAST(N'2026-03-05T11:06:11.313' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (8, 17, 1, 1, CAST(N'2026-03-05T11:06:11.313' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (9, 18, 1, 1, CAST(N'2026-03-05T11:06:11.313' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (10, 19, 1, 1, CAST(N'2026-03-05T11:06:11.313' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (11, 20, 1, 1, CAST(N'2026-03-05T14:21:49.267' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (12, 21, 1, 1, CAST(N'2026-03-05T14:26:11.340' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (26, 23, 1, 1, CAST(N'2026-04-02T11:47:53.500' AS DateTime))
 INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (28, 1, 1, 1, CAST(N'2026-04-03T21:09:28.013' AS DateTime))
-INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (30, 22, 1, 1, CAST(N'2026-05-17T22:31:59.600' AS DateTime))
+INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (29, 7, 1, 1, CAST(N'2026-06-12T11:29:24.850' AS DateTime))
+INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (30, 8, 1, 1, CAST(N'2026-06-12T11:30:30.110' AS DateTime))
+INSERT [dbo].[UserSiteAccess] ([AccessID], [UserID], [SiteID], [IsActive], [GrantedDate]) VALUES (31, 9, 1, 1, CAST(N'2026-06-12T11:31:31.270' AS DateTime))
 SET IDENTITY_INSERT [dbo].[UserSiteAccess] OFF
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__CAPA__0A915F13EDD21930]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  Index [UQ__CAPA__0A915F13B14E8D80]    Script Date: 6/12/2026 12:01:57 PM ******/
 ALTER TABLE [dbo].[CAPA] ADD UNIQUE NONCLUSTERED 
 (
 	[CAPA_Code] ASC
@@ -1081,13 +1075,13 @@ ALTER TABLE [dbo].[CAPA] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Departme__6EA8896D01A1FB79]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  Index [UQ__Departme__6EA8896DC3070313]    Script Date: 6/12/2026 12:01:57 PM ******/
 ALTER TABLE [dbo].[Departments] ADD UNIQUE NONCLUSTERED 
 (
 	[DepartmentCode] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
-/****** Object:  Index [UX_QCTestResults]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  Index [UX_QCTestResults]    Script Date: 6/12/2026 12:01:57 PM ******/
 CREATE UNIQUE NONCLUSTERED INDEX [UX_QCTestResults] ON [dbo].[QCTestResults]
 (
 	[COAID] ASC,
@@ -1096,7 +1090,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [UX_QCTestResults] ON [dbo].[QCTestResults]
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Roles__D62CB59CD4B47BFE]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  Index [UQ__Roles__D62CB59C96D438C6]    Script Date: 6/12/2026 12:01:57 PM ******/
 ALTER TABLE [dbo].[Roles] ADD UNIQUE NONCLUSTERED 
 (
 	[RoleCode] ASC
@@ -1104,21 +1098,13 @@ ALTER TABLE [dbo].[Roles] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Users__1DF52D0CC09C28C2]    Script Date: 6/7/2026 11:44:08 PM ******/
-ALTER TABLE [dbo].[Users] ADD UNIQUE NONCLUSTERED 
-(
-	[UserCode] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
-SET ANSI_PADDING ON
-GO
-/****** Object:  Index [UQ__Users__A9D10534C0837289]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  Index [UQ__Users__A9D10534E9CF467F]    Script Date: 6/12/2026 12:01:57 PM ******/
 ALTER TABLE [dbo].[Users] ADD UNIQUE NONCLUSTERED 
 (
 	[Email] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
-/****** Object:  Index [UQ_UserSite]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  Index [UQ_UserSite]    Script Date: 6/12/2026 12:01:57 PM ******/
 ALTER TABLE [dbo].[UserSiteAccess] ADD  CONSTRAINT [UQ_UserSite] UNIQUE NONCLUSTERED 
 (
 	[UserID] ASC,
@@ -1261,7 +1247,7 @@ ALTER TABLE [dbo].[UserSiteAccess] CHECK CONSTRAINT [FK_UserSiteAccess_Site]
 GO
 ALTER TABLE [dbo].[CAPAActions]  WITH CHECK ADD CHECK  (([ActionType]='PREVENTIVE' OR [ActionType]='CORRECTIVE'))
 GO
-/****** Object:  StoredProcedure [dbo].[deleteUser]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[deleteUser]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1287,7 +1273,7 @@ ELSE
    END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetEmailConcernDepartByCAPAID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetEmailConcernDepartByCAPAID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1303,7 +1289,7 @@ Departments on EmailConcernDeparts.DepartmentID=Departments.DepartmentID
 where CAPAID=@CAPAID
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AcceptOrRecjectCAPA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AcceptOrRecjectCAPA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1367,7 +1353,7 @@ BEGIN
     SELECT 'SUCCESS' AS Message;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AddAction]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AddAction]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1405,7 +1391,7 @@ BEGIN
     SELECT @ActionID AS ActionID, @ActionCode AS ActionCode;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AddCAPAActionsEffectiveness]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AddCAPAActionsEffectiveness]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1431,7 +1417,7 @@ INSERT INTO [CAPAActionsEffectiveness]
      VALUES(@RootCauseID ,@DetailsOfRootCause,@CorectiveAction ,@PreventiveAction ,@CreatedBy ,@CAPAID)
      SELECT SCOPE_IDENTITY()
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AddRootCause]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AddRootCause]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1457,7 +1443,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS RootCauseID, @RootCauseCode AS RootCauseCode;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AllCAPAActionsIsEffective]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AllCAPAActionsIsEffective]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1489,7 +1475,7 @@ update CAPAActionsEffectiveness
 
             where CAPAID=@CAPAID
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ApprovedAllTestResultByCOAID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ApprovedAllTestResultByCOAID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1516,7 +1502,7 @@ END
 
 --exec sp_ApprovedAllTestResultByCOAID 41,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AssignCAPA_MultipleUsers]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AssignCAPA_MultipleUsers]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1566,6 +1552,10 @@ BEGIN
 
 
  DECLARE @Emails NVARCHAR(max);
+  DECLARE @SalesId NVARCHAR(max);
+  DECLARE @ItemName NVARCHAR(max);
+  DECLARE @Description NVARCHAR(max);
+  DECLARE @customer NVARCHAR(max);
     
  SELECT 
     @Emails =STUFF((
@@ -1579,12 +1569,17 @@ BEGIN
 
 
 
-    SELECT 'SUCCESS' AS Message ,@Emails as Emails ;
+select @SalesId=SalesId ,@ItemName=ItemName ,@Description=Description ,@customer=customer  from CAPA
+
+where CAPAID=@CAPAID
+
+    SELECT 'SUCCESS' AS Message ,@Emails as Emails ,@SalesId as SalesId  ,@ItemName as ItemName ,@Description 
+    as Description ,@customer as customer ;
 END
 
 --exec [sp_AssignCAPA_MultipleUsers] 1,'1,2,3' ,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AssignUser]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AssignUser]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1606,7 +1601,7 @@ BEGIN
     SELECT * FROM Assignments WHERE AssignmentID = @AssignmentID;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CAPA_Delete]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_CAPA_Delete]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1618,7 +1613,7 @@ BEGIN
     DELETE FROM CAPA WHERE CAPAID = @CAPAID
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CAPAActionsEffectiveness_Delete]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_CAPAActionsEffectiveness_Delete]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1630,7 +1625,7 @@ BEGIN
     DELETE FROM CAPAActionsEffectiveness WHERE ActionID = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Certifications_Delete]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Certifications_Delete]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1642,7 +1637,7 @@ BEGIN
     DELETE FROM Certifications WHERE Id = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Certifications_GetAllByProductId]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Certifications_GetAllByProductId]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1661,7 +1656,7 @@ END
 
 --exec  [sp_Certifications_GetAllByProductId] 1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Certifications_Insert]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Certifications_Insert]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1678,7 +1673,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Certifications_Update]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Certifications_Update]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1698,7 +1693,7 @@ BEGIN
     WHERE Id = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CompleteAction]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_CompleteAction]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1727,7 +1722,7 @@ BEGIN
     SELECT 'Action Completed' AS Message;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CreateCAPA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_CreateCAPA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1784,7 +1779,7 @@ BEGIN
     SELECT @CAPAID AS CAPAID, @CAPA_Code AS CAPA_Code ,@UserName as CreatedBy,@Emails as Emails;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CreateCOA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_CreateCOA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1826,12 +1821,12 @@ ELSE
   
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeleteAssignCAPAUser]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeleteAssignCAPAUser]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-Create PROCEDURE [dbo].[sp_DeleteAssignCAPAUser]
+CREATE PROCEDURE [dbo].[sp_DeleteAssignCAPAUser]
     @CAPAID INT,
     @AssignmentID INT
    
@@ -1844,10 +1839,35 @@ BEGIN
     DELETE FROM CAPA_Assignments WHERE CAPAID=@CAPAID and AssignmentID=@AssignmentID
 
 
-    SELECT 'SUCCESS' AS Message;
+
+  DECLARE @Email NVARCHAR(max);
+  DECLARE @SalesId NVARCHAR(max);
+  DECLARE @ItemName NVARCHAR(max);
+  DECLARE @Description NVARCHAR(max);
+  DECLARE @customer NVARCHAR(max);
+    
+ SELECT 
+    @Email =Email    from [Users] us 
+    inner join  CAPA_Assignments ca on ca.UserID= us.UserID 
+         
+        WHERE ca.CAPAID=@CAPAID and ca.AssignmentID=@AssignmentID and  us.IsActive = 1
+      
+
+
+
+select @SalesId=SalesId ,@ItemName=ItemName ,@Description=Description ,@customer=customer  from CAPA
+
+where CAPAID=@CAPAID
+
+    SELECT 'SUCCESS' AS Message ,@Email as Email ,@SalesId as SalesId  ,@ItemName as ItemName ,@Description 
+    as Description ,@customer as customer ;
+
+
+
+   
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_deleteQCTestResult]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_deleteQCTestResult]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1862,7 +1882,7 @@ delete
 
   end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GenerateQCTestResults]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GenerateQCTestResults]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1902,7 +1922,7 @@ END
 
 --exec   [sp_GenerateQCTestResults] 41,1,'V0040'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAll_AnalysisCategories]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAll_AnalysisCategories]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1917,7 +1937,7 @@ SELECT  [Id]
   where IsActive=1
   end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllCAPAActionsEffectivenessByCAPAID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllCAPAActionsEffectivenessByCAPAID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1948,7 +1968,7 @@ SELECT [ActionID]
   
   --exec [sp_GetAllCAPAActionsEffectivenessByCAPAID] 17
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllCapaAssignUsers]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllCapaAssignUsers]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1965,7 +1985,7 @@ as
     WHERE [Users].IsActive = 1 and [CAPA_Assignments].IsActive=1
     ORDER BY FullName
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllCapaAssignUsersByCAPAID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllCapaAssignUsersByCAPAID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1983,7 +2003,7 @@ as
     and CAPAID=@CAPAID
     ORDER BY FullName
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllCAPAs]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllCAPAs]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1999,7 +2019,7 @@ BEGIN
     ORDER BY CreatedAt DESC;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllCategories]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllCategories]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2014,7 +2034,7 @@ BEGIN
   where [IsActve]=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllColors]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllColors]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2029,7 +2049,7 @@ BEGIN
   where IsActive=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllDepartment]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllDepartment]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2040,7 +2060,7 @@ BEGIN
 	SELECT [DepartmentId]as Id, [DepartmentName] FROM Departments  where IsActive=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllForms]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllForms]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2056,7 +2076,7 @@ BEGIN
   where IsActive=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetALLITEMVARIETYID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetALLITEMVARIETYID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2084,7 +2104,7 @@ NAME like '%dextrose%'
 
 end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllowedUrls]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllowedUrls]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2102,7 +2122,7 @@ BEGIN
       order by sort
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllRoles]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllRoles]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2115,7 +2135,7 @@ BEGIN
   FROM [Roles]  where IsActive=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllRootCauseType]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllRootCauseType]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2128,7 +2148,7 @@ BEGIN
   
   end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllSites]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllSites]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2142,7 +2162,7 @@ BEGIN
   FROM [Sites]  where IsActive=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllStatus]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllStatus]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2155,7 +2175,7 @@ BEGIN
   FROM [Status]  where IsActive=1
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllUsers]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllUsers]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2170,7 +2190,7 @@ as
     WHERE [Users].IsActive = 1
     ORDER BY FullName
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAssignCAPAByUserID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAssignCAPAByUserID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2259,7 +2279,7 @@ and [CAPA_Assignments].UserID=@UserID
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAssignCAPAByUserIDOnlyForQA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAssignCAPAByUserIDOnlyForQA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2351,7 +2371,7 @@ and [CAPA_Assignments].UserID=@UserID  and    ([Users].DepartmentID=3 or [Users]
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetCAPADetails]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetCAPADetails]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2431,7 +2451,7 @@ END;
 
 -- exec [dbo].[sp_GetCAPADetails] 1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetCAPADetailsWithStatus]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetCAPADetailsWithStatus]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2454,7 +2474,7 @@ END
 
 --exec sp_GetCAPADetailsWithStatus null
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetCAPAList]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetCAPAList]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2539,7 +2559,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetCOA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetCOA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2640,7 +2660,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetCOADetails]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetCOADetails]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2682,7 +2702,13 @@ BEGIN
                 WHERE UserID = COA.ApprovedBy
             )   AS ApprovedByName
             
+            ,(Select top 1 COUNT(*) from Products where ItemVarietyID=[COA].ItemVarietyID) as IsItemAvailableProduct
             
+            ,(Select top 1 COUNT(*) from Products
+              inner join [ProductAnalysis] on Products.Id=[ProductAnalysis].ProductId
+            
+            
+            where Products.ItemVarietyID=[COA].ItemVarietyID)as IsParameterAvailable
             
              from  [COA]
     
@@ -2693,7 +2719,7 @@ END;
 
 -- exec [dbo].[sp_GetCOADetails] 41
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetDashboardData]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetDashboardData]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2733,7 +2759,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetDetailsBySalesId]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetDetailsBySalesId]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2778,7 +2804,7 @@ where sln.DataAreaid=@Site and REPLACE(LOWER(sln.SalesId), 'sop-', '') = LOWER(@
 
 --exec sp_GetDetailsBySalesId  '013595' , '1'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetMenusByRole]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetMenusByRole]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2811,7 +2837,7 @@ END
 
 -- exec [sp_GetMenusByRole] 1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetProductDetailByID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetProductDetailByID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2849,7 +2875,7 @@ SELECT Products.[Id]
   
  -- exec sp_GetProductDetailByID 1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetUserAssignments]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetUserAssignments]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2867,31 +2893,7 @@ BEGIN
     ORDER BY a.AssignedAt DESC;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetUsersByRoleAndDept]    Script Date: 6/7/2026 11:44:08 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- 12. Get Users by Role and Department
-CREATE PROCEDURE [dbo].[sp_GetUsersByRoleAndDept]
-    @RoleID INT = NULL,
-    @DepartmentID INT = NULL
-AS
-BEGIN
-    SELECT 
-        u.UserID, u.UserCode, u.FullName, u.Email, u.PhoneNumber,
-        r.RoleID, r.RoleName, r.RoleCode,
-        d.DepartmentID, d.DepartmentName, d.DepartmentCode
-    FROM Users u
-    INNER JOIN Roles r ON u.RoleID = r.RoleID
-    INNER JOIN Departments d ON u.DepartmentID = d.DepartmentID
-    WHERE u.IsActive = 1
-    AND (@RoleID IS NULL OR u.RoleID = @RoleID)
-    AND (@DepartmentID IS NULL OR u.DepartmentID = @DepartmentID)
-    ORDER BY d.DepartmentName, r.RoleLevel DESC, u.FullName;
-END;
-GO
-/****** Object:  StoredProcedure [dbo].[sp_LoginUser]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_LoginUser]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2914,7 +2916,7 @@ END;
 
 --exec [sp_LoginUser] 'muhammad.ali@matcofoods.com.pk' ,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Packaging_Delete]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Packaging_Delete]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2926,7 +2928,7 @@ BEGIN
     DELETE FROM Packaging WHERE Id = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Packaging_GetAllByProductId]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Packaging_GetAllByProductId]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2945,7 +2947,7 @@ END
 
 --exec  [sp_Packaging_GetAllByProductId] 1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Packaging_Insert]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Packaging_Insert]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2963,7 +2965,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Packaging_Update]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Packaging_Update]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2985,7 +2987,7 @@ BEGIN
     WHERE Id = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Product_Delete]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Product_Delete]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3048,7 +3050,7 @@ END
 
 --exec sp_Product_Delete 19
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Product_Insert]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Product_Insert]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3120,7 +3122,7 @@ CREATE PROCEDURE [dbo].[sp_Product_Insert]
 
            end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Product_Update]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Product_Update]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3177,7 +3179,7 @@ CREATE PROCEDURE [dbo].[sp_Product_Update]
 
            end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_Delete]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_Delete]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3189,7 +3191,7 @@ BEGIN
     DELETE FROM ProductAnalysis WHERE Id = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_GetAllByProductId]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_GetAllByProductId]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3201,6 +3203,8 @@ BEGIN
 SELECT ProductAnalysis.Id
       ,[ProductId]
       ,[CategoryId],
+      (select count(*)  from  [QCTestResults] where ProductAnalysisID=ProductAnalysis.Id) as IsAvailale
+      ,
        CategoryName
       ,[ParameterName]
       ,[Unit]
@@ -3218,7 +3222,7 @@ SELECT ProductAnalysis.Id
   
   -- exec  sp_ProductAnalysis_GetAllByProductId 1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_GetAllTestResultbyCOAID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_GetAllTestResultbyCOAID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3328,7 +3332,7 @@ ORDER BY
   
   -- exec  sp_ProductAnalysis_GetAllTestResultbyCOAID 41
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_Insert]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_Insert]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3350,7 +3354,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_Update]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductAnalysis_Update]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3380,7 +3384,7 @@ BEGIN
     WHERE Id = @Id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductsPagination]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductsPagination]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3444,7 +3448,7 @@ END
 --EXEC [sp_ProductsPagination] @page = 1, @size = 5, @search = 'a', @orderBy = 'ProductName', @orderDir = 'ASC'
 --EXEC [sp_ProductsPagination] @page = 1, @size = 5, @search = '', @orderBy = 'ProductName', @orderDir = 'ASC'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RefreshAgainGenerateQCTestResults]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_RefreshAgainGenerateQCTestResults]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3498,11 +3502,15 @@ WHERE
 
 end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RegisterUser]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_RegisterUser]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+--exec sp_RegisterUser   'Safwan Khalid Ghori', 'safwan.ghori@matcofoods.com' , '$2b$10$IJO4nIIxgtGhbl7EuBZNnOJiMRqSw8aHJDfs8pMfLAe5jmS2s4LyC', 'admin',1,'1','1','1' 
+       
+
+
 CREATE PROCEDURE [dbo].[sp_RegisterUser]
    
  (
@@ -3519,14 +3527,14 @@ CREATE PROCEDURE [dbo].[sp_RegisterUser]
 AS
 
 BEGIN
-    IF EXISTS (SELECT COUNT(*) FROM [Users]  WHERE email =@email  )
+    IF  (SELECT COUNT(*) FROM [Users]  WHERE email =@email  )>0
 BEGIN
-    Select 'Email Exists'
+    SELECT 'Email Exists' AS Message;
 END
 ELSE
    BEGIN
-      insert into [Users](FullName,email,PasswordHash,RawPassword,isActive,DepartmentId  ) 
-	  values(@username,@email,@passwordhash,@rawpassword,@isActive,@departmentId )
+      insert into [Users](FullName,email,PasswordHash,RawPassword,isActive,DepartmentId ,RoleID ) 
+	  values(@username,@email,@passwordhash,@rawpassword,@isActive,@departmentId ,@role_id )
 
 -- Capture first identity
 DECLARE @UserID int = SCOPE_IDENTITY();
@@ -3542,18 +3550,18 @@ inner join [Sites] on LTRIM(RTRIM([Param]))=LTRIM(RTRIM(SiteID))
 
 
 
-insert into [UserRoles]([UserID],[RoleID])
+--insert into [UserRoles]([UserID],[RoleID])
 
-select  @UserID ,@role_id
+--select  @UserID ,@role_id
  
 
 
-	  Select 'New user has been created'
+	  Select 'New user has been created' AS Message
 
    END
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateCAPA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateCAPA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3601,7 +3609,7 @@ BEGIN
     SELECT @CAPAID AS CAPAID ;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateCAPAActionsEffectiveness]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateCAPAActionsEffectiveness]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3626,7 +3634,7 @@ update CAPAActionsEffectiveness
            ,UpdatedBy= @CreatedBy
            where CAPAID=@CAPAID  and ActionID=@ActionID
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateCAPAActionsIsEffective]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateCAPAActionsIsEffective]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3675,7 +3683,7 @@ update CAPAActionsEffectiveness
 
             end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateCOA]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateCOA]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3722,7 +3730,7 @@ BEGIN
   
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateSingleFieldQATestResult]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateSingleFieldQATestResult]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3784,7 +3792,7 @@ BEGIN
     
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateUser]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateUser]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3838,7 +3846,7 @@ inner join [Sites] on LTRIM(RTRIM([Param]))=LTRIM(RTRIM(SiteID))
    END
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_VerifiedAllTestResultByCOAID]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_VerifiedAllTestResultByCOAID]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3883,7 +3891,7 @@ else
     
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_UserPagination]    Script Date: 6/7/2026 11:44:08 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_UserPagination]    Script Date: 6/12/2026 12:01:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

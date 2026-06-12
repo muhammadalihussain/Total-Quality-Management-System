@@ -17,7 +17,10 @@ export default function CreateRootCauseDetails({ isOpen, onClose, onSuccess ,edi
    const [userId, setUserId] = useState<string | null>(null);
    const [editing, setEditing] = useState<any | null>(null);
 
-
+type RootCauseType = {
+  ID: number | string;
+  Name?: string;
+};
 
 type FormType = {
   ActionID: string;
@@ -100,7 +103,7 @@ useEffect(() => {
   const [error, setError] = useState<FormError>({});
   const [loading, setLoading] = useState(false);
 
-  const [rootCauseType, setRootCauseTypes] = useState([]);
+  const [rootCauseType, setRootCauseTypes] = useState<RootCauseType[]>([]);
 
     useEffect(() => {
      const fetchData = async () => {

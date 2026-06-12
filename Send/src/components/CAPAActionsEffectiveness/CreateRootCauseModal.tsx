@@ -12,7 +12,10 @@ export default function CreateRootCauseModal({ isOpen, onClose, onSuccess ,editi
   // ✅ STATE (ALL HOOKS FIRST)
   // =====================
 
-
+type RootCauseType = {
+  ID: number | string;
+  Name?: string;
+};
    const [message, setMessage] = useState('');
    const [userId, setUserId] = useState<string | null>(null);
    const [editing, setEditing] = useState<any | null>(null);
@@ -91,7 +94,7 @@ const fetchUpdate = async (payload :any) => {
   const [error, setError] = useState<FormError>({});
   const [loading, setLoading] = useState(false);
 
-  const [rootCauseType, setRootCauseTypes] = useState([]);
+ const [rootCauseType, setRootCauseTypes] = useState<RootCauseType[]>([]);
 
     useEffect(() => {
 

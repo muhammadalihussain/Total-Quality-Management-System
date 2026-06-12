@@ -314,6 +314,7 @@ export default function COAPDFGenerator({ id }) {
         Limits: first.Limits,
         Result: first.Result,
         Method: first.Method,
+        lotNumber :first.lotNumber,
         
       };
 
@@ -337,7 +338,7 @@ export default function COAPDFGenerator({ id }) {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-    } catch (err) {
+    } catch (err :any) {
       console.error(err);
       alert('Failed to generate COA: ' + err.message);
     } finally {

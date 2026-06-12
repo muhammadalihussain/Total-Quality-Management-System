@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     });
 
 
-  } catch (error) {
+  } catch (error :any) {
     console.error('Error fetching CAPAs:', error);
 
     return NextResponse.json(

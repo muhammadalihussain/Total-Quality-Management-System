@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
 
         const assignments = await executeQuery(query, params);
         return NextResponse.json({ success: true, data: assignments });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error fetching assignments:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to fetch assignments' },

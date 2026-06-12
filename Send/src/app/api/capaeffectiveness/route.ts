@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
 
         return NextResponse.json({ success: true, data: 'test' });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error creating CAPA:', error);
         return NextResponse.json(
             { success: false, error: error },
@@ -32,9 +32,13 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const capaId = searchParams.get('CAPAID');
 
+if (!capaId) {
+  throw new Error("CAPAID is required");
+}
+
   const results = await executeQueryWithMultipleResults('sp_GetAllCAPAActionsEffectivenessByCAPAID', {
-        CAPAID: parseInt(capaId)
-      });
+        CAPAID: parseInt(capaId ?? 0)
+      })
 
   return Response.json({
     data: results[0],
@@ -99,7 +103,7 @@ export async function PUT(request: NextRequest) {
 
 
         return NextResponse.json({ success: true, message: 'CAPA updated successfully' });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error updating CAPA:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to update CAPA' },

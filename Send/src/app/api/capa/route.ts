@@ -170,7 +170,7 @@ const SMTP_CONFIG = {
       html: htmlTemplate
     });
     //console.log('✅ Success! Email sent:', result.messageId);
-  } catch (error) {
+  } catch (error :any) {
     console.error('❌ Failed:', error);
   }
 
@@ -180,7 +180,7 @@ const SMTP_CONFIG = {
         return NextResponse.json({ success: true, data: "test" });
     }
 
-    catch (error) {
+    catch (error :any) {
         console.error('Error creating CAPA:', error);
          if (error.code === 'EREQUEST' &&error.originalError?.info?.number) {
 
@@ -290,7 +290,7 @@ export async function PUT(request: NextRequest) {
 
 
         return NextResponse.json({ success: true, message: 'CAPA updated successfully' });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error updating CAPA:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to update CAPA' },

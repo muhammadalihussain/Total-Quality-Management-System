@@ -44,7 +44,7 @@ const cleaned = {
 
 
         return NextResponse.json({ success: true, data: cleaned });
-    } catch (error) {
+    } catch (error :any) {
         console.error('Error fetching dashboard data:', error);
         return NextResponse.json(
             { success: false, error: 'Failed to fetch dashboard data' },
